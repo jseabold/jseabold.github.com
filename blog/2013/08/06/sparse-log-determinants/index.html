@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-        <title>jseabold.net</title>
+        <title>Monte Carlo Estimates of Log Determinants | jseabold.net</title>
         <meta charset="utf-8" />
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
@@ -1288,20 +1288,17 @@ init_mathjax();
         <div class="span10 offset1">
             <div class="row-fluid">
                 <div class="span10">
-                                                        <section>
-                <ol id="posts-list" class="hfeed" start="9">
-                            <li>
-                    <article>
-                        <header>
-                            <h1 class="entry-title">
-                                <a href="http://jseabold.net/blog/2013/08/06/sparse-log-determinants" rel="bookmark" title="Permalink to Monte Carlo Estimates of Log Determinants">
-                                   Monte Carlo Estimates of Log Determinants
-                                </a>
-                            </h1>
-                        </header>
+                    <section  >
+  <article>
+    <header>
+      <h1 class="entry-title">
+        <a href="http://jseabold.net/blog/2013/08/06/sparse-log-determinants" rel="bookmark"
+           title="Permalink to Monte Carlo Estimates of Log Determinants">Monte Carlo Estimates of Log Determinants</a></h1>
+      <a href="http://twitter.com/share" class="twitter-share-button" data-count="horizontal" data-via="jseabold">Tweet</a><script type="text/javascript" src="http://platform.twitter.com/widgets.js"></script>
+    </header>
 
-                        <div class="entry-content">
-                            <footer class="post-info">
+    <div class="entry-content">
+      <footer class="post-info">
         <address class="vcard author">
         by <a class="url fn" href="http://jseabold.net/author/skipper-seabold.html">Skipper Seabold</a>
     </address>
@@ -1321,7 +1318,7 @@ init_mathjax();
         <a href="http://jseabold.net/blog/2013/08/06/sparse-log-determinants#disqus_thread">comments</a>
     
         
-</footer><!-- /.post-info -->                            <div class="ipynb">
+</footer><!-- /.post-info -->      <div class="ipynb">
 
 <div class="text_cell_render border-box-sizing rendered_html">
 <h2 class="ipynb">
@@ -1329,118 +1326,70 @@ init_mathjax();
 </h2>
 </div>
 <div class="text_cell_render border-box-sizing rendered_html">
-<p>In statistics, we often need to compute a log-determinant as part of a multivariate maximum likelihood problem for non-independent data. The matrix for which we may need a log-determinant can be very large, though more often than not it is also very sparse. Direct methods ...</p></div></div>
-                            <p class="readmore">
-                                <a class="btn btn-info" href="http://jseabold.net/blog/2013/08/06/sparse-log-determinants">Read more...</a>
-                            </p>
-                        </div><!-- /.entry-content -->
-
-                        <hr/>
-                    </article>
-                </li>
-                                                            <li>
-                    <article>
-                        <header>
-                            <h1 class="entry-title">
-                                <a href="http://jseabold.net/blog/2012/02/23/wavelet-regression-in-python" rel="bookmark" title="Permalink to Wavelet Regression in Python">
-                                   Wavelet Regression in Python
-                                </a>
-                            </h1>
-                        </header>
-
-                        <div class="entry-content">
-                            <footer class="post-info">
-        <address class="vcard author">
-        by <a class="url fn" href="http://jseabold.net/author/skipper-seabold.html">Skipper Seabold</a>
-    </address>
-    
-    in <a href="http://jseabold.net/category/misc.html">misc</a>
-
-    on 2012-02-23
-
-            |
-        tags:         <a href="http://jseabold.net/tag/stats.html">stats</a>
-                <a href="http://jseabold.net/tag/python.html">python</a>
-                <a href="http://jseabold.net/tag/wavelets.html">wavelets</a>
-                <a href="http://jseabold.net/tag/nonparametric.html">nonparametric</a>
-            
-    
-            |
-        <a href="http://jseabold.net/blog/2012/02/23/wavelet-regression-in-python#disqus_thread">comments</a>
-    
-        
-</footer><!-- /.post-info -->                            <div class="ipynb">
-
-<div class="text_cell_render border-box-sizing rendered_html">
-<h2 class="ipynb">
-  Wavelet Regression in Python
-</h2>
+<p>In statistics, we often need to compute a log-determinant as part of a multivariate maximum likelihood problem for non-independent data. The matrix for which we may need a log-determinant can be very large, though more often than not it is also very sparse. Direct methods of computing the determinant for a symmetric variance-covariance matrix often use the Cholesky decomposition or in certain cases an LU decomposition can be used.</p>
+<p>I have recently need to tackle this problem for the estimation of some spatial-econometric models. One good thing about the variance-covariance in spatial econometric models is that they're sparse. Unfortunately, all of the sparse Cholesky routines that I am aware of are not suitable to be included in BSD-compatible projects like <a href="http://statsmodels.sourceforge.net">statsmodels</a> and <a href="http://pythonhosted.org/PySAL/">pysal</a>. Furthermore, sparse methods (sometimes) rely on particular orderings of the matrices to achieve good performance; however, these orderings are not always possible to achieve with spatial weighting matrices. Another good thing about working with spatial econometric models is that we often don't need exact estimates. Approximations often do just fine. This led me to a 1999 paper by Barry and Pace in which they introduce a simple Monte Carlo method to approximate log-determinants of matrices, "A Monte Carlo Estimator of Log Determinants of Large Sparse Matrices." [<a href="http://www.spatial-statistics.com/pace_manuscripts/Lin_algebra_appl/lin_algebra_applications.pd]">pdf</a>]. See also Chapter 4.4 in LeSage and Pace's Introduction to Spatial Econometrics.</p>
+<p>To describe the problem in a little more detail. We need to calculate $\ln|I_n - \rho W|$ where $I_n$ is an $n\times n$ identity matrix, $\rho$ is a scalar in $(-1,1)$, and $W$ has been rescaled such that its eigenvalues are in $(-1,1)$. Direct methods would require the computation of this log determinant for a number of different values of $\rho$. However, we can develop an MC approximation that avoids these recomputations by first noting that</p>
+<p>$$\ln|I_n - \rho W| = \operatorname{tr}(\ln(I_n - \rho W))$$</p>
+<p>where $\operatorname{tr}$ denotes the trace of the matrix. Next note that the matrix logarithm has the power series expansion</p>
+<p>$$\ln(I_n - \rho W) = -\sum_{i=1}^{\infty}\frac{\rho^i W^i}{i}$$</p>
+<p>Since the trace is a linear operation, we can write</p>
+<p>$$\ln|I_n - \rho W| = -\sum_{i=1}^{\infty}\frac{\rho^i \operatorname{tr}(W^i)}{i}$$</p>
+<p>Note that this will also hold for non-symmetric W with complex eigenvalues or for complex $\rho$. Assuming that truncation error is small, we can write a finite approximation of the above power series</p>
+<p>$$\ln|I_n - \rho W| = -\sum_{i=1}^{m}\frac{\rho^i \operatorname{tr}(W^i)}{i}$$</p>
+<p>The computation for $\operatorname{tr}(W^i)$ can be computationally costly for larger values of $i$. Barry and Pace introduce the following "trick" to calculate the trace. Let the vector $\boldsymbol{x}$ come from a $N_n(0,I)$ distribution and assume we have some matrix $D$. Since the square of any single $x_i\sim N(\cdot)$ gives $x_i^2\sim\chi^2_1$ with $\mathbb{E}[x_i^2]=1$ and $\mathbb{E}[x_ix_j]=0$ by construction, then given the quadratic form $\boldsymbol{x}^\prime D\boldsymbol{x}$ we have the following using $n=2$ for illustration</p>
+<p>$$\begin{align}\boldsymbol{x}^\prime D\boldsymbol{x} &amp;=x_1^2d_{1,1} + x_2^2d_{2,2} + x_1x_2(d_{1,2} + d_{2,1}) \cr
+\mathbb{E}[\boldsymbol{x}^\prime D\boldsymbol{x}] &amp;=\mathbb{E}[x_1^2d_{1,1} + x_2^2d_{2,2} + x_1x_2(d_{1,2} + d_{2,1})] \cr
+&amp;= d_{1,1} + d_{2,2} \cr
+&amp;= \operatorname{tr(D)}
+\end{align}$$</p>
 </div>
 <div class="text_cell_render border-box-sizing rendered_html">
-<p>Last week I needed to get my head around wavelet regression techniques for a project I am working on. This post will show how to do basic wavelet regression in Python using <a href="http://www.pybytes.com/pywavelets/">PyWavelets</a>. For references I used Chapter 9 in Wasserman's <a href="http://www.amazon.com/gp/product/1441920447/ref=as_li_qf_sp_asin_tl?ie=UTF8&amp;tag=scistapro-20&amp;linkCode=as2&amp;camp=1789&amp;creative=9325&amp;creativeASIN=1441920447">All of Non-Parametric Statistics ...</a></p></div></div>
-                            <p class="readmore">
-                                <a class="btn btn-info" href="http://jseabold.net/blog/2012/02/23/wavelet-regression-in-python">Read more...</a>
-                            </p>
-                        </div><!-- /.entry-content -->
-
-                        <hr/>
-                    </article>
-                </li>
-                                                            <li>
-                    <article>
-                        <header>
-                            <h1 class="entry-title">
-                                <a href="http://jseabold.net/blog/2012/02/12/making-graphical-models-with-pydot" rel="bookmark" title="Permalink to Making Graphical Models with PyDot">
-                                   Making Graphical Models with PyDot
-                                </a>
-                            </h1>
-                        </header>
-
-                        <div class="entry-content">
-                            <footer class="post-info">
-        <address class="vcard author">
-        by <a class="url fn" href="http://jseabold.net/author/skipper-seabold.html">Skipper Seabold</a>
-    </address>
-    
-    in <a href="http://jseabold.net/category/misc.html">misc</a>
-
-    on 2012-02-12
-
-            |
-        tags:         <a href="http://jseabold.net/tag/pydot.html">pydot</a>
-                <a href="http://jseabold.net/tag/graphics.html">graphics</a>
-                <a href="http://jseabold.net/tag/python.html">python</a>
-            
-    
-            |
-        <a href="http://jseabold.net/blog/2012/02/12/making-graphical-models-with-pydot#disqus_thread">comments</a>
-    
-        
-</footer><!-- /.post-info -->                            <div class="ipynb">
-
+<p>This result suggests the following algorithm, which I'll implement below.</p>
+<pre class="ipynb"><code> pick x_i = randn(n)
+ set z = x_i
+ for t = 1:m
+     z = Wz
+     tr(W^i) = n*(x_i'z)/(t*x_i'x_i)
+</code></pre>
+<p>Storing all of the estimates for $\operatorname{tr}(W^i)$, we can use them to compute our truncated power series. </p>
+<p>$$a^{\prime}b$$</p>
+<p>where $a$ are the estimates of the trace and $b=[\rho, \rho^2, \dots, \rho^m]$. It's common to compute the estimate for a grid of values for $\rho$ so that the log determinant over all possible values for $\rho$ can be computed in a vectorized way and then to use interpolation to get intermediate values as needed.</p>
+<p>Notice that I used $x_i$ for the random vector above. This suggests that we can do this numerous times and take the average to get a better estimate for the log determinant. Now let's look at the implementation.</p>
+</div>
 <div class="cell border-box-sizing code_cell vbox">
 <div class="input hbox">
-<div class="prompt input_prompt">In&nbsp;[1]:</div>
+<div class="prompt input_prompt">In&nbsp;[51]:</div>
 <div class="input_area box-flex1">
-<div class="highlight-ipynb"><pre class="ipynb"><span class="kn">from</span> <span class="nn">IPython.display</span> <span class="kn">import</span> <span class="n">Image</span>
+<div class="highlight-ipynb"><pre class="ipynb"><span class="kn">import</span> <span class="nn">numpy</span> <span class="kn">as</span> <span class="nn">np</span>
+<span class="n">np</span><span class="o">.</span><span class="n">set_printoptions</span><span class="p">(</span><span class="n">suppress</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
 </pre></div>
 
 </div>
 </div>
 </div>
 <div class="text_cell_render border-box-sizing rendered_html">
-<h2 class="ipynb">
-  Graphical Models with PyDot
-</h2>
-</div>
-<div class="text_cell_render border-box-sizing rendered_html">
-<p><strong>EDIT 6/26/13</strong> Since I've written this post, I've heard about a new project, <a href="http://daft-pgm.org/">daft</a>, for making probabilistic graphical models. I hope to give it a shot soon.</p>
+<p>Take an example of a contiguity matrix</p>
 </div>
 <div class="cell border-box-sizing code_cell vbox">
 <div class="input hbox">
-<div class="prompt input_prompt">In&nbsp;[2]:</div>
+<div class="prompt input_prompt">In&nbsp;[52]:</div>
 <div class="input_area box-flex1">
-<div class="highlight-ipynb"><pre class="ipynb"><span class="n">Image</span><span class="p">(</span><span class="s">&#39;Smoothed_LDA.png&#39;</span><span class="p">)</span>
+<div class="highlight-ipynb"><pre class="ipynb"><span class="n">W</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="mi">7</span><span class="p">,</span><span class="mi">7</span><span class="p">),</span> <span class="n">dtype</span><span class="o">=</span><span class="nb">float</span><span class="p">)</span>
+<span class="n">W</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="mf">1.</span>
+<span class="n">W</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="o">-</span><span class="mi">2</span><span class="p">]</span> <span class="o">=</span> <span class="mf">1.</span>
+<span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">5</span><span class="p">):</span>
+    <span class="n">W</span><span class="p">[</span><span class="n">i</span><span class="o">+</span><span class="mi">1</span><span class="p">,</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="o">.</span><span class="mi">5</span>
+    <span class="n">W</span><span class="p">[</span><span class="n">i</span><span class="o">+</span><span class="mi">1</span><span class="p">,</span> <span class="n">i</span><span class="o">+</span><span class="mi">2</span><span class="p">]</span> <span class="o">=</span> <span class="o">.</span><span class="mi">5</span>
+</pre></div>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell vbox">
+<div class="input hbox">
+<div class="prompt input_prompt">In&nbsp;[53]:</div>
+<div class="input_area box-flex1">
+<div class="highlight-ipynb"><pre class="ipynb"><span class="n">W</span>
 </pre></div>
 
 </div>
@@ -1448,23 +1397,517 @@ init_mathjax();
 <div class="vbox output_wrapper">
 <div class="output vbox">
 <div class="hbox output_area">
-<div class="prompt output_prompt">Out[2]:</div>
+<div class="prompt output_prompt">Out[53]:</div>
 <div class="output_subarea output_pyout">
-<img ...</div></div></div></div></div></div>
-                            <p class="readmore">
-                                <a class="btn btn-info" href="http://jseabold.net/blog/2012/02/12/making-graphical-models-with-pydot">Read more...</a>
-                            </p>
-                        </div><!-- /.entry-content -->
+<pre class="ipynb">array([[ 0. ,  1. ,  0. ,  0. ,  0. ,  0. ,  0. ],
+       [ 0.5,  0. ,  0.5,  0. ,  0. ,  0. ,  0. ],
+       [ 0. ,  0.5,  0. ,  0.5,  0. ,  0. ,  0. ],
+       [ 0. ,  0. ,  0.5,  0. ,  0.5,  0. ,  0. ],
+       [ 0. ,  0. ,  0. ,  0.5,  0. ,  0.5,  0. ],
+       [ 0. ,  0. ,  0. ,  0. ,  0.5,  0. ,  0.5],
+       [ 0. ,  0. ,  0. ,  0. ,  0. ,  1. ,  0. ]])</pre>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>This is what is called a row-stochastic weight matrix in the spatial regression literature. That is, the rows all sum to 1. This guarantees that the eigenvalues are constrained to be from -1 to 1.</p>
+</div>
+<div class="cell border-box-sizing code_cell vbox">
+<div class="input hbox">
+<div class="prompt input_prompt">In&nbsp;[54]:</div>
+<div class="input_area box-flex1">
+<div class="highlight-ipynb"><pre class="ipynb"><span class="n">np</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">eig</span><span class="p">(</span><span class="n">W</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span>
+</pre></div>
 
-                        <hr/>
-                    </article>
-                </li>
-                            </ol><!-- /#posts-list -->
-                                    <p class="paginator">
-        Page 1 / 1
-    </p>
-                            </section><!-- /#content -->
-                                        </div>
+</div>
+</div>
+<div class="vbox output_wrapper">
+<div class="output vbox">
+<div class="hbox output_area">
+<div class="prompt output_prompt">Out[54]:</div>
+<div class="output_subarea output_pyout">
+<pre class="ipynb">array([-1.       , -0.8660254, -0.5      , -0.       ,  0.5      ,
+        1.       ,  0.8660254])</pre>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell vbox">
+<div class="input hbox">
+<div class="prompt input_prompt">In&nbsp;[55]:</div>
+<div class="input_area box-flex1">
+<div class="highlight-ipynb"><pre class="ipynb"><span class="n">rho</span> <span class="o">=</span> <span class="o">.</span><span class="mi">25</span>
+</pre></div>
+
+</div>
+</div>
+</div>
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>Direct computation of $\ln|I_n - \rho W|$ yields</p>
+</div>
+<div class="cell border-box-sizing code_cell vbox">
+<div class="input hbox">
+<div class="prompt input_prompt">In&nbsp;[56]:</div>
+<div class="input_area box-flex1">
+<div class="highlight-ipynb"><pre class="ipynb"><span class="n">np</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">det</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">eye</span><span class="p">(</span><span class="n">W</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span> <span class="o">-</span> <span class="n">rho</span><span class="o">*</span><span class="n">W</span><span class="p">))</span>
+</pre></div>
+
+</div>
+</div>
+<div class="vbox output_wrapper">
+<div class="output vbox">
+<div class="hbox output_area">
+<div class="prompt output_prompt">Out[56]:</div>
+<div class="output_subarea output_pyout">
+<pre class="ipynb">-0.12829609729207081</pre>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>Or better yet, use the more numerically stable <code>slogdet</code>.</p>
+</div>
+<div class="cell border-box-sizing code_cell vbox">
+<div class="input hbox">
+<div class="prompt input_prompt">In&nbsp;[57]:</div>
+<div class="input_area box-flex1">
+<div class="highlight-ipynb"><pre class="ipynb"><span class="n">np</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">slogdet</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">eye</span><span class="p">(</span><span class="n">W</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span> <span class="o">-</span> <span class="n">rho</span><span class="o">*</span><span class="n">W</span><span class="p">)</span>
+</pre></div>
+
+</div>
+</div>
+<div class="vbox output_wrapper">
+<div class="output vbox">
+<div class="hbox output_area">
+<div class="prompt output_prompt">Out[57]:</div>
+<div class="output_subarea output_pyout">
+<pre class="ipynb">(1.0, -0.12829609729207084)</pre>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>Below is the implementation of the algorithm of Barry and Pace. I haven't done any timings or optimizations for it. I first need to see how it performs in practice. Notice also that it only takes a single $\rho$. This is easily updated to work with a grid for $\rho$, though I'm thinking about using a memoization pattern for the trace estimates in my own code, depending on speed, so I've left it as is here.</p>
+</div>
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>One addition to the algorithm above is given via the <code>exact</code> keyword. If $W$ is symmetric with zeros on the diagonals, which it always will be for spatial econometric applications, then we can compute the first two moments exactly at small cost. $\operatorname{tr}(W=0)$ and $\operatorname{tr}(W^2)=\sum W^2$ where the square is taken elementwise.</p>
+</div>
+<div class="cell border-box-sizing code_cell vbox">
+<div class="input hbox">
+<div class="prompt input_prompt">In&nbsp;[58]:</div>
+<div class="input_area box-flex1">
+<div class="highlight-ipynb"><pre class="ipynb"><span class="kn">from</span> <span class="nn">scipy</span> <span class="kn">import</span> <span class="n">sparse</span>
+
+<span class="k">def</span> <span class="nf">logdet_mc</span><span class="p">(</span><span class="n">W</span><span class="p">,</span> <span class="n">rho</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">seed</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">nterms</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span> <span class="n">nrepl</span><span class="o">=</span><span class="mi">100</span><span class="p">,</span> <span class="n">exact</span><span class="o">=</span><span class="bp">True</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Compute the approximate log-determinant of I - rho*W.</span>
+<span class="sd">    </span>
+<span class="sd">    W : array or sparse</span>
+<span class="sd">        An n x n array or a scipy.sparse matrix.</span>
+<span class="sd">    rho : scalar</span>
+<span class="sd">        The autoregressive coefficient.</span>
+<span class="sd">    seed : int or None</span>
+<span class="sd">        Seed passed to numpy.random.seed.</span>
+<span class="sd">    nterms : int</span>
+<span class="sd">        The number of terms for the power series estimate of the log determinate.</span>
+<span class="sd">    nrepl : int</span>
+<span class="sd">        The number of power series to estimate. The log determinate is the average</span>
+<span class="sd">        of each these.</span>
+<span class="sd">    exact : bool</span>
+<span class="sd">        Use exact if W is symmetric with zeros on the diagonal to use the exact </span>
+<span class="sd">        first two moments.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="n">seed</span> <span class="ow">is</span> <span class="ow">not</span> <span class="bp">None</span><span class="p">:</span>
+        <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">seed</span><span class="p">(</span><span class="n">seed</span><span class="p">)</span>       
+
+    <span class="k">if</span> <span class="nb">hasattr</span><span class="p">(</span><span class="n">W</span><span class="p">,</span> <span class="s">&#39;dot&#39;</span><span class="p">):</span> <span class="c"># then prefer it (for sparse) and newer numpy</span>
+        <span class="n">Wdot</span> <span class="o">=</span> <span class="n">W</span><span class="o">.</span><span class="n">dot</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">Wdot</span> <span class="o">=</span> <span class="k">lambda</span> <span class="n">x</span> <span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">W</span><span class="p">,</span> <span class="n">x</span><span class="p">)</span>
+        
+    <span class="n">nobs</span> <span class="o">=</span> <span class="n">W</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+    <span class="k">try</span><span class="p">:</span>
+        <span class="k">assert</span> <span class="n">W</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">==</span> <span class="n">nobs</span>
+    <span class="k">except</span> <span class="ne">AssertionError</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s">&quot;W is not square.&quot;</span><span class="p">)</span>
+    
+    <span class="n">allT</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">empty</span><span class="p">((</span><span class="n">nrepl</span><span class="p">,</span> <span class="n">nterms</span><span class="p">))</span>
+    
+    <span class="n">range_</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="mf">1.</span><span class="p">,</span> <span class="n">nterms</span><span class="o">+</span><span class="mi">1</span><span class="p">)</span>    
+    
+    <span class="k">for</span> <span class="n">j</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">nrepl</span><span class="p">):</span>
+
+        <span class="n">T</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">empty</span><span class="p">(</span><span class="n">nterms</span><span class="p">)</span>
+        <span class="c"># get the &quot;seed&quot;</span>
+        <span class="n">u1</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">randn</span><span class="p">(</span><span class="n">nobs</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+        <span class="n">z_t</span> <span class="o">=</span> <span class="n">u1</span>
+        <span class="n">uTu</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">u1</span><span class="o">.</span><span class="n">T</span><span class="p">,</span> <span class="n">u1</span><span class="p">)</span><span class="o">.</span><span class="n">item</span><span class="p">()</span> <span class="c"># scalar</span>
+    
+        <span class="c"># compute the terms in the expansion</span>
+        <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">nterms</span><span class="o">+</span><span class="mi">1</span><span class="p">):</span>
+            <span class="n">z_t</span> <span class="o">=</span> <span class="n">Wdot</span><span class="p">(</span><span class="n">z_t</span><span class="p">)</span>
+            <span class="n">T</span><span class="p">[</span><span class="n">i</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">u1</span><span class="o">.</span><span class="n">T</span><span class="p">,</span> <span class="n">z_t</span><span class="p">)</span><span class="o">.</span><span class="n">item</span><span class="p">()</span>
+        
+        <span class="n">T</span> <span class="o">*=</span> <span class="n">nobs</span><span class="o">/</span><span class="p">(</span><span class="n">range_</span><span class="o">*</span><span class="n">uTu</span><span class="p">)</span>
+        <span class="n">allT</span><span class="p">[</span><span class="n">j</span><span class="p">]</span> <span class="o">=</span> <span class="n">T</span>
+    
+    
+    <span class="k">if</span> <span class="n">exact</span><span class="p">:</span> <span class="c"># must be symmetric and zeros on diagonal</span>
+        <span class="k">if</span> <span class="n">sparse</span><span class="o">.</span><span class="n">issparse</span><span class="p">(</span><span class="n">W</span><span class="p">):</span>
+            <span class="n">exactT</span> <span class="o">=</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">W</span><span class="o">.</span><span class="n">data</span><span class="o">**</span><span class="mi">2</span><span class="p">)</span><span class="o">/</span><span class="mf">2.</span><span class="p">]</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">exactT</span> <span class="o">=</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">W</span><span class="o">**</span><span class="mi">2</span><span class="p">)</span><span class="o">/</span><span class="mf">2.</span><span class="p">]</span>
+        
+        <span class="n">allT</span><span class="p">[:,:</span><span class="mi">2</span><span class="p">]</span> <span class="o">=</span> <span class="n">exactT</span>
+    
+    <span class="n">meanT</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">allT</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+    
+    <span class="n">b</span> <span class="o">=</span> <span class="o">-</span><span class="n">rho</span> <span class="o">**</span> <span class="n">range_</span>
+
+    <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">b</span><span class="p">,</span> <span class="n">meanT</span><span class="p">)</span>
+</pre></div>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell vbox">
+<div class="input hbox">
+<div class="prompt input_prompt">In&nbsp;[59]:</div>
+<div class="input_area box-flex1">
+<div class="highlight-ipynb"><pre class="ipynb"><span class="n">rho</span> <span class="o">=</span> <span class="o">.</span><span class="mi">75</span>
+</pre></div>
+
+</div>
+</div>
+</div>
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>Exact estimate</p>
+</div>
+<div class="cell border-box-sizing code_cell vbox">
+<div class="input hbox">
+<div class="prompt input_prompt">In&nbsp;[60]:</div>
+<div class="input_area box-flex1">
+<div class="highlight-ipynb"><pre class="ipynb"><span class="n">np</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">slogdet</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">eye</span><span class="p">(</span><span class="n">W</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span> <span class="o">-</span> <span class="n">rho</span> <span class="o">*</span> <span class="n">W</span><span class="p">)</span>
+</pre></div>
+
+</div>
+</div>
+<div class="vbox output_wrapper">
+<div class="output vbox">
+<div class="hbox output_area">
+<div class="prompt output_prompt">Out[60]:</div>
+<div class="output_subarea output_pyout">
+<pre class="ipynb">(1.0, -1.5261936420271165)</pre>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>Monte-carlo estimate</p>
+</div>
+<div class="cell border-box-sizing code_cell vbox">
+<div class="input hbox">
+<div class="prompt input_prompt">In&nbsp;[61]:</div>
+<div class="input_area box-flex1">
+<div class="highlight-ipynb"><pre class="ipynb"><span class="n">logdet_mc</span><span class="p">(</span><span class="n">W</span><span class="p">,</span> <span class="n">rho</span><span class="p">,</span> <span class="n">seed</span><span class="o">=</span><span class="mi">12</span><span class="p">,</span> <span class="n">nterms</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span> <span class="n">exact</span><span class="o">=</span><span class="bp">True</span><span class="p">,</span> <span class="n">nrepl</span><span class="o">=</span><span class="mi">1000</span><span class="p">)</span>
+</pre></div>
+
+</div>
+</div>
+<div class="vbox output_wrapper">
+<div class="output vbox">
+<div class="hbox output_area">
+<div class="prompt output_prompt">Out[61]:</div>
+<div class="output_subarea output_pyout">
+<pre class="ipynb">-1.6339584180549775</pre>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>Estimate using <a href="http://www.cise.ufl.edu/research/sparse/cholmod/">CHOLMOD</a> from <a href="https://github.com/njsmith/scikits-sparse">scikits.sparse</a>.</p>
+</div>
+<div class="cell border-box-sizing code_cell vbox">
+<div class="input hbox">
+<div class="prompt input_prompt">In&nbsp;[62]:</div>
+<div class="input_area box-flex1">
+<div class="highlight-ipynb"><pre class="ipynb"><span class="n">sparseW</span> <span class="o">=</span> <span class="n">sparse</span><span class="o">.</span><span class="n">csc_matrix</span><span class="p">(</span><span class="n">W</span><span class="p">)</span>
+</pre></div>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell vbox">
+<div class="input hbox">
+<div class="prompt input_prompt">In&nbsp;[63]:</div>
+<div class="input_area box-flex1">
+<div class="highlight-ipynb"><pre class="ipynb"><span class="kn">from</span> <span class="nn">scikits.sparse</span> <span class="kn">import</span> <span class="n">cholmod</span>
+</pre></div>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell vbox">
+<div class="input hbox">
+<div class="prompt input_prompt">In&nbsp;[64]:</div>
+<div class="input_area box-flex1">
+<div class="highlight-ipynb"><pre class="ipynb"><span class="n">f</span> <span class="o">=</span> <span class="n">cholmod</span><span class="o">.</span><span class="n">cholesky</span><span class="p">((</span><span class="n">sparse</span><span class="o">.</span><span class="n">eye</span><span class="p">(</span><span class="mi">7</span><span class="p">,</span> <span class="n">format</span><span class="o">=</span><span class="s">&quot;csc&quot;</span><span class="p">)</span> <span class="o">-</span> <span class="n">rho</span><span class="o">*</span><span class="n">sparseW</span><span class="p">))</span>
+<span class="n">f</span><span class="o">.</span><span class="n">logdet</span><span class="p">()</span>
+</pre></div>
+
+</div>
+</div>
+<div class="vbox output_wrapper">
+<div class="output vbox">
+<div class="hbox output_area">
+<div class="prompt output_prompt">Out[64]:</div>
+<div class="output_subarea output_pyout">
+<pre class="ipynb">-2.0152902872928142</pre>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="text_cell_render border-box-sizing rendered_html">
+<h3 class="ipynb">
+  Pace and Barry Data
+</h3>
+</div>
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>The following example uses the example data from Pace and Barry (1997) on 3,107 US Counties for the 1980 Presidential election. You can find the data and more information <a href="http://spatial-econometrics.com/data/contents.html">here</a>.</p>
+</div>
+<div class="cell border-box-sizing code_cell vbox">
+<div class="input hbox">
+<div class="prompt input_prompt">In&nbsp;[65]:</div>
+<div class="input_area box-flex1">
+<div class="highlight-ipynb"><pre class="ipynb"><span class="kn">import</span> <span class="nn">pandas</span> <span class="kn">as</span> <span class="nn">pd</span>
+<span class="kn">from</span> <span class="nn">scipy</span> <span class="kn">import</span> <span class="n">sparse</span>
+</pre></div>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell vbox">
+<div class="input hbox">
+<div class="prompt input_prompt">In&nbsp;[66]:</div>
+<div class="input_area box-flex1">
+<div class="highlight-ipynb"><pre class="ipynb"><span class="n">dta</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_table</span><span class="p">(</span><span class="s">&quot;http://spatial-econometrics.com/data/elect.dat&quot;</span><span class="p">,</span> <span class="n">sep</span><span class="o">=</span><span class="s">&quot; *&quot;</span><span class="p">,</span> <span class="n">header</span><span class="o">=</span><span class="bp">None</span><span class="p">)[[</span><span class="mi">4</span><span class="p">,</span><span class="mi">5</span><span class="p">]]</span>
+<span class="n">dta</span><span class="o">.</span><span class="n">rename</span><span class="p">(</span><span class="n">columns</span><span class="o">=</span><span class="p">{</span><span class="mi">4</span> <span class="p">:</span> <span class="s">&quot;lat&quot;</span><span class="p">,</span> <span class="mi">5</span> <span class="p">:</span> <span class="s">&quot;long&quot;</span><span class="p">},</span> <span class="n">inplace</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
+</pre></div>
+
+</div>
+</div>
+</div>
+<div class="text_cell_render border-box-sizing rendered_html">
+<h4 class="ipynb">
+  Nearest Neighbors
+</h4>
+</div>
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>Compute the 5 nearest neighbors using Euclidean distance. Use 5 because it counts itself and we want the 4 nearest neighbors.</p>
+</div>
+<div class="cell border-box-sizing code_cell vbox">
+<div class="input hbox">
+<div class="prompt input_prompt">In&nbsp;[67]:</div>
+<div class="input_area box-flex1">
+<div class="highlight-ipynb"><pre class="ipynb"><span class="kn">from</span> <span class="nn">sklearn</span> <span class="kn">import</span> <span class="n">neighbors</span>
+</pre></div>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell vbox">
+<div class="input hbox">
+<div class="prompt input_prompt">In&nbsp;[68]:</div>
+<div class="input_area box-flex1">
+<div class="highlight-ipynb"><pre class="ipynb"><span class="n">neigh</span> <span class="o">=</span> <span class="n">neighbors</span><span class="o">.</span><span class="n">NearestNeighbors</span><span class="p">(</span><span class="n">n_neighbors</span><span class="o">=</span><span class="mi">5</span><span class="p">)</span>
+<span class="n">neigh</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">dta</span><span class="o">.</span><span class="n">values</span><span class="p">)</span>
+</pre></div>
+
+</div>
+</div>
+<div class="vbox output_wrapper">
+<div class="output vbox">
+<div class="hbox output_area">
+<div class="prompt output_prompt">Out[68]:</div>
+<div class="output_subarea output_pyout">
+<pre class="ipynb">NearestNeighbors(algorithm=&apos;auto&apos;, leaf_size=30, n_neighbors=5, p=2,
+         radius=1.0)</pre>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell vbox">
+<div class="input hbox">
+<div class="prompt input_prompt">In&nbsp;[69]:</div>
+<div class="input_area box-flex1">
+<div class="highlight-ipynb"><pre class="ipynb"><span class="n">nobs</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">dta</span><span class="p">)</span>
+<span class="n">W</span> <span class="o">=</span> <span class="n">sparse</span><span class="o">.</span><span class="n">lil_matrix</span><span class="p">((</span><span class="n">nobs</span><span class="p">,</span> <span class="n">nobs</span><span class="p">))</span>
+</pre></div>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell vbox">
+<div class="input hbox">
+<div class="prompt input_prompt">In&nbsp;[70]:</div>
+<div class="input_area box-flex1">
+<div class="highlight-ipynb"><pre class="ipynb"><span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">row</span> <span class="ow">in</span> <span class="n">dta</span><span class="o">.</span><span class="n">iterrows</span><span class="p">():</span>
+    <span class="n">closest</span> <span class="o">=</span> <span class="n">neigh</span><span class="o">.</span><span class="n">kneighbors</span><span class="p">(</span><span class="n">row</span><span class="o">.</span><span class="n">values</span><span class="p">,</span> <span class="n">return_distance</span><span class="o">=</span><span class="bp">False</span><span class="p">)</span>
+    <span class="k">for</span> <span class="n">j</span> <span class="ow">in</span> <span class="n">closest</span><span class="p">[</span><span class="mi">0</span><span class="p">]:</span>
+        <span class="k">if</span> <span class="n">j</span> <span class="o">==</span> <span class="n">i</span><span class="p">:</span> <span class="c"># don&#39;t count own observation</span>
+            <span class="k">continue</span>
+        <span class="n">W</span><span class="p">[</span><span class="n">i</span><span class="p">,</span> <span class="n">j</span><span class="p">]</span> <span class="o">=</span> <span class="mf">1.</span>
+</pre></div>
+
+</div>
+</div>
+</div>
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>Make row stochastic</p>
+</div>
+<div class="cell border-box-sizing code_cell vbox">
+<div class="input hbox">
+<div class="prompt input_prompt">In&nbsp;[71]:</div>
+<div class="input_area box-flex1">
+<div class="highlight-ipynb"><pre class="ipynb"><span class="n">W</span> <span class="o">=</span> <span class="n">W</span> <span class="o">/</span> <span class="mf">4.</span>
+<span class="k">assert</span> <span class="nb">all</span><span class="p">(</span><span class="n">W</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span> <span class="o">==</span> <span class="mi">1</span><span class="p">)</span>
+</pre></div>
+
+</div>
+</div>
+</div>
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>Convert to CSC format for calculations</p>
+</div>
+<div class="cell border-box-sizing code_cell vbox">
+<div class="input hbox">
+<div class="prompt input_prompt">In&nbsp;[72]:</div>
+<div class="input_area box-flex1">
+<div class="highlight-ipynb"><pre class="ipynb"><span class="n">W</span> <span class="o">=</span> <span class="n">W</span><span class="o">.</span><span class="n">tocsc</span><span class="p">()</span>
+</pre></div>
+
+</div>
+</div>
+</div>
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>Set $\rho$</p>
+</div>
+<div class="cell border-box-sizing code_cell vbox">
+<div class="input hbox">
+<div class="prompt input_prompt">In&nbsp;[73]:</div>
+<div class="input_area box-flex1">
+<div class="highlight-ipynb"><pre class="ipynb"><span class="n">rho</span> <span class="o">=</span> <span class="o">.</span><span class="mi">1</span>
+</pre></div>
+
+</div>
+</div>
+</div>
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>Calculate the exact log determinant.</p>
+</div>
+<div class="cell border-box-sizing code_cell vbox">
+<div class="input hbox">
+<div class="prompt input_prompt">In&nbsp;[74]:</div>
+<div class="input_area box-flex1">
+<div class="highlight-ipynb"><pre class="ipynb"><span class="n">np</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">slogdet</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">eye</span><span class="p">(</span><span class="n">W</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span> <span class="o">-</span> <span class="n">rho</span><span class="o">*</span><span class="n">W</span><span class="o">.</span><span class="n">toarray</span><span class="p">())</span>
+</pre></div>
+
+</div>
+</div>
+<div class="vbox output_wrapper">
+<div class="output vbox">
+<div class="hbox output_area">
+<div class="prompt output_prompt">Out[74]:</div>
+<div class="output_subarea output_pyout">
+<pre class="ipynb">(1.0, -3.346557139406221)</pre>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>Get the monte carlo approximation of the log determinant.</p>
+</div>
+<div class="cell border-box-sizing code_cell vbox">
+<div class="input hbox">
+<div class="prompt input_prompt">In&nbsp;[75]:</div>
+<div class="input_area box-flex1">
+<div class="highlight-ipynb"><pre class="ipynb"><span class="n">logdet_mc</span><span class="p">(</span><span class="n">W</span><span class="p">,</span> <span class="n">rho</span><span class="p">)</span>
+</pre></div>
+
+</div>
+</div>
+<div class="vbox output_wrapper">
+<div class="output vbox">
+<div class="hbox output_area">
+<div class="prompt output_prompt">Out[75]:</div>
+<div class="output_subarea output_pyout">
+<pre class="ipynb">-3.9456500690606093</pre>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>Compute the log determinant using CHOLMOD and scikits.sparse again.</p>
+</div>
+<div class="cell border-box-sizing code_cell vbox">
+<div class="input hbox">
+<div class="prompt input_prompt">In&nbsp;[76]:</div>
+<div class="input_area box-flex1">
+<div class="highlight-ipynb"><pre class="ipynb"><span class="n">f</span> <span class="o">=</span> <span class="n">cholmod</span><span class="o">.</span><span class="n">cholesky</span><span class="p">(</span><span class="n">sparse</span><span class="o">.</span><span class="n">eye</span><span class="p">(</span><span class="n">W</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">format</span><span class="o">=</span><span class="s">&quot;csc&quot;</span><span class="p">)</span> <span class="o">-</span> <span class="n">rho</span> <span class="o">*</span> <span class="n">W</span><span class="p">)</span>
+</pre></div>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell vbox">
+<div class="input hbox">
+<div class="prompt input_prompt">In&nbsp;[77]:</div>
+<div class="input_area box-flex1">
+<div class="highlight-ipynb"><pre class="ipynb"><span class="n">f</span><span class="o">.</span><span class="n">logdet</span><span class="p">()</span>
+</pre></div>
+
+</div>
+</div>
+<div class="vbox output_wrapper">
+<div class="output vbox">
+<div class="hbox output_area">
+<div class="prompt output_prompt">Out[77]:</div>
+<div class="output_subarea output_pyout">
+<pre class="ipynb">-3.9400025132708647</pre>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+    </div><!-- /.entry-content -->
+        <div class="comments">
+      <h2>Comments</h2>
+      <div id="disqus_thread"></div>
+      <script type="text/javascript">
+        var disqus_identifier = "blog/2013/08/06/sparse-log-determinants";
+        (function() {
+        var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+        dsq.src = 'http://jseabold.disqus.com/embed.js';
+        (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+        })();
+      </script>
+    </div>
+    
+  </article>
+</section>
+                </div>
                 <div class="span2">
                     <section id="sidebar">
                                                                     <div>
