@@ -1358,7 +1358,7 @@ init_mathjax();
 </div>
 <div class="cell border-box-sizing code_cell vbox">
 <div class="input hbox">
-<div class="prompt input_prompt">In&nbsp;[51]:</div>
+<div class="prompt input_prompt">In&nbsp;[43]:</div>
 <div class="input_area box-flex1">
 <div class="highlight-ipynb"><pre class="ipynb"><span class="kn">import</span> <span class="nn">numpy</span> <span class="kn">as</span> <span class="nn">np</span>
 <span class="n">np</span><span class="o">.</span><span class="n">set_printoptions</span><span class="p">(</span><span class="n">suppress</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
@@ -1372,7 +1372,7 @@ init_mathjax();
 </div>
 <div class="cell border-box-sizing code_cell vbox">
 <div class="input hbox">
-<div class="prompt input_prompt">In&nbsp;[52]:</div>
+<div class="prompt input_prompt">In&nbsp;[44]:</div>
 <div class="input_area box-flex1">
 <div class="highlight-ipynb"><pre class="ipynb"><span class="n">W</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="mi">7</span><span class="p">,</span><span class="mi">7</span><span class="p">),</span> <span class="n">dtype</span><span class="o">=</span><span class="nb">float</span><span class="p">)</span>
 <span class="n">W</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="mf">1.</span>
@@ -1387,7 +1387,7 @@ init_mathjax();
 </div>
 <div class="cell border-box-sizing code_cell vbox">
 <div class="input hbox">
-<div class="prompt input_prompt">In&nbsp;[53]:</div>
+<div class="prompt input_prompt">In&nbsp;[45]:</div>
 <div class="input_area box-flex1">
 <div class="highlight-ipynb"><pre class="ipynb"><span class="n">W</span>
 </pre></div>
@@ -1397,7 +1397,7 @@ init_mathjax();
 <div class="vbox output_wrapper">
 <div class="output vbox">
 <div class="hbox output_area">
-<div class="prompt output_prompt">Out[53]:</div>
+<div class="prompt output_prompt">Out[45]:</div>
 <div class="output_subarea output_pyout">
 <pre class="ipynb">array([[ 0. ,  1. ,  0. ,  0. ,  0. ,  0. ,  0. ],
        [ 0.5,  0. ,  0.5,  0. ,  0. ,  0. ,  0. ],
@@ -1416,7 +1416,7 @@ init_mathjax();
 </div>
 <div class="cell border-box-sizing code_cell vbox">
 <div class="input hbox">
-<div class="prompt input_prompt">In&nbsp;[54]:</div>
+<div class="prompt input_prompt">In&nbsp;[46]:</div>
 <div class="input_area box-flex1">
 <div class="highlight-ipynb"><pre class="ipynb"><span class="n">np</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">eig</span><span class="p">(</span><span class="n">W</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span>
 </pre></div>
@@ -1426,7 +1426,7 @@ init_mathjax();
 <div class="vbox output_wrapper">
 <div class="output vbox">
 <div class="hbox output_area">
-<div class="prompt output_prompt">Out[54]:</div>
+<div class="prompt output_prompt">Out[46]:</div>
 <div class="output_subarea output_pyout">
 <pre class="ipynb">array([-1.       , -0.8660254, -0.5      , -0.       ,  0.5      ,
         1.       ,  0.8660254])</pre>
@@ -1437,7 +1437,7 @@ init_mathjax();
 </div>
 <div class="cell border-box-sizing code_cell vbox">
 <div class="input hbox">
-<div class="prompt input_prompt">In&nbsp;[55]:</div>
+<div class="prompt input_prompt">In&nbsp;[47]:</div>
 <div class="input_area box-flex1">
 <div class="highlight-ipynb"><pre class="ipynb"><span class="n">rho</span> <span class="o">=</span> <span class="o">.</span><span class="mi">25</span>
 </pre></div>
@@ -1450,7 +1450,7 @@ init_mathjax();
 </div>
 <div class="cell border-box-sizing code_cell vbox">
 <div class="input hbox">
-<div class="prompt input_prompt">In&nbsp;[56]:</div>
+<div class="prompt input_prompt">In&nbsp;[48]:</div>
 <div class="input_area box-flex1">
 <div class="highlight-ipynb"><pre class="ipynb"><span class="n">np</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">det</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">eye</span><span class="p">(</span><span class="n">W</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span> <span class="o">-</span> <span class="n">rho</span><span class="o">*</span><span class="n">W</span><span class="p">))</span>
 </pre></div>
@@ -1460,7 +1460,7 @@ init_mathjax();
 <div class="vbox output_wrapper">
 <div class="output vbox">
 <div class="hbox output_area">
-<div class="prompt output_prompt">Out[56]:</div>
+<div class="prompt output_prompt">Out[48]:</div>
 <div class="output_subarea output_pyout">
 <pre class="ipynb">-0.12829609729207081</pre>
 </div>
@@ -1473,7 +1473,7 @@ init_mathjax();
 </div>
 <div class="cell border-box-sizing code_cell vbox">
 <div class="input hbox">
-<div class="prompt input_prompt">In&nbsp;[57]:</div>
+<div class="prompt input_prompt">In&nbsp;[49]:</div>
 <div class="input_area box-flex1">
 <div class="highlight-ipynb"><pre class="ipynb"><span class="n">np</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">slogdet</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">eye</span><span class="p">(</span><span class="n">W</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span> <span class="o">-</span> <span class="n">rho</span><span class="o">*</span><span class="n">W</span><span class="p">)</span>
 </pre></div>
@@ -1483,7 +1483,7 @@ init_mathjax();
 <div class="vbox output_wrapper">
 <div class="output vbox">
 <div class="hbox output_area">
-<div class="prompt output_prompt">Out[57]:</div>
+<div class="prompt output_prompt">Out[49]:</div>
 <div class="output_subarea output_pyout">
 <pre class="ipynb">(1.0, -0.12829609729207084)</pre>
 </div>
@@ -1499,7 +1499,7 @@ init_mathjax();
 </div>
 <div class="cell border-box-sizing code_cell vbox">
 <div class="input hbox">
-<div class="prompt input_prompt">In&nbsp;[58]:</div>
+<div class="prompt input_prompt">In&nbsp;[50]:</div>
 <div class="input_area box-flex1">
 <div class="highlight-ipynb"><pre class="ipynb"><span class="kn">from</span> <span class="nn">scipy</span> <span class="kn">import</span> <span class="n">sparse</span>
 
@@ -1507,6 +1507,8 @@ init_mathjax();
     <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Compute the approximate log-determinant of I - rho*W.</span>
 <span class="sd">    </span>
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
 <span class="sd">    W : array or sparse</span>
 <span class="sd">        An n x n array or a scipy.sparse matrix.</span>
 <span class="sd">    rho : scalar</span>
@@ -1577,7 +1579,7 @@ init_mathjax();
 </div>
 <div class="cell border-box-sizing code_cell vbox">
 <div class="input hbox">
-<div class="prompt input_prompt">In&nbsp;[59]:</div>
+<div class="prompt input_prompt">In&nbsp;[51]:</div>
 <div class="input_area box-flex1">
 <div class="highlight-ipynb"><pre class="ipynb"><span class="n">rho</span> <span class="o">=</span> <span class="o">.</span><span class="mi">75</span>
 </pre></div>
@@ -1590,7 +1592,7 @@ init_mathjax();
 </div>
 <div class="cell border-box-sizing code_cell vbox">
 <div class="input hbox">
-<div class="prompt input_prompt">In&nbsp;[60]:</div>
+<div class="prompt input_prompt">In&nbsp;[52]:</div>
 <div class="input_area box-flex1">
 <div class="highlight-ipynb"><pre class="ipynb"><span class="n">np</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">slogdet</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">eye</span><span class="p">(</span><span class="n">W</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span> <span class="o">-</span> <span class="n">rho</span> <span class="o">*</span> <span class="n">W</span><span class="p">)</span>
 </pre></div>
@@ -1600,7 +1602,7 @@ init_mathjax();
 <div class="vbox output_wrapper">
 <div class="output vbox">
 <div class="hbox output_area">
-<div class="prompt output_prompt">Out[60]:</div>
+<div class="prompt output_prompt">Out[52]:</div>
 <div class="output_subarea output_pyout">
 <pre class="ipynb">(1.0, -1.5261936420271165)</pre>
 </div>
@@ -1613,9 +1615,9 @@ init_mathjax();
 </div>
 <div class="cell border-box-sizing code_cell vbox">
 <div class="input hbox">
-<div class="prompt input_prompt">In&nbsp;[61]:</div>
+<div class="prompt input_prompt">In&nbsp;[53]:</div>
 <div class="input_area box-flex1">
-<div class="highlight-ipynb"><pre class="ipynb"><span class="n">logdet_mc</span><span class="p">(</span><span class="n">W</span><span class="p">,</span> <span class="n">rho</span><span class="p">,</span> <span class="n">seed</span><span class="o">=</span><span class="mi">12</span><span class="p">,</span> <span class="n">nterms</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span> <span class="n">exact</span><span class="o">=</span><span class="bp">True</span><span class="p">,</span> <span class="n">nrepl</span><span class="o">=</span><span class="mi">1000</span><span class="p">)</span>
+<div class="highlight-ipynb"><pre class="ipynb"><span class="n">logdet_mc</span><span class="p">(</span><span class="n">W</span><span class="p">,</span> <span class="n">rho</span><span class="p">,</span> <span class="n">seed</span><span class="o">=</span><span class="mi">1234</span><span class="p">,</span> <span class="n">nterms</span><span class="o">=</span><span class="mi">30</span><span class="p">,</span> <span class="n">exact</span><span class="o">=</span><span class="bp">False</span><span class="p">,</span> <span class="n">nrepl</span><span class="o">=</span><span class="mi">1000</span><span class="p">)</span>
 </pre></div>
 
 </div>
@@ -1623,20 +1625,23 @@ init_mathjax();
 <div class="vbox output_wrapper">
 <div class="output vbox">
 <div class="hbox output_area">
-<div class="prompt output_prompt">Out[61]:</div>
+<div class="prompt output_prompt">Out[53]:</div>
 <div class="output_subarea output_pyout">
-<pre class="ipynb">-1.6339584180549775</pre>
+<pre class="ipynb">-1.5140194676583663</pre>
 </div>
 </div>
 </div>
 </div>
 </div>
 <div class="text_cell_render border-box-sizing rendered_html">
+<p>(<strong>EDIT 8/14/2013</strong>) The below estimate using CHOLMOD is incorrect since W is not symmetric. The Cholesky decomposition estimate is only valid for positive-definite symmetric matrices. See below for a correct estimate using the LU decomposition.</p>
+</div>
+<div class="text_cell_render border-box-sizing rendered_html">
 <p>Estimate using <a href="http://www.cise.ufl.edu/research/sparse/cholmod/">CHOLMOD</a> from <a href="https://github.com/njsmith/scikits-sparse">scikits.sparse</a>.</p>
 </div>
 <div class="cell border-box-sizing code_cell vbox">
 <div class="input hbox">
-<div class="prompt input_prompt">In&nbsp;[62]:</div>
+<div class="prompt input_prompt">In&nbsp;[54]:</div>
 <div class="input_area box-flex1">
 <div class="highlight-ipynb"><pre class="ipynb"><span class="n">sparseW</span> <span class="o">=</span> <span class="n">sparse</span><span class="o">.</span><span class="n">csc_matrix</span><span class="p">(</span><span class="n">W</span><span class="p">)</span>
 </pre></div>
@@ -1646,7 +1651,7 @@ init_mathjax();
 </div>
 <div class="cell border-box-sizing code_cell vbox">
 <div class="input hbox">
-<div class="prompt input_prompt">In&nbsp;[63]:</div>
+<div class="prompt input_prompt">In&nbsp;[55]:</div>
 <div class="input_area box-flex1">
 <div class="highlight-ipynb"><pre class="ipynb"><span class="kn">from</span> <span class="nn">scikits.sparse</span> <span class="kn">import</span> <span class="n">cholmod</span>
 </pre></div>
@@ -1656,7 +1661,7 @@ init_mathjax();
 </div>
 <div class="cell border-box-sizing code_cell vbox">
 <div class="input hbox">
-<div class="prompt input_prompt">In&nbsp;[64]:</div>
+<div class="prompt input_prompt">In&nbsp;[56]:</div>
 <div class="input_area box-flex1">
 <div class="highlight-ipynb"><pre class="ipynb"><span class="n">f</span> <span class="o">=</span> <span class="n">cholmod</span><span class="o">.</span><span class="n">cholesky</span><span class="p">((</span><span class="n">sparse</span><span class="o">.</span><span class="n">eye</span><span class="p">(</span><span class="mi">7</span><span class="p">,</span> <span class="n">format</span><span class="o">=</span><span class="s">&quot;csc&quot;</span><span class="p">)</span> <span class="o">-</span> <span class="n">rho</span><span class="o">*</span><span class="n">sparseW</span><span class="p">))</span>
 <span class="n">f</span><span class="o">.</span><span class="n">logdet</span><span class="p">()</span>
@@ -1667,9 +1672,45 @@ init_mathjax();
 <div class="vbox output_wrapper">
 <div class="output vbox">
 <div class="hbox output_area">
-<div class="prompt output_prompt">Out[64]:</div>
+<div class="prompt output_prompt">Out[56]:</div>
 <div class="output_subarea output_pyout">
 <pre class="ipynb">-2.0152902872928142</pre>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>(<strong>EDIT 8/14/2013</strong>  Added this section). We can use the LU decomposition to get the log-determinant of a non-symmetric positive-definite matrix.</p>
+</div>
+<div class="cell border-box-sizing code_cell vbox">
+<div class="input hbox">
+<div class="prompt input_prompt">In&nbsp;[57]:</div>
+<div class="input_area box-flex1">
+<div class="highlight-ipynb"><pre class="ipynb"><span class="kn">from</span> <span class="nn">scipy.sparse</span> <span class="kn">import</span> <span class="n">linalg</span> <span class="k">as</span> <span class="n">sp_linalg</span>
+</pre></div>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell vbox">
+<div class="input hbox">
+<div class="prompt input_prompt">In&nbsp;[58]:</div>
+<div class="input_area box-flex1">
+<div class="highlight-ipynb"><pre class="ipynb"><span class="n">umfpack</span> <span class="o">=</span> <span class="n">sparse</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">umfpack</span><span class="o">.</span><span class="n">UmfpackContext</span><span class="p">()</span>
+<span class="n">L</span><span class="p">,</span> <span class="n">U</span><span class="p">,</span> <span class="n">P</span><span class="p">,</span> <span class="n">Q</span><span class="p">,</span> <span class="n">R</span><span class="p">,</span> <span class="n">do_recip</span> <span class="o">=</span> <span class="n">umfpack</span><span class="o">.</span><span class="n">lu</span><span class="p">((</span><span class="n">sparse</span><span class="o">.</span><span class="n">eye</span><span class="p">(</span><span class="mi">7</span><span class="p">,</span> <span class="n">format</span><span class="o">=</span><span class="s">&quot;csc&quot;</span><span class="p">)</span> <span class="o">-</span> <span class="n">rho</span><span class="o">*</span><span class="n">sparseW</span><span class="p">))</span>
+<span class="k">print</span> <span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="n">U</span><span class="o">.</span><span class="n">diagonal</span><span class="p">()</span><span class="o">/</span><span class="n">R</span><span class="p">))</span>
+</pre></div>
+
+</div>
+</div>
+<div class="vbox output_wrapper">
+<div class="output vbox">
+<div class="hbox output_area">
+<div class="prompt output_prompt"></div>
+<div class="output_subarea output_stream output_stdout">
+<pre class="ipynb">-1.52619364203
+</pre>
 </div>
 </div>
 </div>
@@ -1685,7 +1726,7 @@ init_mathjax();
 </div>
 <div class="cell border-box-sizing code_cell vbox">
 <div class="input hbox">
-<div class="prompt input_prompt">In&nbsp;[65]:</div>
+<div class="prompt input_prompt">In&nbsp;[59]:</div>
 <div class="input_area box-flex1">
 <div class="highlight-ipynb"><pre class="ipynb"><span class="kn">import</span> <span class="nn">pandas</span> <span class="kn">as</span> <span class="nn">pd</span>
 <span class="kn">from</span> <span class="nn">scipy</span> <span class="kn">import</span> <span class="n">sparse</span>
@@ -1696,7 +1737,7 @@ init_mathjax();
 </div>
 <div class="cell border-box-sizing code_cell vbox">
 <div class="input hbox">
-<div class="prompt input_prompt">In&nbsp;[66]:</div>
+<div class="prompt input_prompt">In&nbsp;[60]:</div>
 <div class="input_area box-flex1">
 <div class="highlight-ipynb"><pre class="ipynb"><span class="n">dta</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_table</span><span class="p">(</span><span class="s">&quot;http://spatial-econometrics.com/data/elect.dat&quot;</span><span class="p">,</span> <span class="n">sep</span><span class="o">=</span><span class="s">&quot; *&quot;</span><span class="p">,</span> <span class="n">header</span><span class="o">=</span><span class="bp">None</span><span class="p">)[[</span><span class="mi">4</span><span class="p">,</span><span class="mi">5</span><span class="p">]]</span>
 <span class="n">dta</span><span class="o">.</span><span class="n">rename</span><span class="p">(</span><span class="n">columns</span><span class="o">=</span><span class="p">{</span><span class="mi">4</span> <span class="p">:</span> <span class="s">&quot;lat&quot;</span><span class="p">,</span> <span class="mi">5</span> <span class="p">:</span> <span class="s">&quot;long&quot;</span><span class="p">},</span> <span class="n">inplace</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
@@ -1715,7 +1756,7 @@ init_mathjax();
 </div>
 <div class="cell border-box-sizing code_cell vbox">
 <div class="input hbox">
-<div class="prompt input_prompt">In&nbsp;[67]:</div>
+<div class="prompt input_prompt">In&nbsp;[61]:</div>
 <div class="input_area box-flex1">
 <div class="highlight-ipynb"><pre class="ipynb"><span class="kn">from</span> <span class="nn">sklearn</span> <span class="kn">import</span> <span class="n">neighbors</span>
 </pre></div>
@@ -1725,7 +1766,7 @@ init_mathjax();
 </div>
 <div class="cell border-box-sizing code_cell vbox">
 <div class="input hbox">
-<div class="prompt input_prompt">In&nbsp;[68]:</div>
+<div class="prompt input_prompt">In&nbsp;[62]:</div>
 <div class="input_area box-flex1">
 <div class="highlight-ipynb"><pre class="ipynb"><span class="n">neigh</span> <span class="o">=</span> <span class="n">neighbors</span><span class="o">.</span><span class="n">NearestNeighbors</span><span class="p">(</span><span class="n">n_neighbors</span><span class="o">=</span><span class="mi">5</span><span class="p">)</span>
 <span class="n">neigh</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">dta</span><span class="o">.</span><span class="n">values</span><span class="p">)</span>
@@ -1736,7 +1777,7 @@ init_mathjax();
 <div class="vbox output_wrapper">
 <div class="output vbox">
 <div class="hbox output_area">
-<div class="prompt output_prompt">Out[68]:</div>
+<div class="prompt output_prompt">Out[62]:</div>
 <div class="output_subarea output_pyout">
 <pre class="ipynb">NearestNeighbors(algorithm=&apos;auto&apos;, leaf_size=30, n_neighbors=5, p=2,
          radius=1.0)</pre>
@@ -1747,7 +1788,7 @@ init_mathjax();
 </div>
 <div class="cell border-box-sizing code_cell vbox">
 <div class="input hbox">
-<div class="prompt input_prompt">In&nbsp;[69]:</div>
+<div class="prompt input_prompt">In&nbsp;[63]:</div>
 <div class="input_area box-flex1">
 <div class="highlight-ipynb"><pre class="ipynb"><span class="n">nobs</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">dta</span><span class="p">)</span>
 <span class="n">W</span> <span class="o">=</span> <span class="n">sparse</span><span class="o">.</span><span class="n">lil_matrix</span><span class="p">((</span><span class="n">nobs</span><span class="p">,</span> <span class="n">nobs</span><span class="p">))</span>
@@ -1758,7 +1799,7 @@ init_mathjax();
 </div>
 <div class="cell border-box-sizing code_cell vbox">
 <div class="input hbox">
-<div class="prompt input_prompt">In&nbsp;[70]:</div>
+<div class="prompt input_prompt">In&nbsp;[64]:</div>
 <div class="input_area box-flex1">
 <div class="highlight-ipynb"><pre class="ipynb"><span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">row</span> <span class="ow">in</span> <span class="n">dta</span><span class="o">.</span><span class="n">iterrows</span><span class="p">():</span>
     <span class="n">closest</span> <span class="o">=</span> <span class="n">neigh</span><span class="o">.</span><span class="n">kneighbors</span><span class="p">(</span><span class="n">row</span><span class="o">.</span><span class="n">values</span><span class="p">,</span> <span class="n">return_distance</span><span class="o">=</span><span class="bp">False</span><span class="p">)</span>
@@ -1776,7 +1817,7 @@ init_mathjax();
 </div>
 <div class="cell border-box-sizing code_cell vbox">
 <div class="input hbox">
-<div class="prompt input_prompt">In&nbsp;[71]:</div>
+<div class="prompt input_prompt">In&nbsp;[65]:</div>
 <div class="input_area box-flex1">
 <div class="highlight-ipynb"><pre class="ipynb"><span class="n">W</span> <span class="o">=</span> <span class="n">W</span> <span class="o">/</span> <span class="mf">4.</span>
 <span class="k">assert</span> <span class="nb">all</span><span class="p">(</span><span class="n">W</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span> <span class="o">==</span> <span class="mi">1</span><span class="p">)</span>
@@ -1790,7 +1831,7 @@ init_mathjax();
 </div>
 <div class="cell border-box-sizing code_cell vbox">
 <div class="input hbox">
-<div class="prompt input_prompt">In&nbsp;[72]:</div>
+<div class="prompt input_prompt">In&nbsp;[66]:</div>
 <div class="input_area box-flex1">
 <div class="highlight-ipynb"><pre class="ipynb"><span class="n">W</span> <span class="o">=</span> <span class="n">W</span><span class="o">.</span><span class="n">tocsc</span><span class="p">()</span>
 </pre></div>
@@ -1803,7 +1844,7 @@ init_mathjax();
 </div>
 <div class="cell border-box-sizing code_cell vbox">
 <div class="input hbox">
-<div class="prompt input_prompt">In&nbsp;[73]:</div>
+<div class="prompt input_prompt">In&nbsp;[67]:</div>
 <div class="input_area box-flex1">
 <div class="highlight-ipynb"><pre class="ipynb"><span class="n">rho</span> <span class="o">=</span> <span class="o">.</span><span class="mi">1</span>
 </pre></div>
@@ -1816,7 +1857,7 @@ init_mathjax();
 </div>
 <div class="cell border-box-sizing code_cell vbox">
 <div class="input hbox">
-<div class="prompt input_prompt">In&nbsp;[74]:</div>
+<div class="prompt input_prompt">In&nbsp;[68]:</div>
 <div class="input_area box-flex1">
 <div class="highlight-ipynb"><pre class="ipynb"><span class="n">np</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">slogdet</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">eye</span><span class="p">(</span><span class="n">W</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span> <span class="o">-</span> <span class="n">rho</span><span class="o">*</span><span class="n">W</span><span class="o">.</span><span class="n">toarray</span><span class="p">())</span>
 </pre></div>
@@ -1826,7 +1867,7 @@ init_mathjax();
 <div class="vbox output_wrapper">
 <div class="output vbox">
 <div class="hbox output_area">
-<div class="prompt output_prompt">Out[74]:</div>
+<div class="prompt output_prompt">Out[68]:</div>
 <div class="output_subarea output_pyout">
 <pre class="ipynb">(1.0, -3.346557139406221)</pre>
 </div>
@@ -1839,9 +1880,9 @@ init_mathjax();
 </div>
 <div class="cell border-box-sizing code_cell vbox">
 <div class="input hbox">
-<div class="prompt input_prompt">In&nbsp;[75]:</div>
+<div class="prompt input_prompt">In&nbsp;[94]:</div>
 <div class="input_area box-flex1">
-<div class="highlight-ipynb"><pre class="ipynb"><span class="n">logdet_mc</span><span class="p">(</span><span class="n">W</span><span class="p">,</span> <span class="n">rho</span><span class="p">)</span>
+<div class="highlight-ipynb"><pre class="ipynb"><span class="n">logdet_mc</span><span class="p">(</span><span class="n">W</span><span class="p">,</span> <span class="n">rho</span><span class="p">,</span> <span class="n">seed</span><span class="o">=</span><span class="mi">124</span><span class="p">,</span> <span class="n">nterms</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span> <span class="n">exact</span><span class="o">=</span><span class="bp">False</span><span class="p">,</span> <span class="n">nrepl</span><span class="o">=</span><span class="mi">2500</span><span class="p">)</span>
 </pre></div>
 
 </div>
@@ -1849,20 +1890,20 @@ init_mathjax();
 <div class="vbox output_wrapper">
 <div class="output vbox">
 <div class="hbox output_area">
-<div class="prompt output_prompt">Out[75]:</div>
+<div class="prompt output_prompt">Out[94]:</div>
 <div class="output_subarea output_pyout">
-<pre class="ipynb">-3.9456500690606093</pre>
+<pre class="ipynb">-3.2609283583388167</pre>
 </div>
 </div>
 </div>
 </div>
 </div>
 <div class="text_cell_render border-box-sizing rendered_html">
-<p>Compute the log determinant using CHOLMOD and scikits.sparse again.</p>
+<p>(<strong>EDIT 8/14/2013</strong> This is wrong. See above note. LU decomposition added below.) Compute the log determinant using CHOLMOD and scikits.sparse again.</p>
 </div>
 <div class="cell border-box-sizing code_cell vbox">
 <div class="input hbox">
-<div class="prompt input_prompt">In&nbsp;[76]:</div>
+<div class="prompt input_prompt">In&nbsp;[70]:</div>
 <div class="input_area box-flex1">
 <div class="highlight-ipynb"><pre class="ipynb"><span class="n">f</span> <span class="o">=</span> <span class="n">cholmod</span><span class="o">.</span><span class="n">cholesky</span><span class="p">(</span><span class="n">sparse</span><span class="o">.</span><span class="n">eye</span><span class="p">(</span><span class="n">W</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">format</span><span class="o">=</span><span class="s">&quot;csc&quot;</span><span class="p">)</span> <span class="o">-</span> <span class="n">rho</span> <span class="o">*</span> <span class="n">W</span><span class="p">)</span>
 </pre></div>
@@ -1872,7 +1913,7 @@ init_mathjax();
 </div>
 <div class="cell border-box-sizing code_cell vbox">
 <div class="input hbox">
-<div class="prompt input_prompt">In&nbsp;[77]:</div>
+<div class="prompt input_prompt">In&nbsp;[71]:</div>
 <div class="input_area box-flex1">
 <div class="highlight-ipynb"><pre class="ipynb"><span class="n">f</span><span class="o">.</span><span class="n">logdet</span><span class="p">()</span>
 </pre></div>
@@ -1882,9 +1923,34 @@ init_mathjax();
 <div class="vbox output_wrapper">
 <div class="output vbox">
 <div class="hbox output_area">
-<div class="prompt output_prompt">Out[77]:</div>
+<div class="prompt output_prompt">Out[71]:</div>
 <div class="output_subarea output_pyout">
 <pre class="ipynb">-3.9400025132708647</pre>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>(<strong>EDIT 8/14/2013</strong> Add LU decomposition.)</p>
+</div>
+<div class="cell border-box-sizing code_cell vbox">
+<div class="input hbox">
+<div class="prompt input_prompt">In&nbsp;[73]:</div>
+<div class="input_area box-flex1">
+<div class="highlight-ipynb"><pre class="ipynb"><span class="n">L</span><span class="p">,</span> <span class="n">U</span><span class="p">,</span> <span class="n">P</span><span class="p">,</span> <span class="n">Q</span><span class="p">,</span> <span class="n">R</span><span class="p">,</span> <span class="n">do_recip</span> <span class="o">=</span> <span class="n">umfpack</span><span class="o">.</span><span class="n">lu</span><span class="p">((</span><span class="n">sparse</span><span class="o">.</span><span class="n">eye</span><span class="p">(</span><span class="n">W</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">format</span><span class="o">=</span><span class="s">&quot;csc&quot;</span><span class="p">)</span> <span class="o">-</span> <span class="n">rho</span><span class="o">*</span><span class="n">W</span><span class="p">))</span>
+<span class="k">print</span> <span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="n">U</span><span class="o">.</span><span class="n">diagonal</span><span class="p">()</span><span class="o">/</span><span class="n">R</span><span class="p">))</span>
+</pre></div>
+
+</div>
+</div>
+<div class="vbox output_wrapper">
+<div class="output vbox">
+<div class="hbox output_area">
+<div class="prompt output_prompt"></div>
+<div class="output_subarea output_stream output_stdout">
+<pre class="ipynb">-3.34655713941
+</pre>
 </div>
 </div>
 </div>
