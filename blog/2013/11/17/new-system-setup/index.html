@@ -1437,7 +1437,7 @@ init_mathjax();
 </pre></div>
 
 
-<h2>Config Files and Scripts</h2>
+<h2><a href="https://github.com/jseabold/dotfiles">Config Files</a> and <a href="https://github.com/jseabold/scripts">Scripts</a></h2>
 <div class="highlight"><pre><span class="n">cd</span> <span class="o">~</span>
 <span class="n">cd</span> <span class="n">src</span>
 <span class="n">git</span> <span class="n">clone</span> <span class="n">git</span><span class="err">@</span><span class="n">github</span><span class="p">.</span><span class="n">com</span><span class="o">:</span><span class="n">jseabold</span><span class="o">/</span><span class="n">scripts</span>
@@ -1453,8 +1453,9 @@ init_mathjax();
 <h2><a href="http://www.huyng.com/projects/bashmarks/">Bashmarks</a></h2>
 <p>Bookmark directories for the shell.</p>
 <div class="highlight"><pre><span class="n">cd</span> <span class="o">~/</span><span class="n">src</span><span class="o">/</span>
+<span class="n">git</span> <span class="n">clone</span> <span class="n">https</span><span class="o">:</span><span class="c1">//github.com/huyng/bashmarks</span>
+<span class="n">cd</span> <span class="n">bashmarks</span>
 <span class="n">make</span> <span class="n">install</span>
-<span class="n">git</span> <span class="n">clone</span> <span class="n">http</span><span class="o">:</span><span class="c1">//www.huyng.com/projects/bashmarks/</span>
 </pre></div>
 
 
@@ -1685,8 +1686,11 @@ init_mathjax();
 <p>Dependencies (not already installed)</p>
 <p>For UMFPACK support</p>
 <div class="highlight"><pre><span class="n">sudo</span> <span class="n">apt</span><span class="o">-</span><span class="n">get</span> <span class="n">install</span> <span class="n">swig</span>
+</pre></div>
 
-<span class="n">cd</span> <span class="o">~/</span><span class="n">src</span><span class="o">/</span><span class="n">scipy</span><span class="o">-</span><span class="n">skipper</span>
+
+<p>Build/Install SciPy</p>
+<div class="highlight"><pre><span class="n">cd</span> <span class="o">~/</span><span class="n">src</span><span class="o">/</span><span class="n">scipy</span><span class="o">-</span><span class="n">skipper</span>
 <span class="n">cp</span> <span class="o">~/</span><span class="n">src</span><span class="o">/</span><span class="n">numpy</span><span class="o">-</span><span class="n">skipper</span><span class="o">/</span><span class="n">site</span><span class="p">.</span><span class="n">cfg</span> 
 <span class="n">python</span> <span class="n">setup</span><span class="p">.</span><span class="n">py</span> <span class="n">build</span>
 <span class="n">sudo</span> <span class="n">python</span> <span class="n">setup</span><span class="p">.</span><span class="n">py</span> <span class="n">install</span>
@@ -1767,7 +1771,7 @@ init_mathjax();
 </pre></div>
 
 
-<h3><a href="http://star.mit.edu/cluster/">starcluster</a>: cluster-computing toolkit for AMazon EC2</h3>
+<h3><a href="http://star.mit.edu/cluster/">starcluster</a>: cluster-computing toolkit for Amazon EC2</h3>
 <div class="highlight"><pre><span class="n">cd</span> <span class="o">~/</span><span class="n">src</span><span class="o">/</span>
 <span class="n">git</span> <span class="n">clone</span> <span class="n">git</span><span class="o">:</span><span class="c1">//github.com/jtriley/StarCluster.git</span>
 <span class="n">cd</span> <span class="n">StarCluster</span>
@@ -1916,17 +1920,24 @@ init_mathjax();
 
 <h2>Graph Theory / Networks</h2>
 <h3><a href="http://igraph.sourceforge.net/">igraph</a></h3>
+<p>Build the source</p>
 <div class="highlight"><pre><span class="n">cd</span> <span class="o">~/</span><span class="n">src</span><span class="o">/</span>
-<span class="n">wget</span> <span class="o">--</span><span class="n">content</span><span class="o">-</span><span class="n">disposition</span> <span class="n">http</span><span class="o">:</span><span class="c1">//sourceforge.net/projects/igraph/files/C%20library/0.6.5/igraph-0.6.5.tar.gz/download</span>
-<span class="n">tar</span> <span class="o">-</span><span class="n">xvf</span> <span class="n">igraph</span><span class="o">-*</span>
+<span class="n">git</span> <span class="n">clone</span> <span class="n">git</span><span class="o">:</span><span class="c1">//github.com/igraph/igraph</span>
 <span class="n">cd</span> <span class="n">igraph</span>
+<span class="n">sudo</span> <span class="n">apt</span><span class="o">-</span><span class="n">get</span> <span class="n">install</span> <span class="n">libtool</span>
+<span class="p">.</span><span class="o">/</span><span class="n">bootstrap</span><span class="p">.</span><span class="n">sh</span>
 <span class="p">.</span><span class="o">/</span><span class="n">configure</span>
 <span class="n">make</span>
 <span class="n">sudo</span> <span class="n">make</span> <span class="n">install</span>
 <span class="n">make</span> <span class="n">clean</span> <span class="o">&amp;&amp;</span> <span class="n">make</span> <span class="n">distclean</span>
+</pre></div>
 
+
+<p>Install the Python package</p>
+<div class="highlight"><pre><span class="n">cd</span> <span class="n">interfaces</span><span class="o">/</span><span class="n">python</span>
+<span class="n">python</span> <span class="n">setup</span><span class="p">.</span><span class="n">py</span> <span class="n">build</span>
+<span class="n">sudo</span> <span class="n">python</span> <span class="n">setup</span><span class="p">.</span><span class="n">py</span> <span class="n">install</span>
 <span class="n">cd</span> <span class="o">~</span>
-<span class="n">pip</span> <span class="n">install</span> <span class="o">--</span><span class="n">user</span> <span class="n">python</span><span class="o">-</span><span class="n">igraph</span>
 </pre></div>
 
 
