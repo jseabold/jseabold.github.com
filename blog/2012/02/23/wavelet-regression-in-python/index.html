@@ -5,14 +5,14 @@
         <meta charset="utf-8" />
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-                    <link rel="stylesheet" href="http://jseabold.net/theme/css/bootstrap.min.css" type="text/css" />
+            <link rel="stylesheet" href="http://jseabold.net/theme/css/bootstrap.min.css" type="text/css" />
         <link rel="stylesheet" href="http://jseabold.net/theme/css/bootstrap-responsive.min.css" type="text/css" />
 
         <link rel="stylesheet" href="http://jseabold.net/theme/css/main.css" type="text/css" />
         <link rel="stylesheet" href="http://jseabold.net/theme/css/font-awesome.min.css" type="text/css" />
-                <link href="http://jseabold.net/feeds/all.atom.xml" type="application/atom+xml" rel="alternate" title="jseabold.net Atom Feed" />
-                        
-            <style type="text/css">
+        <link href="http://jseabold.net/feeds/all.atom.xml" type="application/atom+xml" rel="alternate" title="jseabold.net Atom Feed" />
+
+        <style type="text/css">
 /**
  * HTML5 ✰ Boilerplate
  *
@@ -1258,7 +1258,7 @@ init_mathjax = function() {
 init_mathjax();
 </script>
 
-    </head>
+</head>
 
 <body id="index">
     <div class="row-fluid">
@@ -1270,15 +1270,15 @@ init_mathjax();
                 <nav class="navbar">
                     <div class="navbar-inner">
                         <ul class="nav">
-                                                    <li><a href="/blog">Blog</a></li>
-                                                                                                    <li><a href="http://jseabold.net/pages/about.html">About</a></li>
-                                                    <li><a href="http://jseabold.net/pages/courses.html">Courses</a></li>
-                                                    <li><a href="http://jseabold.net/">Home</a></li>
-                                                    <li><a href="http://jseabold.net/pages/projects.html">Projects</a></li>
-                                                    <li><a href="http://jseabold.net/pages/talks.html">Talks</a></li>
-                                                                                                </ul>
+                            <li><a href="/blog">Blog</a></li>
+                            <li><a href="/pages/about">About</a></li>
+                            <li><a href="/pages/courses">Courses</a></li>
+                            <li><a href="/">Home</a></li>
+                            <li><a href="/pages/projects">Projects</a></li>
+                            <li><a href="/pages/talks">Talks</a></li>
+                        </ul>
 
-                                            </div>
+                    </div>
                 </nav>
             </header><!-- /#banner -->
         </div>
@@ -1288,54 +1288,54 @@ init_mathjax();
         <div class="span10 offset1">
             <div class="row-fluid">
                 <div class="span10">
-                    <section  >
+<section  >
   <article>
     <header>
       <h1 class="entry-title">
         <a href="http://jseabold.net/blog/2012/02/23/wavelet-regression-in-python" rel="bookmark"
            title="Permalink to Wavelet Regression in Python">Wavelet Regression in Python</a></h1>
-      <a href="http://twitter.com/share" class="twitter-share-button" data-count="horizontal" data-via="jseabold">Tweet</a><script type="text/javascript" src="http://platform.twitter.com/widgets.js"></script>
+<a href="http://twitter.com/share" class="twitter-share-button" data-count="horizontal" data-via="jseabold">Tweet</a><script type="text/javascript" src="http://platform.twitter.com/widgets.js"></script>
     </header>
 
     <div class="entry-content">
-      <footer class="post-info">
-        <address class="vcard author">
+<footer class="post-info">
+    <address class="vcard author">
         by <a class="url fn" href="http://jseabold.net/author/skipper-seabold.html">Skipper Seabold</a>
     </address>
-    
+
     in <a href="http://jseabold.net/category/misc.html">misc</a>
 
     on 2012-02-23
 
-            |
+        |
         tags:         <a href="http://jseabold.net/tag/stats.html">stats</a>
-                <a href="http://jseabold.net/tag/python.html">python</a>
-                <a href="http://jseabold.net/tag/wavelets.html">wavelets</a>
-                <a href="http://jseabold.net/tag/nonparametric.html">nonparametric</a>
-            
-    
-            |
+        <a href="http://jseabold.net/tag/python.html">python</a>
+        <a href="http://jseabold.net/tag/wavelets.html">wavelets</a>
+        <a href="http://jseabold.net/tag/nonparametric.html">nonparametric</a>
+
+
+        |
         <a href="http://jseabold.net/blog/2012/02/23/wavelet-regression-in-python#disqus_thread">comments</a>
+
     
-        
-</footer><!-- /.post-info -->      <div class="ipynb">
+</footer><!-- /.post-info -->      <p>
+<div class="text_cell_render border-box-sizing rendered_html">
+<h2 id="Wavelet-Regression-in-Python">Wavelet Regression in Python<a class="anchor-link" href="#Wavelet-Regression-in-Python">&#182;</a></h2>
+</div>
 
 <div class="text_cell_render border-box-sizing rendered_html">
-<h2 class="ipynb">
-  Wavelet Regression in Python
-</h2>
-</div>
-<div class="text_cell_render border-box-sizing rendered_html">
-<p>Last week I needed to get my head around wavelet regression techniques for a project I am working on. This post will show how to do basic wavelet regression in Python using <a href="http://www.pybytes.com/pywavelets/">PyWavelets</a>. For references I used Chapter 9 in Wasserman's <a href="http://www.amazon.com/gp/product/1441920447/ref=as_li_qf_sp_asin_tl?ie=UTF8&amp;tag=scistapro-20&amp;linkCode=as2&amp;camp=1789&amp;creative=9325&amp;creativeASIN=1441920447">All of Non-Parametric Statistics</a>, Ogden's <a href="http://www.amazon.com/gp/product/0817638644/ref=as_li_qf_sp_asin_tl?ie=UTF8&amp;tag=scistapro-20&amp;linkCode=as2&amp;camp=1789&amp;creative=9325&amp;creativeASIN=0817638644">Essential Wavelets for Statistical Applications and Data Analysis</a>, and Donoho and Johnstone's "Ideal spational adaptation by wavelet shrinkage" [<a href="biomet.oxfordjournals.org/content/81/3/425.full.pdf">pdf</a>]. I also recommend "An Introduction to Wavelets" [<a href="www.cis.udel.edu/~amer/CISC651/IEEEwavelet.pdf">pdf</a>] by Amara Graps for a high level overview and a brief historical treatment of the development of wavelet analysis. These references will provide much more detail and guidance than I will here.</p>
-<p>Wavelets are mathematical functions that provide an orthonormal basis for functions in the $L^2$ space. The use of wavelets is akin to the use of sines and cosines to represent $L^2$ functions in Fourier analysis. In fact, many treatments on wavelets start the discussion by reviewing Fourier series represenations of functions. Legendre polynomials are another complete orthonormal system.</p>
+<p>Last week I needed to get my head around wavelet regression techniques for a project I am working on. This post will show how to do basic wavelet regression in Python using <a href="http://www.pybytes.com/pywavelets/">PyWavelets</a>. For references I used Chapter 9 in Wasserman's <a href="http://www.amazon.com/gp/product/1441920447/ref=as_li_qf_sp_asin_tl?ie=UTF8&amp;tag=scistapro-20&amp;linkCode=as2&amp;camp=1789&amp;creative=9325&amp;creativeASIN=1441920447">All of Non-Parametric Statistics</a>, Ogden's <a href="http://www.amazon.com/gp/product/0817638644/ref=as_li_qf_sp_asin_tl?ie=UTF8&amp;tag=scistapro-20&amp;linkCode=as2&amp;camp=1789&amp;creative=9325&amp;creativeASIN=0817638644">Essential Wavelets for Statistical Applications and Data Analysis</a>, and Donoho and Johnstone's &quot;Ideal spational adaptation by wavelet shrinkage&quot; [<a href="biomet.oxfordjournals.org/content/81/3/425.full.pdf">pdf</a>]. I also recommend &quot;An Introduction to Wavelets&quot; [<a href="www.cis.udel.edu/~amer/CISC651/IEEEwavelet.pdf">pdf</a>] by Amara Graps for a high level overview and a brief historical treatment of the development of wavelet analysis. These references will provide much more detail and guidance than I will here.</p>
+<p>Wavelets are mathematical functions that provide an orthonormal basis for functions in the <span class="math">\(L^2\)</span> space. The use of wavelets is akin to the use of sines and cosines to represent <span class="math">\(L^2\)</span> functions in Fourier analysis. In fact, many treatments on wavelets start the discussion by reviewing Fourier series represenations of functions. Legendre polynomials are another complete orthonormal system.</p>
 <p>The simplest wavelet is the Haar wavelet. It is not much used in practice but it is convenient to fix ideas. The Haar function is given</p>
 </div>
 <div class="text_cell_render border-box-sizing rendered_html">
-<p>$$\psi(x)=\begin{cases}1,&amp;x \in [0,1)\cr -1,&amp;x \in [\frac{1}{2},1)\cr 0,&amp;\text{otherwise}\end{cases}$$</p>
+<p><span class="math">\[\psi(x)=\begin{cases}1,&amp;x \in [0,1)\cr -1,&amp;x \in [\frac{1}{2},1)\cr 0,&amp;\text{otherwise}\end{cases}\]</span></p>
 </div>
 <div class="cell border-box-sizing code_cell vbox">
 <div class="input hbox">
-<div class="prompt input_prompt">In&nbsp;[1]:</div>
+<div class="prompt input_prompt">
+In&nbsp;[1]:
+</div>
 <div class="input_area box-flex1">
 <div class="highlight-ipynb"><pre class="ipynb"><span class="kn">import</span> <span class="nn">pywt</span>
 <span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="kn">as</span> <span class="nn">plt</span>
@@ -1343,10 +1343,13 @@ init_mathjax();
 
 </div>
 </div>
+
 </div>
 <div class="cell border-box-sizing code_cell vbox">
 <div class="input hbox">
-<div class="prompt input_prompt">In&nbsp;[2]:</div>
+<div class="prompt input_prompt">
+In&nbsp;[2]:
+</div>
 <div class="input_area box-flex1">
 <div class="highlight-ipynb"><pre class="ipynb"><span class="n">w</span> <span class="o">=</span> <span class="n">pywt</span><span class="o">.</span><span class="n">Wavelet</span><span class="p">(</span><span class="s">&#39;Haar&#39;</span><span class="p">)</span>
 <span class="n">phi</span><span class="p">,</span> <span class="n">psi</span><span class="p">,</span> <span class="n">x</span> <span class="o">=</span> <span class="n">w</span><span class="o">.</span><span class="n">wavefun</span><span class="p">(</span><span class="n">level</span><span class="o">=</span><span class="mi">10</span><span class="p">)</span>
@@ -1358,11 +1361,15 @@ init_mathjax();
 
 </div>
 </div>
+
 <div class="vbox output_wrapper">
 <div class="output vbox">
-<div class="hbox output_area">
-<div class="prompt output_prompt"></div>
-<div class="output_subarea output_display_data">
+
+
+<div class="hbox output_area"><div class="prompt"></div>
+<div class="box-flex1 output_subarea output_display_data">
+
+
 <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAXsAAAD+CAYAAADbNKXUAAAABHNCSVQICAgIfAhkiAAAAAlwSFlz
 AAALEgAACxIB0t1+/AAAGBxJREFUeJzt3V9sHHe5xvFnXXtd23sotJG8C4VKIAp1XDt1kzRuLSWS
 D2opUmnkP8BFYpVYuUBI1KqiCuoEJJMbekGIiJCoJeT0BmQDjqACLiyK6saNG2+dTbGTg9QTCWFv
@@ -1473,22 +1480,27 @@ TZs2aW5uTnfeeWdJRHm51J/JZLS8vCzp2hc8S2nQbySW9DMDA3Wd/ZkzZ1b+utzR0aGGhgZJq39R
 a619wyyX+r/97W/rrrvuUllZmT7zmc/oqaeecnLMt1Iu9V/38ssv68qVKyXza3wuPfjXv/6lF154
 QZcvX1Zzc3NJxHm51P+b3/xG58+fVyaT0SOPPLLmrdPD5MNfWK2rq1v5wuqtmIGBGvYAgMIITGYP
 ACgchj0AGMCwBwADGPYAYADDHgAMYNgDgAEMewAw4H8BJdYehiXtg6gAAAAASUVORK5CYII=
-"></img>
+">
+
 </div>
 </div>
+
 </div>
 </div>
+
 </div>
 <div class="text_cell_render border-box-sizing rendered_html">
-<p>The location in the domain and the range of this <em>mother wavelet</em> function can be conrolled by a translation index $k$ and a dilation index $j$, respectively.</p>
-<p>$$\psi_{j,k}(x)=2^{j/2}\psi(2^{j}x-k)$$</p>
-<p>A wavelet system is fully defined once a <em>scaling function</em>, or <em>father wavelet</em>, is defined. The scaling function ensures that the orthonormal basis covers the original space of a function without having to use an infinite number of mother wavelets. The father wavelet for the Haar system is </p>
-<p>$$\phi(x)=I_{[0,1)}(x)$$</p>
-<p>where $I_A(x)$ is an indicator function that equals 1 if $x$ is in the set $A$. You can see that any dilation and translation can cover the original function space. While the Haar function is a good introduction, the rest of the code will use the most nearly symmetric Debauchies wavelet with N=8.</p>
+<p>The location in the domain and the range of this <em>mother wavelet</em> function can be conrolled by a translation index <span class="math">\(k\)</span> and a dilation index <span class="math">\(j\)</span>, respectively.</p>
+<p><span class="math">\[\psi_{j,k}(x)=2^{j/2}\psi(2^{j}x-k)\]</span></p>
+<p>A wavelet system is fully defined once a <em>scaling function</em>, or <em>father wavelet</em>, is defined. The scaling function ensures that the orthonormal basis covers the original space of a function without having to use an infinite number of mother wavelets. The father wavelet for the Haar system is</p>
+<p><span class="math">\[\phi(x)=I_{[0,1)}(x)\]</span></p>
+<p>where <span class="math">\(I_A(x)\)</span> is an indicator function that equals 1 if <span class="math">\(x\)</span> is in the set <span class="math">\(A\)</span>. You can see that any dilation and translation can cover the original function space. While the Haar function is a good introduction, the rest of the code will use the most nearly symmetric Debauchies wavelet with N=8.</p>
 </div>
 <div class="cell border-box-sizing code_cell vbox">
 <div class="input hbox">
-<div class="prompt input_prompt">In&nbsp;[3]:</div>
+<div class="prompt input_prompt">
+In&nbsp;[3]:
+</div>
 <div class="input_area box-flex1">
 <div class="highlight-ipynb"><pre class="ipynb"><span class="n">db8</span> <span class="o">=</span> <span class="n">pywt</span><span class="o">.</span><span class="n">Wavelet</span><span class="p">(</span><span class="s">&#39;db8&#39;</span><span class="p">)</span>
 <span class="n">scaling</span><span class="p">,</span> <span class="n">wavelet</span><span class="p">,</span> <span class="n">x</span> <span class="o">=</span> <span class="n">db8</span><span class="o">.</span><span class="n">wavefun</span><span class="p">()</span>
@@ -1509,11 +1521,15 @@ ACgchj0AGMCwBwADGPYAYADDHgAMYNgDgAEMewAw4H8BJdYehiXtg6gAAAAASUVORK5CYII=
 
 </div>
 </div>
+
 <div class="vbox output_wrapper">
 <div class="output vbox">
-<div class="hbox output_area">
-<div class="prompt output_prompt"></div>
-<div class="output_subarea output_display_data">
+
+
+<div class="hbox output_area"><div class="prompt"></div>
+<div class="box-flex1 output_subarea output_display_data">
+
+
 <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAjkAAAGpCAYAAABvZSezAAAABHNCSVQICAgIfAhkiAAAAAlwSFlz
 AAALEgAACxIB0t1+/AAAIABJREFUeJzsnXl4FFXW/79V3enOTkIWEhLCFhAh7IiAcUBxGVdAQQE3
 FETxnRlH59XREXHcntFX58Xx/ek4juOug8LgvgKuEVBkERCEsAZIOmQl6c7Wy/39Uekknd6ququ7
@@ -1975,25 +1991,30 @@ jR566CHt3LnTWOzZent7lUgkjLZtvvvuOx0+fFgTExN67LHHjF92ff/993Xx4kVlMhk9/vjj2rhx
 Y9linThxQufPn9fo6Kg6Ozu1e/duo3lXKL6p3CsUe5qJvCsUvxy5ZzKfCrF9Pkl2PkckO5+jfG/Y
 O942c72Y87xiihwAAIBSqojfrgIAACg1ihwAABBIFDkAACCQKHIAAEAgUeQAAIBAosgBAACB9H8f
 5OQWCdXEpgAAAABJRU5ErkJggg==
-"></img>
+">
+
 </div>
 </div>
+
 </div>
 </div>
+
 </div>
 <div class="text_cell_render border-box-sizing rendered_html">
-<p>For the current purposes, the objective of wavelet analysis is to recover the unknown function $f$ from noisy data</p>
-<p>$$y_i = f(x_i) + e_i, i \in \left{1,\dots,n\right}$$</p>
-<p>with $x_i = i/n$ without loss of generality and $e_i \sim N(0,\sigma^2)$. The expansion of the function $f$ as a finite sum of wavelets can be achieved as</p>
-<p>$$f_J(x) = \alpha\phi(x) + \sum_{j=0}^{J-1}\sum_{k=0}^{2^j-1}\beta_{jk}\psi_{jk}(x)$$</p>
+<p>For the current purposes, the objective of wavelet analysis is to recover the unknown function <span class="math">\(f\)</span> from noisy data</p>
+<p><span class="math">\[y_i = f(x_i) + e_i, i \in \left\{1,\dots,n\right\}\]</span></p>
+<p>with <span class="math">\(x_i = i/n\)</span> without loss of generality and <span class="math">\(e_i \sim N(0,\sigma^2)\)</span>. The expansion of the function <span class="math">\(f\)</span> as a finite sum of wavelets can be achieved as</p>
+<p><span class="math">\[f_J(x) = \alpha\phi(x) + \sum_{j=0}^{J-1}\sum_{k=0}^{2^j-1}\beta_{jk}\psi_{jk}(x)\]</span></p>
 <p>where</p>
-<p>$$\alpha=\int_0^1f(x)\phi(x)dx\text{, }\beta_{jk}=\int_0^1f(x)\psi_{jk}(x)dx.$$ </p>
-<p>$\alpha$ and $\beta_jk$ are called the scaling coefficients and the detail coefficients, respectively. The basic idea is that the detail coefficients capture the coarser details of the function while the scaling, or smoothing, coefficients capture the overall functional form.</p>
+<p><span class="math">\[\alpha=\int_0^1f(x)\phi(x)dx\text{, }\beta_{jk}=\int_0^1f(x)\psi_{jk}(x)dx.\]</span></p>
+<p><span class="math">\(\alpha\)</span> and <span class="math">\(\beta_jk\)</span> are called the scaling coefficients and the detail coefficients, respectively. The basic idea is that the detail coefficients capture the coarser details of the function while the scaling, or smoothing, coefficients capture the overall functional form.</p>
 <p>Donoho and Johnstone use four functions that mimic properties of empirical data in domains where wavelets might be useful, Bumps, Blocks, HeaviSine, and Doppler. For completeness, they are defined here.</p>
 </div>
 <div class="cell border-box-sizing code_cell vbox">
 <div class="input hbox">
-<div class="prompt input_prompt">In&nbsp;[4]:</div>
+<div class="prompt input_prompt">
+In&nbsp;[4]:
+</div>
 <div class="input_area box-flex1">
 <div class="highlight-ipynb"><pre class="ipynb"><span class="k">def</span> <span class="nf">doppler</span><span class="p">(</span><span class="n">x</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;</span>
@@ -2039,10 +2060,13 @@ O942c72Y87xiihwAAIBSqojfrgIAACg1ihwAABBIFDkAACCQKHIAAEAgUeQAAIBAosgBAACB9H8f
 
 </div>
 </div>
+
 </div>
 <div class="cell border-box-sizing code_cell vbox">
 <div class="input hbox">
-<div class="prompt input_prompt">In&nbsp;[5]:</div>
+<div class="prompt input_prompt">
+In&nbsp;[5]:
+</div>
 <div class="input_area box-flex1">
 <div class="highlight-ipynb"><pre class="ipynb"><span class="n">x</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="o">**</span><span class="mi">11</span><span class="p">)</span>
 <span class="n">dop</span> <span class="o">=</span> <span class="n">doppler</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
@@ -2053,10 +2077,13 @@ O942c72Y87xiihwAAIBSqojfrgIAACg1ihwAABBIFDkAACCQKHIAAEAgUeQAAIBAosgBAACB9H8f
 
 </div>
 </div>
+
 </div>
 <div class="cell border-box-sizing code_cell vbox">
 <div class="input hbox">
-<div class="prompt input_prompt">In&nbsp;[6]:</div>
+<div class="prompt input_prompt">
+In&nbsp;[6]:
+</div>
 <div class="input_area box-flex1">
 <div class="highlight-ipynb"><pre class="ipynb"><span class="n">fig</span><span class="p">,</span> <span class="n">axes</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span><span class="mi">10</span><span class="p">))</span>
 <span class="n">ax1</span> <span class="o">=</span> <span class="n">axes</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">]</span>
@@ -2085,11 +2112,15 @@ O942c72Y87xiihwAAIBSqojfrgIAACg1ihwAABBIFDkAACCQKHIAAEAgUeQAAIBAosgBAACB9H8f
 
 </div>
 </div>
+
 <div class="vbox output_wrapper">
 <div class="output vbox">
-<div class="hbox output_area">
-<div class="prompt output_prompt"></div>
-<div class="output_subarea output_display_data">
+
+
+<div class="hbox output_area"><div class="prompt"></div>
+<div class="box-flex1 output_subarea output_display_data">
+
+
 <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAsgAAALJCAYAAACp99XTAAAABHNCSVQICAgIfAhkiAAAAAlwSFlz
 AAALEgAACxIB0t1+/AAAIABJREFUeJzsnXe4G+WZ9u+RdKTTi21sHzdMMLjhTseACQYCJIQkeAPZ
 dRaWJfkCHwkkS0vY0EJ2KQt8hARSaAksJbAbILQEh5KDwTg2uONgg8G4+/Sio6My3x8v79F0zYxm
@@ -3213,18 +3244,23 @@ Za5igaxRbo28914E11zTggULcrj66ixOPVX48YP28OOG9evXY/78+Y5eW89rcVCo13XHDz76KIIb
 b2zC8OEqbr+9DzNm6NeJjg4Jv/51Aj/7WQq33ZbGF78o7pNhjkelcExK4ZiUYnctthXIDMMwTG1w
 I5AZhmGY2uBaIDMMwzAMwzBMf4RkkR7DMAzDMAzD+AULZIZhGIZhGIYxwAKZYRiGYRiGYQywQGYY
 hmEYhmEYAyyQGYZhGIZhGMYAC2SGYRiGYRiGMfD/AZANLhBOuB29AAAAAElFTkSuQmCC
-"></img>
+">
+
 </div>
 </div>
+
 </div>
 </div>
+
 </div>
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>The wavelet coefficients fully describe some data. First, generate some data from the noisy doppler function and apply a discrete wavelet transform to recover the smoothing and detail coefficients, then have a look at a common diagnostic plot of the wavelet coefficients using <code>coef_pyramid_plot</code>.</p>
 </div>
 <div class="cell border-box-sizing code_cell vbox">
 <div class="input hbox">
-<div class="prompt input_prompt">In&nbsp;[7]:</div>
+<div class="prompt input_prompt">
+In&nbsp;[7]:
+</div>
 <div class="input_area box-flex1">
 <div class="highlight-ipynb"><pre class="ipynb"><span class="k">def</span> <span class="nf">coef_pyramid_plot</span><span class="p">(</span><span class="n">coefs</span><span class="p">,</span> <span class="n">first</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">scale</span><span class="o">=</span><span class="s">&#39;uniform&#39;</span><span class="p">,</span> <span class="n">ax</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;</span>
@@ -3287,13 +3323,16 @@ hmEYhmEYAyyQGYZhGIZhGMYAC2SGYRiGYRiGMfD/AZANLhBOuB29AAAAAElFTkSuQmCC
 
 </div>
 </div>
+
 </div>
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>Generate the data and get the coefficients using the multilevel discrete wavelet transform. Plot the true coefficients and the noisy ones.</p>
 </div>
 <div class="cell border-box-sizing code_cell vbox">
 <div class="input hbox">
-<div class="prompt input_prompt">In&nbsp;[8]:</div>
+<div class="prompt input_prompt">
+In&nbsp;[8]:
+</div>
 <div class="input_area box-flex1">
 <div class="highlight-ipynb"><pre class="ipynb"><span class="kn">from</span> <span class="nn">scipy</span> <span class="kn">import</span> <span class="n">stats</span>
 <span class="kn">import</span> <span class="nn">numpy</span> <span class="kn">as</span> <span class="nn">np</span>
@@ -3318,11 +3357,15 @@ hmEYhmEYAyyQGYZhGIZhGMYAC2SGYRiGYRiGMfD/AZANLhBOuB29AAAAAElFTkSuQmCC
 
 </div>
 </div>
+
 <div class="vbox output_wrapper">
 <div class="output vbox">
-<div class="hbox output_area">
-<div class="prompt output_prompt"></div>
-<div class="output_subarea output_display_data">
+
+
+<div class="hbox output_area"><div class="prompt"></div>
+<div class="box-flex1 output_subarea output_display_data">
+
+
 <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAoAAAAPwCAYAAAChmM9WAAAABHNCSVQICAgIfAhkiAAAAAlwSFlz
 AAALEgAACxIB0t1+/AAAIABJREFUeJzs3XeUVPX9//HXzPbKwlIWWaQoglTZYA0hFI1oLKiooFGx
 oNHEiKiJfhUJKJYQEXuLQcUYDU1jF1YXQQKWFZGysCArdSnb2F5m7u8PD/NzWLbPnTv72efjHI9n
@@ -4136,21 +4179,26 @@ byZyvaL+FnBbW1v+Gy333HMP69atm+MRycX41re+RXl5OWazmcWLF/MXf/EXF8xSGc8vu3fvJpFI
 8IUvfEGZznMTExM8/fTTRKNRbrrpJr74xS8q03lsx44dnDx5kmw2y+bNm9m6davynEdeeOEFWltb
 CQaDNDc3881vfvOS8/u0uV5RBaCIiIiIzL4rpgdQRERERC4PFYAiIiIiVxkVgCIiIiJXGRWAIiIi
 IlcZFYAiIiIiVxkVgCIiIiJXmf8HFmrfAGBrdJUAAAAASUVORK5CYII=
-"></img>
+">
+
 </div>
 </div>
+
 </div>
 </div>
+
 </div>
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>Notice that most of the coefficients of the true signal are zero. This is the idea of <em>sparseness</em>, most functions, smooth or otherwise, have a sparse respresentation in a wavelet basis. The detail coefficients are non-zero where the block function is not flat. The detail coefficients of the noisy signal have many more non-zero coefficients at the higher resolutions from the added noise. To recover the signal from the noisy coefficients, you <em>threshold</em> the coefficients. Essentially, thresholding sets many of the coefficients to zero by assuming that they are noise. There are a number of ways to go about performing thresholding. Details can be found in the given references. I will simply apply soft thresholding using the <em>universal threshold</em>. The universal threshold is defined</p>
-<p>$$\lambda=\hat{\sigma}\sqrt{2\log(N)}$$</p>
-<p>where $\hat{\sigma}$ is a robust estimator of the standard deviation of the finest level detail coefficients. Here, I use the standardized median absolute deviation available from <a href="http://statsmodels.sf.net">statsmodels</a>.</p>
-<p>$$\hat{\sigma}=\text{M}\text{A}\text{D}(\beta_{J-1,\cdot})$$</p>
+<p><span class="math">\[\lambda=\hat{\sigma}\sqrt{2\log(N)}\]</span></p>
+<p>where <span class="math">\(\hat{\sigma}\)</span> is a robust estimator of the standard deviation of the finest level detail coefficients. Here, I use the standardized median absolute deviation available from <a href="http://statsmodels.sf.net">statsmodels</a>.</p>
+<p><span class="math">\[\hat{\sigma}=\text{M}\text{A}\text{D}(\beta_{J-1,\cdot})\]</span></p>
 </div>
 <div class="cell border-box-sizing code_cell vbox">
 <div class="input hbox">
-<div class="prompt input_prompt">In&nbsp;[9]:</div>
+<div class="prompt input_prompt">
+In&nbsp;[9]:
+</div>
 <div class="input_area box-flex1">
 <div class="highlight-ipynb"><pre class="ipynb"><span class="kn">from</span> <span class="nn">statsmodels.robust</span> <span class="kn">import</span> <span class="n">stand_mad</span>
 
@@ -4164,13 +4212,16 @@ IlcZFYAiIiIiVxkVgCIiIiJXmf8HFmrfAGBrdJUAAAAASUVORK5CYII=
 
 </div>
 </div>
+
 </div>
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>We can recover the signal by applying the inverse discrete wavelet transform to the thresholded coefficients.</p>
 </div>
 <div class="cell border-box-sizing code_cell vbox">
 <div class="input hbox">
-<div class="prompt input_prompt">In&nbsp;[10]:</div>
+<div class="prompt input_prompt">
+In&nbsp;[10]:
+</div>
 <div class="input_area box-flex1">
 <div class="highlight-ipynb"><pre class="ipynb"><span class="n">signal</span> <span class="o">=</span> <span class="n">pywt</span><span class="o">.</span><span class="n">waverec</span><span class="p">(</span><span class="n">denoised</span><span class="p">,</span> <span class="s">&#39;db8&#39;</span><span class="p">,</span> <span class="n">mode</span><span class="o">=</span><span class="s">&#39;per&#39;</span><span class="p">)</span>
 
@@ -4195,11 +4246,15 @@ IlcZFYAiIiIiVxkVgCIiIiJXmf8HFmrfAGBrdJUAAAAASUVORK5CYII=
 
 </div>
 </div>
+
 <div class="vbox output_wrapper">
 <div class="output vbox">
-<div class="hbox output_area">
-<div class="prompt output_prompt"></div>
-<div class="output_subarea output_display_data">
+
+
+<div class="hbox output_area"><div class="prompt"></div>
+<div class="box-flex1 output_subarea output_display_data">
+
+
 <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAsgAAAI5CAYAAAC8ZczKAAAABHNCSVQICAgIfAhkiAAAAAlwSFlz
 AAALEgAACxIB0t1+/AAAIABJREFUeJzs3XeYE3X+B/D3JNmSbbDUpYigUqQLWMDFAop3ggqIUhQp
 KifFgooVQfSHCJ7lVMod3qHo2eAUFRuKBVYBRYSlI9JhV8qyy9bsJpnfH+Mkk8mkTzaTzfv1PD6S
@@ -5060,18 +5115,20 @@ uru7WVlZaTgg7/bNXpK0e763SlI6Wg7IQ0NDDA0N7eoH9fb2sra2xrlz50iShCtXrtDX15fKRUqS
 JEmh7PmYt9pmRn9/P4uLi1uP79+/T39//96vTJIkSYpgT6dYzM7OMj8/z+PHj1lfX+f8+fPk83lO
 nz7NxYsXAZicnEz1QiVJkqQQopyDLEmSJHUq76QnSZIkVXBAliRJkio4IEuSJEkVHJAlSZKkCg7I
 kiRJUgUHZEmSJKnC/wDCA/Ugi9lI4QAAAABJRU5ErkJggg==
-"></img>
+">
+
 </div>
 </div>
+
 </div>
 </div>
+
 </div>
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>PyWavelets is a really cool project. But it could use a little more attention. It would be nice if some of the library functions were wrapped up so that they return wavelet objects that would be easier to work with. For instance, if wavedec returned a discrete wavelet object that the thresholding functions also accepted, this would save me some keystrokes in the above. I do not have time to take on another project, but it is low hanging fruit if someone else does. The code is MIT licensed and might even find a nice home in SciPy.</p>
-</div>
-</div>
+</div></p>
     </div><!-- /.entry-content -->
-        <div class="comments">
+    <div class="comments">
       <h2>Comments</h2>
       <div id="disqus_thread"></div>
       <script type="text/javascript">
@@ -5083,23 +5140,23 @@ kiRJUgUHZEmSJKnC/wDCA/Ugi9lI4QAAAABJRU5ErkJggg==
         })();
       </script>
     </div>
-    
+
   </article>
 </section>
                 </div>
                 <div class="span2">
                     <section id="sidebar">
-                                                                    <div>
+                            <div>
                                 <h2>Social</h2>
                                 <ul style="list-tyle-type: none;list-style: none;padding: 0px;margin: 0px;">
                                     <li><a href="http://jseabold.net/feeds/all.atom.xml" type="application/atom+xml" rel="alternate"><i class="icon-rss svc-badge"></i></a></li>
-                                    
-                                                                <li><a href="https://github.com/jseabold"><i class="icon-github svc-badge"></i></a></li>
-                                                                <li><a href="https://twitter.com/jseabold"><i class="icon-twitter svc-badge"></i></a></li>
-                                                                <li><a href="https://gittip.com/jseabold"><i class="icon-gittip svc-badge"></i></a></li>
-                                                                </ul>
+
+                                <li><a href="https://github.com/jseabold"><i class="icon-github svc-badge"></i></a></li>
+                                <li><a href="https://twitter.com/jseabold"><i class="icon-twitter svc-badge"></i></a></li>
+                                <li><a href="https://gittip.com/jseabold"><i class="icon-gittip svc-badge"></i></a></li>
+                                </ul>
                             </div><!-- /.social -->
-                                        </section><!-- /#sidebar -->
+                    </section><!-- /#sidebar -->
                 </div>
             </div>
         </div>
