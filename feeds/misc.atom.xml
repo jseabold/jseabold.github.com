@@ -742,64 +742,90 @@ kdialog &lt;span class="s2"&gt;&amp;quot;Your S3 backup job has completed&amp;qu
 &lt;p&gt;Since this is a laptop, you can add this to anacron, so that it will run the next time your machine is on according to some schedule. I added the following to &lt;code&gt;/etc/anacrontab&lt;/code&gt;&lt;/p&gt;
 &lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="mi"&gt;7&lt;/span&gt; &lt;span class="mi"&gt;10&lt;/span&gt; &lt;span class="n"&gt;backup&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="n"&gt;weekly&lt;/span&gt; &lt;span class="o"&gt;/&lt;/span&gt;&lt;span class="n"&gt;home&lt;/span&gt;&lt;span class="o"&gt;/&lt;/span&gt;&lt;span class="n"&gt;skipper&lt;/span&gt;&lt;span class="o"&gt;/&lt;/span&gt;&lt;span class="n"&gt;src&lt;/span&gt;&lt;span class="o"&gt;/&lt;/span&gt;&lt;span class="n"&gt;scripts&lt;/span&gt;&lt;span class="o"&gt;/&lt;/span&gt;&lt;span class="n"&gt;s3backup&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="n"&gt;sh&lt;/span&gt;
 &lt;/pre&gt;&lt;/div&gt;</summary><category term="linux"></category><category term="notes-to-self"></category></entry><entry><title>Monte Carlo Estimates of Log Determinants</title><link href="http://jseabold.net/blog/2013/08/06/sparse-log-determinants" rel="alternate"></link><updated>2013-08-06T00:00:00-04:00</updated><author><name>Skipper Seabold</name></author><id>tag:jseabold.net,2013-08-06:blog/2013/08/06/sparse-log-determinants</id><summary type="html">&lt;p&gt;
+&lt;div class="cell border-box-sizing text_cell rendered"&gt;
+&lt;div class="prompt input_prompt"&gt;
+&lt;/div&gt;
+&lt;div class="inner_cell"&gt;
 &lt;div class="text_cell_render border-box-sizing rendered_html"&gt;
 &lt;h2 id="Monte-Carlo-Estimates-of-Log-Determinants"&gt;Monte Carlo Estimates of Log-Determinants&lt;a class="anchor-link" href="#Monte-Carlo-Estimates-of-Log-Determinants"&gt;&amp;#182;&lt;/a&gt;&lt;/h2&gt;
 &lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;
 
+&lt;div class="cell border-box-sizing text_cell rendered"&gt;
+&lt;div class="prompt input_prompt"&gt;
+&lt;/div&gt;
+&lt;div class="inner_cell"&gt;
 &lt;div class="text_cell_render border-box-sizing rendered_html"&gt;
 &lt;p&gt;In statistics, we often need to compute a log-determinant as part of a multivariate maximum likelihood problem for non-independent data. The matrix for which we may need a log-determinant can be very large, though more often than not it is also very sparse. Direct methods of computing the determinant for a symmetric variance-covariance matrix often use the Cholesky decomposition or in certain cases an LU decomposition can be used.&lt;/p&gt;
-&lt;p&gt;I have recently need to tackle this problem for the estimation of some spatial-econometric models. One good thing about the variance-covariance in spatial econometric models is that they're sparse. Unfortunately, all of the sparse Cholesky routines that I am aware of are not suitable to be included in BSD-compatible projects like &lt;a href="http://statsmodels.sourceforge.net"&gt;statsmodels&lt;/a&gt; and &lt;a href="http://pythonhosted.org/PySAL/"&gt;pysal&lt;/a&gt;. Furthermore, sparse methods (sometimes) rely on particular orderings of the matrices to achieve good performance; however, these orderings are not always possible to achieve with spatial weighting matrices. Another good thing about working with spatial econometric models is that we often don't need exact estimates. Approximations often do just fine. This led me to a 1999 paper by Barry and Pace in which they introduce a simple Monte Carlo method to approximate log-determinants of matrices, &amp;quot;A Monte Carlo Estimator of Log Determinants of Large Sparse Matrices.&amp;quot; [[pdf](http://www.spatial-statistics.com/pace_manuscripts/Lin_algebra_appl/lin_algebra_applications.pd])]. See also Chapter 4.4 in LeSage and Pace's Introduction to Spatial Econometrics.&lt;/p&gt;
-&lt;p&gt;To describe the problem in a little more detail. We need to calculate &lt;span class="math"&gt;\(\ln|I_n - \rho W|\)&lt;/span&gt; where &lt;span class="math"&gt;\(I_n\)&lt;/span&gt; is an &lt;span class="math"&gt;\(n\times n\)&lt;/span&gt; identity matrix, &lt;span class="math"&gt;\(\rho\)&lt;/span&gt; is a scalar in &lt;span class="math"&gt;\((-1,1)\)&lt;/span&gt;, and &lt;span class="math"&gt;\(W\)&lt;/span&gt; has been rescaled such that its eigenvalues are in &lt;span class="math"&gt;\((-1,1)\)&lt;/span&gt;. Direct methods would require the computation of this log determinant for a number of different values of &lt;span class="math"&gt;\(\rho\)&lt;/span&gt;. However, we can develop an MC approximation that avoids these recomputations by first noting that&lt;/p&gt;
-&lt;p&gt;&lt;span class="math"&gt;\[\ln|I_n - \rho W| = \operatorname{tr}(\ln(I_n - \rho W))\]&lt;/span&gt;&lt;/p&gt;
-&lt;p&gt;where &lt;span class="math"&gt;\(\operatorname{tr}\)&lt;/span&gt; denotes the trace of the matrix. Next note that the matrix logarithm has the power series expansion&lt;/p&gt;
-&lt;p&gt;&lt;span class="math"&gt;\[\ln(I_n - \rho W) = -\sum_{i=1}^{\infty}\frac{\rho^i W^i}{i}\]&lt;/span&gt;&lt;/p&gt;
+&lt;p&gt;I have recently need to tackle this problem for the estimation of some spatial-econometric models. One good thing about the variance-covariance in spatial econometric models is that they&amp;#39;re sparse. Unfortunately, all of the sparse Cholesky routines that I am aware of are not suitable to be included in BSD-compatible projects like &lt;a href="http://statsmodels.sourceforge.net"&gt;statsmodels&lt;/a&gt; and &lt;a href="http://pythonhosted.org/PySAL/"&gt;pysal&lt;/a&gt;. Furthermore, sparse methods (sometimes) rely on particular orderings of the matrices to achieve good performance; however, these orderings are not always possible to achieve with spatial weighting matrices. Another good thing about working with spatial econometric models is that we often don&amp;#39;t need exact estimates. Approximations often do just fine. This led me to a 1999 paper by Barry and Pace in which they introduce a simple Monte Carlo method to approximate log-determinants of matrices, &amp;quot;A Monte Carlo Estimator of Log Determinants of Large Sparse Matrices.&amp;quot; [&lt;a href="http://www.spatial-statistics.com/pace_manuscripts/Lin_algebra_appl/lin_algebra_applications.pd]"&gt;pdf&lt;/a&gt;]. See also Chapter 4.4 in LeSage and Pace&amp;#39;s Introduction to Spatial Econometrics.&lt;/p&gt;
+&lt;p&gt;To describe the problem in a little more detail. We need to calculate $\ln|I_n - \rho W|$ where $I_n$ is an $n\times n$ identity matrix, $\rho$ is a scalar in $(-1,1)$, and $W$ has been rescaled such that its eigenvalues are in $(-1,1)$. Direct methods would require the computation of this log determinant for a number of different values of $\rho$. However, we can develop an MC approximation that avoids these recomputations by first noting that&lt;/p&gt;
+&lt;p&gt;$$\ln|I_n - \rho W| = \operatorname{tr}(\ln(I_n - \rho W))$$&lt;/p&gt;
+&lt;p&gt;where $\operatorname{tr}$ denotes the trace of the matrix. Next note that the matrix logarithm has the power series expansion&lt;/p&gt;
+&lt;p&gt;$$\ln(I_n - \rho W) = -\sum_{i=1}^{\infty}\frac{\rho^i W^i}{i}$$&lt;/p&gt;
 &lt;p&gt;Since the trace is a linear operation, we can write&lt;/p&gt;
-&lt;p&gt;&lt;span class="math"&gt;\[\ln|I_n - \rho W| = -\sum_{i=1}^{\infty}\frac{\rho^i \operatorname{tr}(W^i)}{i}\]&lt;/span&gt;&lt;/p&gt;
-&lt;p&gt;Note that this will also hold for non-symmetric W with complex eigenvalues or for complex &lt;span class="math"&gt;\(\rho\)&lt;/span&gt;. Assuming that truncation error is small, we can write a finite approximation of the above power series&lt;/p&gt;
-&lt;p&gt;&lt;span class="math"&gt;\[\ln|I_n - \rho W| = -\sum_{i=1}^{m}\frac{\rho^i \operatorname{tr}(W^i)}{i}\]&lt;/span&gt;&lt;/p&gt;
-&lt;p&gt;The computation for &lt;span class="math"&gt;\(\operatorname{tr}(W^i)\)&lt;/span&gt; can be computationally costly for larger values of &lt;span class="math"&gt;\(i\)&lt;/span&gt;. Barry and Pace introduce the following &amp;quot;trick&amp;quot; to calculate the trace. Let the vector &lt;span class="math"&gt;\(\boldsymbol{x}\)&lt;/span&gt; come from a &lt;span class="math"&gt;\(N_n(0,I)\)&lt;/span&gt; distribution and assume we have some matrix &lt;span class="math"&gt;\(D\)&lt;/span&gt;. Since the square of any single &lt;span class="math"&gt;\(x_i\sim N(\cdot)\)&lt;/span&gt; gives &lt;span class="math"&gt;\(x_i^2\sim\chi^2_1\)&lt;/span&gt; with &lt;span class="math"&gt;\(\mathbb{E}[x_i^2]=1\)&lt;/span&gt; and &lt;span class="math"&gt;\(\mathbb{E}[x_ix_j]=0\)&lt;/span&gt; by construction, then given the quadratic form &lt;span class="math"&gt;\(\boldsymbol{x}^\prime D\boldsymbol{x}\)&lt;/span&gt; we have the following using &lt;span class="math"&gt;\(n=2\)&lt;/span&gt; for illustration&lt;/p&gt;
-&lt;p&gt;&lt;span class="math"&gt;\[\begin{align}\boldsymbol{x}^\prime D\boldsymbol{x} &amp;amp;=x_1^2d_{1,1} + x_2^2d_{2,2} + x_1x_2(d_{1,2} + d_{2,1}) \cr
+&lt;p&gt;$$\ln|I_n - \rho W| = -\sum_{i=1}^{\infty}\frac{\rho^i \operatorname{tr}(W^i)}{i}$$&lt;/p&gt;
+&lt;p&gt;Note that this will also hold for non-symmetric W with complex eigenvalues or for complex $\rho$. Assuming that truncation error is small, we can write a finite approximation of the above power series&lt;/p&gt;
+&lt;p&gt;$$\ln|I_n - \rho W| = -\sum_{i=1}^{m}\frac{\rho^i \operatorname{tr}(W^i)}{i}$$&lt;/p&gt;
+&lt;p&gt;The computation for $\operatorname{tr}(W^i)$ can be computationally costly for larger values of $i$. Barry and Pace introduce the following &amp;quot;trick&amp;quot; to calculate the trace. Let the vector $\boldsymbol{x}$ come from a $N_n(0,I)$ distribution and assume we have some matrix $D$. Since the square of any single $x_i\sim N(\cdot)$ gives $x_i^2\sim\chi^2_1$ with $\mathbb{E}[x_i^2]=1$ and $\mathbb{E}[x_ix_j]=0$ by construction, then given the quadratic form $\boldsymbol{x}^\prime D\boldsymbol{x}$ we have the following using $n=2$ for illustration&lt;/p&gt;
+&lt;p&gt;$$\begin{align}\boldsymbol{x}^\prime D\boldsymbol{x} &amp;amp;=x_1^2d_{1,1} + x_2^2d_{2,2} + x_1x_2(d_{1,2} + d_{2,1}) \cr
 \mathbb{E}[\boldsymbol{x}^\prime D\boldsymbol{x}] &amp;amp;=\mathbb{E}[x_1^2d_{1,1} + x_2^2d_{2,2} + x_1x_2(d_{1,2} + d_{2,1})] \cr
 &amp;amp;= d_{1,1} + d_{2,2} \cr
 &amp;amp;= \operatorname{tr(D)}
-\end{align}\]&lt;/span&gt;&lt;/p&gt;
+\end{align}$$&lt;/p&gt;
 &lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div class="cell border-box-sizing text_cell rendered"&gt;
+&lt;div class="prompt input_prompt"&gt;
+&lt;/div&gt;
+&lt;div class="inner_cell"&gt;
 &lt;div class="text_cell_render border-box-sizing rendered_html"&gt;
-&lt;p&gt;This result suggests the following algorithm, which I'll implement below.&lt;/p&gt;
+&lt;p&gt;This result suggests the following algorithm, which I&amp;#39;ll implement below.&lt;/p&gt;
 &lt;pre&gt;&lt;code&gt; pick x_i = randn(n)
  set z = x_i
  for t = 1:m
      z = Wz
      tr(W^i) = n*(x_i&amp;#39;z)/(t*x_i&amp;#39;x_i)
-     &lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;Storing all of the estimates for &lt;span class="math"&gt;\(\operatorname{tr}(W^i)\)&lt;/span&gt;, we can use them to compute our truncated power series.&lt;/p&gt;
-&lt;p&gt;&lt;span class="math"&gt;\[a^{\prime}b\]&lt;/span&gt;&lt;/p&gt;
-&lt;p&gt;where &lt;span class="math"&gt;\(a\)&lt;/span&gt; are the estimates of the trace and &lt;span class="math"&gt;\(b=[\rho, \rho^2, \dots, \rho^m]\)&lt;/span&gt;. It's common to compute the estimate for a grid of values for &lt;span class="math"&gt;\(\rho\)&lt;/span&gt; so that the log determinant over all possible values for &lt;span class="math"&gt;\(\rho\)&lt;/span&gt; can be computed in a vectorized way and then to use interpolation to get intermediate values as needed.&lt;/p&gt;
-&lt;p&gt;Notice that I used &lt;span class="math"&gt;\(x_i\)&lt;/span&gt; for the random vector above. This suggests that we can do this numerous times and take the average to get a better estimate for the log determinant. Now let's look at the implementation.&lt;/p&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;Storing all of the estimates for $\operatorname{tr}(W^i)$, we can use them to compute our truncated power series. &lt;/p&gt;
+&lt;p&gt;$$a^{\prime}b$$&lt;/p&gt;
+&lt;p&gt;where $a$ are the estimates of the trace and $b=[\rho, \rho^2, \dots, \rho^m]$. It&amp;#39;s common to compute the estimate for a grid of values for $\rho$ so that the log determinant over all possible values for $\rho$ can be computed in a vectorized way and then to use interpolation to get intermediate values as needed.&lt;/p&gt;
+&lt;p&gt;Notice that I used $x_i$ for the random vector above. This suggests that we can do this numerous times and take the average to get a better estimate for the log determinant. Now let&amp;#39;s look at the implementation.&lt;/p&gt;
 &lt;/div&gt;
-&lt;div class="cell border-box-sizing code_cell vbox"&gt;
-&lt;div class="input hbox"&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div class="cell border-box-sizing code_cell rendered"&gt;
+&lt;div class="input"&gt;
 &lt;div class="prompt input_prompt"&gt;
 In&amp;nbsp;[43]:
 &lt;/div&gt;
-&lt;div class="input_area box-flex1"&gt;
+&lt;div class="inner_cell"&gt;
+    &lt;div class="input_area"&gt;
 &lt;div class="highlight-ipynb"&gt;&lt;pre class="ipynb"&gt;&lt;span class="kn"&gt;import&lt;/span&gt; &lt;span class="nn"&gt;numpy&lt;/span&gt; &lt;span class="kn"&gt;as&lt;/span&gt; &lt;span class="nn"&gt;np&lt;/span&gt;
 &lt;span class="n"&gt;np&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;set_printoptions&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;suppress&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="bp"&gt;True&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
 &lt;/pre&gt;&lt;/div&gt;
 
 &lt;/div&gt;
 &lt;/div&gt;
+&lt;/div&gt;
 
 &lt;/div&gt;
+&lt;div class="cell border-box-sizing text_cell rendered"&gt;
+&lt;div class="prompt input_prompt"&gt;
+&lt;/div&gt;
+&lt;div class="inner_cell"&gt;
 &lt;div class="text_cell_render border-box-sizing rendered_html"&gt;
 &lt;p&gt;Take an example of a contiguity matrix&lt;/p&gt;
 &lt;/div&gt;
-&lt;div class="cell border-box-sizing code_cell vbox"&gt;
-&lt;div class="input hbox"&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div class="cell border-box-sizing code_cell rendered"&gt;
+&lt;div class="input"&gt;
 &lt;div class="prompt input_prompt"&gt;
 In&amp;nbsp;[44]:
 &lt;/div&gt;
-&lt;div class="input_area box-flex1"&gt;
+&lt;div class="inner_cell"&gt;
+    &lt;div class="input_area"&gt;
 &lt;div class="highlight-ipynb"&gt;&lt;pre class="ipynb"&gt;&lt;span class="n"&gt;W&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;np&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;zeros&lt;/span&gt;&lt;span class="p"&gt;((&lt;/span&gt;&lt;span class="mi"&gt;7&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;&lt;span class="mi"&gt;7&lt;/span&gt;&lt;span class="p"&gt;),&lt;/span&gt; &lt;span class="n"&gt;dtype&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="nb"&gt;float&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
 &lt;span class="n"&gt;W&lt;/span&gt;&lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="mi"&gt;0&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;&lt;span class="mi"&gt;1&lt;/span&gt;&lt;span class="p"&gt;]&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="mf"&gt;1.&lt;/span&gt;
 &lt;span class="n"&gt;W&lt;/span&gt;&lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="mi"&gt;1&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="mi"&gt;2&lt;/span&gt;&lt;span class="p"&gt;]&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="mf"&gt;1.&lt;/span&gt;
@@ -810,29 +836,32 @@ In&amp;nbsp;[44]:
 
 &lt;/div&gt;
 &lt;/div&gt;
+&lt;/div&gt;
 
 &lt;/div&gt;
-&lt;div class="cell border-box-sizing code_cell vbox"&gt;
-&lt;div class="input hbox"&gt;
+&lt;div class="cell border-box-sizing code_cell rendered"&gt;
+&lt;div class="input"&gt;
 &lt;div class="prompt input_prompt"&gt;
 In&amp;nbsp;[45]:
 &lt;/div&gt;
-&lt;div class="input_area box-flex1"&gt;
+&lt;div class="inner_cell"&gt;
+    &lt;div class="input_area"&gt;
 &lt;div class="highlight-ipynb"&gt;&lt;pre class="ipynb"&gt;&lt;span class="n"&gt;W&lt;/span&gt;
 &lt;/pre&gt;&lt;/div&gt;
 
 &lt;/div&gt;
 &lt;/div&gt;
+&lt;/div&gt;
 
-&lt;div class="vbox output_wrapper"&gt;
-&lt;div class="output vbox"&gt;
+&lt;div class="output_wrapper"&gt;
+&lt;div class="output"&gt;
 
 
-&lt;div class="hbox output_area"&gt;&lt;div class="prompt output_prompt"&gt;
+&lt;div class="output_area"&gt;&lt;div class="prompt output_prompt"&gt;
     Out[45]:&lt;/div&gt;
-&lt;div class="box-flex1 output_subarea output_pyout"&gt;
 
 
+&lt;div class="output_text output_subarea output_pyout"&gt;
 &lt;pre&gt;
 array([[ 0. ,  1. ,  0. ,  0. ,  0. ,  0. ,  0. ],
        [ 0.5,  0. ,  0.5,  0. ,  0. ,  0. ,  0. ],
@@ -842,145 +871,184 @@ array([[ 0. ,  1. ,  0. ,  0. ,  0. ,  0. ,  0. ],
        [ 0. ,  0. ,  0. ,  0. ,  0.5,  0. ,  0.5],
        [ 0. ,  0. ,  0. ,  0. ,  0. ,  1. ,  0. ]])
 &lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;/div&gt;
 
 &lt;/div&gt;
 &lt;/div&gt;
 
 &lt;/div&gt;
+&lt;div class="cell border-box-sizing text_cell rendered"&gt;
+&lt;div class="prompt input_prompt"&gt;
 &lt;/div&gt;
-
-&lt;/div&gt;
+&lt;div class="inner_cell"&gt;
 &lt;div class="text_cell_render border-box-sizing rendered_html"&gt;
 &lt;p&gt;This is what is called a row-stochastic weight matrix in the spatial regression literature. That is, the rows all sum to 1. This guarantees that the eigenvalues are constrained to be from -1 to 1.&lt;/p&gt;
 &lt;/div&gt;
-&lt;div class="cell border-box-sizing code_cell vbox"&gt;
-&lt;div class="input hbox"&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div class="cell border-box-sizing code_cell rendered"&gt;
+&lt;div class="input"&gt;
 &lt;div class="prompt input_prompt"&gt;
 In&amp;nbsp;[46]:
 &lt;/div&gt;
-&lt;div class="input_area box-flex1"&gt;
+&lt;div class="inner_cell"&gt;
+    &lt;div class="input_area"&gt;
 &lt;div class="highlight-ipynb"&gt;&lt;pre class="ipynb"&gt;&lt;span class="n"&gt;np&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;linalg&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;eig&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;W&lt;/span&gt;&lt;span class="p"&gt;)[&lt;/span&gt;&lt;span class="mi"&gt;0&lt;/span&gt;&lt;span class="p"&gt;]&lt;/span&gt;
 &lt;/pre&gt;&lt;/div&gt;
 
 &lt;/div&gt;
 &lt;/div&gt;
+&lt;/div&gt;
 
-&lt;div class="vbox output_wrapper"&gt;
-&lt;div class="output vbox"&gt;
+&lt;div class="output_wrapper"&gt;
+&lt;div class="output"&gt;
 
 
-&lt;div class="hbox output_area"&gt;&lt;div class="prompt output_prompt"&gt;
+&lt;div class="output_area"&gt;&lt;div class="prompt output_prompt"&gt;
     Out[46]:&lt;/div&gt;
-&lt;div class="box-flex1 output_subarea output_pyout"&gt;
 
 
+&lt;div class="output_text output_subarea output_pyout"&gt;
 &lt;pre&gt;
 array([-1.       , -0.8660254, -0.5      , -0.       ,  0.5      ,
         1.       ,  0.8660254])
 &lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;/div&gt;
 
 &lt;/div&gt;
 &lt;/div&gt;
 
 &lt;/div&gt;
-&lt;/div&gt;
-
-&lt;/div&gt;
-&lt;div class="cell border-box-sizing code_cell vbox"&gt;
-&lt;div class="input hbox"&gt;
+&lt;div class="cell border-box-sizing code_cell rendered"&gt;
+&lt;div class="input"&gt;
 &lt;div class="prompt input_prompt"&gt;
 In&amp;nbsp;[47]:
 &lt;/div&gt;
-&lt;div class="input_area box-flex1"&gt;
+&lt;div class="inner_cell"&gt;
+    &lt;div class="input_area"&gt;
 &lt;div class="highlight-ipynb"&gt;&lt;pre class="ipynb"&gt;&lt;span class="n"&gt;rho&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="mi"&gt;25&lt;/span&gt;
 &lt;/pre&gt;&lt;/div&gt;
 
 &lt;/div&gt;
 &lt;/div&gt;
+&lt;/div&gt;
 
 &lt;/div&gt;
-&lt;div class="text_cell_render border-box-sizing rendered_html"&gt;
-&lt;p&gt;Direct computation of &lt;span class="math"&gt;\(\ln|I_n - \rho W|\)&lt;/span&gt; yields&lt;/p&gt;
+&lt;div class="cell border-box-sizing text_cell rendered"&gt;
+&lt;div class="prompt input_prompt"&gt;
 &lt;/div&gt;
-&lt;div class="cell border-box-sizing code_cell vbox"&gt;
-&lt;div class="input hbox"&gt;
+&lt;div class="inner_cell"&gt;
+&lt;div class="text_cell_render border-box-sizing rendered_html"&gt;
+&lt;p&gt;Direct computation of $\ln|I_n - \rho W|$ yields&lt;/p&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div class="cell border-box-sizing code_cell rendered"&gt;
+&lt;div class="input"&gt;
 &lt;div class="prompt input_prompt"&gt;
 In&amp;nbsp;[48]:
 &lt;/div&gt;
-&lt;div class="input_area box-flex1"&gt;
+&lt;div class="inner_cell"&gt;
+    &lt;div class="input_area"&gt;
 &lt;div class="highlight-ipynb"&gt;&lt;pre class="ipynb"&gt;&lt;span class="n"&gt;np&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;log&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;np&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;linalg&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;det&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;np&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;eye&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;W&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;shape&lt;/span&gt;&lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="mi"&gt;0&lt;/span&gt;&lt;span class="p"&gt;])&lt;/span&gt; &lt;span class="o"&gt;-&lt;/span&gt; &lt;span class="n"&gt;rho&lt;/span&gt;&lt;span class="o"&gt;*&lt;/span&gt;&lt;span class="n"&gt;W&lt;/span&gt;&lt;span class="p"&gt;))&lt;/span&gt;
 &lt;/pre&gt;&lt;/div&gt;
 
 &lt;/div&gt;
 &lt;/div&gt;
+&lt;/div&gt;
 
-&lt;div class="vbox output_wrapper"&gt;
-&lt;div class="output vbox"&gt;
+&lt;div class="output_wrapper"&gt;
+&lt;div class="output"&gt;
 
 
-&lt;div class="hbox output_area"&gt;&lt;div class="prompt output_prompt"&gt;
+&lt;div class="output_area"&gt;&lt;div class="prompt output_prompt"&gt;
     Out[48]:&lt;/div&gt;
-&lt;div class="box-flex1 output_subarea output_pyout"&gt;
 
 
+&lt;div class="output_text output_subarea output_pyout"&gt;
 &lt;pre&gt;
 -0.12829609729207081
 &lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;/div&gt;
 
 &lt;/div&gt;
 &lt;/div&gt;
 
 &lt;/div&gt;
+&lt;div class="cell border-box-sizing text_cell rendered"&gt;
+&lt;div class="prompt input_prompt"&gt;
 &lt;/div&gt;
-
-&lt;/div&gt;
+&lt;div class="inner_cell"&gt;
 &lt;div class="text_cell_render border-box-sizing rendered_html"&gt;
 &lt;p&gt;Or better yet, use the more numerically stable &lt;code&gt;slogdet&lt;/code&gt;.&lt;/p&gt;
 &lt;/div&gt;
-&lt;div class="cell border-box-sizing code_cell vbox"&gt;
-&lt;div class="input hbox"&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div class="cell border-box-sizing code_cell rendered"&gt;
+&lt;div class="input"&gt;
 &lt;div class="prompt input_prompt"&gt;
 In&amp;nbsp;[49]:
 &lt;/div&gt;
-&lt;div class="input_area box-flex1"&gt;
+&lt;div class="inner_cell"&gt;
+    &lt;div class="input_area"&gt;
 &lt;div class="highlight-ipynb"&gt;&lt;pre class="ipynb"&gt;&lt;span class="n"&gt;np&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;linalg&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;slogdet&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;np&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;eye&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;W&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;shape&lt;/span&gt;&lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="mi"&gt;0&lt;/span&gt;&lt;span class="p"&gt;])&lt;/span&gt; &lt;span class="o"&gt;-&lt;/span&gt; &lt;span class="n"&gt;rho&lt;/span&gt;&lt;span class="o"&gt;*&lt;/span&gt;&lt;span class="n"&gt;W&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
 &lt;/pre&gt;&lt;/div&gt;
 
 &lt;/div&gt;
 &lt;/div&gt;
+&lt;/div&gt;
 
-&lt;div class="vbox output_wrapper"&gt;
-&lt;div class="output vbox"&gt;
+&lt;div class="output_wrapper"&gt;
+&lt;div class="output"&gt;
 
 
-&lt;div class="hbox output_area"&gt;&lt;div class="prompt output_prompt"&gt;
+&lt;div class="output_area"&gt;&lt;div class="prompt output_prompt"&gt;
     Out[49]:&lt;/div&gt;
-&lt;div class="box-flex1 output_subarea output_pyout"&gt;
 
 
+&lt;div class="output_text output_subarea output_pyout"&gt;
 &lt;pre&gt;
 (1.0, -0.12829609729207084)
 &lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;/div&gt;
 
 &lt;/div&gt;
 &lt;/div&gt;
 
 &lt;/div&gt;
+&lt;div class="cell border-box-sizing text_cell rendered"&gt;
+&lt;div class="prompt input_prompt"&gt;
 &lt;/div&gt;
-
-&lt;/div&gt;
+&lt;div class="inner_cell"&gt;
 &lt;div class="text_cell_render border-box-sizing rendered_html"&gt;
-&lt;p&gt;Below is the implementation of the algorithm of Barry and Pace. I haven't done any timings or optimizations for it. I first need to see how it performs in practice. Notice also that it only takes a single &lt;span class="math"&gt;\(\rho\)&lt;/span&gt;. This is easily updated to work with a grid for &lt;span class="math"&gt;\(\rho\)&lt;/span&gt;, though I'm thinking about using a memoization pattern for the trace estimates in my own code, depending on speed, so I've left it as is here.&lt;/p&gt;
+&lt;p&gt;Below is the implementation of the algorithm of Barry and Pace. I haven&amp;#39;t done any timings or optimizations for it. I first need to see how it performs in practice. Notice also that it only takes a single $\rho$. This is easily updated to work with a grid for $\rho$, though I&amp;#39;m thinking about using a memoization pattern for the trace estimates in my own code, depending on speed, so I&amp;#39;ve left it as is here.&lt;/p&gt;
 &lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div class="cell border-box-sizing text_cell rendered"&gt;
+&lt;div class="prompt input_prompt"&gt;
+&lt;/div&gt;
+&lt;div class="inner_cell"&gt;
 &lt;div class="text_cell_render border-box-sizing rendered_html"&gt;
-&lt;p&gt;One addition to the algorithm above is given via the &lt;code&gt;exact&lt;/code&gt; keyword. If &lt;span class="math"&gt;\(W\)&lt;/span&gt; is symmetric with zeros on the diagonals, which it always will be for spatial econometric applications, then we can compute the first two moments exactly at small cost. &lt;span class="math"&gt;\(\operatorname{tr}(W=0)\)&lt;/span&gt; and &lt;span class="math"&gt;\(\operatorname{tr}(W^2)=\sum W^2\)&lt;/span&gt; where the square is taken elementwise.&lt;/p&gt;
+&lt;p&gt;One addition to the algorithm above is given via the &lt;code&gt;exact&lt;/code&gt; keyword. If $W$ is symmetric with zeros on the diagonals, which it always will be for spatial econometric applications, then we can compute the first two moments exactly at small cost. $\operatorname{tr}(W=0)$ and $\operatorname{tr}(W^2)=\sum W^2$ where the square is taken elementwise.&lt;/p&gt;
 &lt;/div&gt;
-&lt;div class="cell border-box-sizing code_cell vbox"&gt;
-&lt;div class="input hbox"&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div class="cell border-box-sizing code_cell rendered"&gt;
+&lt;div class="input"&gt;
 &lt;div class="prompt input_prompt"&gt;
 In&amp;nbsp;[50]:
 &lt;/div&gt;
-&lt;div class="input_area box-flex1"&gt;
+&lt;div class="inner_cell"&gt;
+    &lt;div class="input_area"&gt;
 &lt;div class="highlight-ipynb"&gt;&lt;pre class="ipynb"&gt;&lt;span class="kn"&gt;from&lt;/span&gt; &lt;span class="nn"&gt;scipy&lt;/span&gt; &lt;span class="kn"&gt;import&lt;/span&gt; &lt;span class="n"&gt;sparse&lt;/span&gt;
 
 &lt;span class="k"&gt;def&lt;/span&gt; &lt;span class="nf"&gt;logdet_mc&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;W&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;rho&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="mi"&gt;1&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;seed&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="bp"&gt;None&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;nterms&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="mi"&gt;10&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;nrepl&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="mi"&gt;100&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;exact&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="bp"&gt;True&lt;/span&gt;&lt;span class="p"&gt;):&lt;/span&gt;
@@ -1056,178 +1124,224 @@ In&amp;nbsp;[50]:
 
 &lt;/div&gt;
 &lt;/div&gt;
+&lt;/div&gt;
 
 &lt;/div&gt;
-&lt;div class="cell border-box-sizing code_cell vbox"&gt;
-&lt;div class="input hbox"&gt;
+&lt;div class="cell border-box-sizing code_cell rendered"&gt;
+&lt;div class="input"&gt;
 &lt;div class="prompt input_prompt"&gt;
 In&amp;nbsp;[51]:
 &lt;/div&gt;
-&lt;div class="input_area box-flex1"&gt;
+&lt;div class="inner_cell"&gt;
+    &lt;div class="input_area"&gt;
 &lt;div class="highlight-ipynb"&gt;&lt;pre class="ipynb"&gt;&lt;span class="n"&gt;rho&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="mi"&gt;75&lt;/span&gt;
 &lt;/pre&gt;&lt;/div&gt;
 
 &lt;/div&gt;
 &lt;/div&gt;
+&lt;/div&gt;
 
 &lt;/div&gt;
+&lt;div class="cell border-box-sizing text_cell rendered"&gt;
+&lt;div class="prompt input_prompt"&gt;
+&lt;/div&gt;
+&lt;div class="inner_cell"&gt;
 &lt;div class="text_cell_render border-box-sizing rendered_html"&gt;
 &lt;p&gt;Exact estimate&lt;/p&gt;
 &lt;/div&gt;
-&lt;div class="cell border-box-sizing code_cell vbox"&gt;
-&lt;div class="input hbox"&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div class="cell border-box-sizing code_cell rendered"&gt;
+&lt;div class="input"&gt;
 &lt;div class="prompt input_prompt"&gt;
 In&amp;nbsp;[52]:
 &lt;/div&gt;
-&lt;div class="input_area box-flex1"&gt;
+&lt;div class="inner_cell"&gt;
+    &lt;div class="input_area"&gt;
 &lt;div class="highlight-ipynb"&gt;&lt;pre class="ipynb"&gt;&lt;span class="n"&gt;np&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;linalg&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;slogdet&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;np&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;eye&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;W&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;shape&lt;/span&gt;&lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="mi"&gt;0&lt;/span&gt;&lt;span class="p"&gt;])&lt;/span&gt; &lt;span class="o"&gt;-&lt;/span&gt; &lt;span class="n"&gt;rho&lt;/span&gt; &lt;span class="o"&gt;*&lt;/span&gt; &lt;span class="n"&gt;W&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
 &lt;/pre&gt;&lt;/div&gt;
 
 &lt;/div&gt;
 &lt;/div&gt;
+&lt;/div&gt;
 
-&lt;div class="vbox output_wrapper"&gt;
-&lt;div class="output vbox"&gt;
+&lt;div class="output_wrapper"&gt;
+&lt;div class="output"&gt;
 
 
-&lt;div class="hbox output_area"&gt;&lt;div class="prompt output_prompt"&gt;
+&lt;div class="output_area"&gt;&lt;div class="prompt output_prompt"&gt;
     Out[52]:&lt;/div&gt;
-&lt;div class="box-flex1 output_subarea output_pyout"&gt;
 
 
+&lt;div class="output_text output_subarea output_pyout"&gt;
 &lt;pre&gt;
 (1.0, -1.5261936420271165)
 &lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;/div&gt;
 
 &lt;/div&gt;
 &lt;/div&gt;
 
 &lt;/div&gt;
+&lt;div class="cell border-box-sizing text_cell rendered"&gt;
+&lt;div class="prompt input_prompt"&gt;
 &lt;/div&gt;
-
-&lt;/div&gt;
+&lt;div class="inner_cell"&gt;
 &lt;div class="text_cell_render border-box-sizing rendered_html"&gt;
 &lt;p&gt;Monte-carlo estimate&lt;/p&gt;
 &lt;/div&gt;
-&lt;div class="cell border-box-sizing code_cell vbox"&gt;
-&lt;div class="input hbox"&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div class="cell border-box-sizing code_cell rendered"&gt;
+&lt;div class="input"&gt;
 &lt;div class="prompt input_prompt"&gt;
 In&amp;nbsp;[53]:
 &lt;/div&gt;
-&lt;div class="input_area box-flex1"&gt;
+&lt;div class="inner_cell"&gt;
+    &lt;div class="input_area"&gt;
 &lt;div class="highlight-ipynb"&gt;&lt;pre class="ipynb"&gt;&lt;span class="n"&gt;logdet_mc&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;W&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;rho&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;seed&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="mi"&gt;1234&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;nterms&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="mi"&gt;30&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;exact&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="bp"&gt;False&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;nrepl&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="mi"&gt;1000&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
 &lt;/pre&gt;&lt;/div&gt;
 
 &lt;/div&gt;
 &lt;/div&gt;
+&lt;/div&gt;
 
-&lt;div class="vbox output_wrapper"&gt;
-&lt;div class="output vbox"&gt;
+&lt;div class="output_wrapper"&gt;
+&lt;div class="output"&gt;
 
 
-&lt;div class="hbox output_area"&gt;&lt;div class="prompt output_prompt"&gt;
+&lt;div class="output_area"&gt;&lt;div class="prompt output_prompt"&gt;
     Out[53]:&lt;/div&gt;
-&lt;div class="box-flex1 output_subarea output_pyout"&gt;
 
 
+&lt;div class="output_text output_subarea output_pyout"&gt;
 &lt;pre&gt;
 -1.5140194676583663
 &lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;/div&gt;
 
 &lt;/div&gt;
 &lt;/div&gt;
 
 &lt;/div&gt;
+&lt;div class="cell border-box-sizing text_cell rendered"&gt;
+&lt;div class="prompt input_prompt"&gt;
 &lt;/div&gt;
-
-&lt;/div&gt;
+&lt;div class="inner_cell"&gt;
 &lt;div class="text_cell_render border-box-sizing rendered_html"&gt;
 &lt;p&gt;(&lt;strong&gt;EDIT 8/14/2013&lt;/strong&gt;) The below estimate using CHOLMOD is incorrect since W is not symmetric. The Cholesky decomposition estimate is only valid for positive-definite symmetric matrices. See below for a correct estimate using the LU decomposition.&lt;/p&gt;
 &lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div class="cell border-box-sizing text_cell rendered"&gt;
+&lt;div class="prompt input_prompt"&gt;
+&lt;/div&gt;
+&lt;div class="inner_cell"&gt;
 &lt;div class="text_cell_render border-box-sizing rendered_html"&gt;
 &lt;p&gt;Estimate using &lt;a href="http://www.cise.ufl.edu/research/sparse/cholmod/"&gt;CHOLMOD&lt;/a&gt; from &lt;a href="https://github.com/njsmith/scikits-sparse"&gt;scikits.sparse&lt;/a&gt;.&lt;/p&gt;
 &lt;/div&gt;
-&lt;div class="cell border-box-sizing code_cell vbox"&gt;
-&lt;div class="input hbox"&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div class="cell border-box-sizing code_cell rendered"&gt;
+&lt;div class="input"&gt;
 &lt;div class="prompt input_prompt"&gt;
 In&amp;nbsp;[54]:
 &lt;/div&gt;
-&lt;div class="input_area box-flex1"&gt;
+&lt;div class="inner_cell"&gt;
+    &lt;div class="input_area"&gt;
 &lt;div class="highlight-ipynb"&gt;&lt;pre class="ipynb"&gt;&lt;span class="n"&gt;sparseW&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;sparse&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;csc_matrix&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;W&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
 &lt;/pre&gt;&lt;/div&gt;
 
 &lt;/div&gt;
 &lt;/div&gt;
+&lt;/div&gt;
 
 &lt;/div&gt;
-&lt;div class="cell border-box-sizing code_cell vbox"&gt;
-&lt;div class="input hbox"&gt;
+&lt;div class="cell border-box-sizing code_cell rendered"&gt;
+&lt;div class="input"&gt;
 &lt;div class="prompt input_prompt"&gt;
 In&amp;nbsp;[55]:
 &lt;/div&gt;
-&lt;div class="input_area box-flex1"&gt;
+&lt;div class="inner_cell"&gt;
+    &lt;div class="input_area"&gt;
 &lt;div class="highlight-ipynb"&gt;&lt;pre class="ipynb"&gt;&lt;span class="kn"&gt;from&lt;/span&gt; &lt;span class="nn"&gt;scikits.sparse&lt;/span&gt; &lt;span class="kn"&gt;import&lt;/span&gt; &lt;span class="n"&gt;cholmod&lt;/span&gt;
 &lt;/pre&gt;&lt;/div&gt;
 
 &lt;/div&gt;
 &lt;/div&gt;
+&lt;/div&gt;
 
 &lt;/div&gt;
-&lt;div class="cell border-box-sizing code_cell vbox"&gt;
-&lt;div class="input hbox"&gt;
+&lt;div class="cell border-box-sizing code_cell rendered"&gt;
+&lt;div class="input"&gt;
 &lt;div class="prompt input_prompt"&gt;
 In&amp;nbsp;[56]:
 &lt;/div&gt;
-&lt;div class="input_area box-flex1"&gt;
+&lt;div class="inner_cell"&gt;
+    &lt;div class="input_area"&gt;
 &lt;div class="highlight-ipynb"&gt;&lt;pre class="ipynb"&gt;&lt;span class="n"&gt;f&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;cholmod&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;cholesky&lt;/span&gt;&lt;span class="p"&gt;((&lt;/span&gt;&lt;span class="n"&gt;sparse&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;eye&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="mi"&gt;7&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;format&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="s"&gt;&amp;quot;csc&amp;quot;&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt; &lt;span class="o"&gt;-&lt;/span&gt; &lt;span class="n"&gt;rho&lt;/span&gt;&lt;span class="o"&gt;*&lt;/span&gt;&lt;span class="n"&gt;sparseW&lt;/span&gt;&lt;span class="p"&gt;))&lt;/span&gt;
 &lt;span class="n"&gt;f&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;logdet&lt;/span&gt;&lt;span class="p"&gt;()&lt;/span&gt;
 &lt;/pre&gt;&lt;/div&gt;
 
 &lt;/div&gt;
 &lt;/div&gt;
+&lt;/div&gt;
 
-&lt;div class="vbox output_wrapper"&gt;
-&lt;div class="output vbox"&gt;
+&lt;div class="output_wrapper"&gt;
+&lt;div class="output"&gt;
 
 
-&lt;div class="hbox output_area"&gt;&lt;div class="prompt output_prompt"&gt;
+&lt;div class="output_area"&gt;&lt;div class="prompt output_prompt"&gt;
     Out[56]:&lt;/div&gt;
-&lt;div class="box-flex1 output_subarea output_pyout"&gt;
 
 
+&lt;div class="output_text output_subarea output_pyout"&gt;
 &lt;pre&gt;
 -2.0152902872928142
 &lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;/div&gt;
 
 &lt;/div&gt;
 &lt;/div&gt;
 
 &lt;/div&gt;
+&lt;div class="cell border-box-sizing text_cell rendered"&gt;
+&lt;div class="prompt input_prompt"&gt;
 &lt;/div&gt;
-
-&lt;/div&gt;
+&lt;div class="inner_cell"&gt;
 &lt;div class="text_cell_render border-box-sizing rendered_html"&gt;
-&lt;p&gt;(&lt;strong&gt;EDIT 8/14/2013&lt;/strong&gt; Added this section). We can use the LU decomposition to get the log-determinant of a non-symmetric positive-definite matrix.&lt;/p&gt;
+&lt;p&gt;(&lt;strong&gt;EDIT 8/14/2013&lt;/strong&gt;  Added this section). We can use the LU decomposition to get the log-determinant of a non-symmetric positive-definite matrix.&lt;/p&gt;
 &lt;/div&gt;
-&lt;div class="cell border-box-sizing code_cell vbox"&gt;
-&lt;div class="input hbox"&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div class="cell border-box-sizing code_cell rendered"&gt;
+&lt;div class="input"&gt;
 &lt;div class="prompt input_prompt"&gt;
 In&amp;nbsp;[57]:
 &lt;/div&gt;
-&lt;div class="input_area box-flex1"&gt;
+&lt;div class="inner_cell"&gt;
+    &lt;div class="input_area"&gt;
 &lt;div class="highlight-ipynb"&gt;&lt;pre class="ipynb"&gt;&lt;span class="kn"&gt;from&lt;/span&gt; &lt;span class="nn"&gt;scipy.sparse&lt;/span&gt; &lt;span class="kn"&gt;import&lt;/span&gt; &lt;span class="n"&gt;linalg&lt;/span&gt; &lt;span class="k"&gt;as&lt;/span&gt; &lt;span class="n"&gt;sp_linalg&lt;/span&gt;
 &lt;/pre&gt;&lt;/div&gt;
 
 &lt;/div&gt;
 &lt;/div&gt;
+&lt;/div&gt;
 
 &lt;/div&gt;
-&lt;div class="cell border-box-sizing code_cell vbox"&gt;
-&lt;div class="input hbox"&gt;
+&lt;div class="cell border-box-sizing code_cell rendered"&gt;
+&lt;div class="input"&gt;
 &lt;div class="prompt input_prompt"&gt;
 In&amp;nbsp;[58]:
 &lt;/div&gt;
-&lt;div class="input_area box-flex1"&gt;
+&lt;div class="inner_cell"&gt;
+    &lt;div class="input_area"&gt;
 &lt;div class="highlight-ipynb"&gt;&lt;pre class="ipynb"&gt;&lt;span class="n"&gt;umfpack&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;sparse&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;linalg&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;umfpack&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;UmfpackContext&lt;/span&gt;&lt;span class="p"&gt;()&lt;/span&gt;
 &lt;span class="n"&gt;L&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;U&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;P&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;Q&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;R&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;do_recip&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;umfpack&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;lu&lt;/span&gt;&lt;span class="p"&gt;((&lt;/span&gt;&lt;span class="n"&gt;sparse&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;eye&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="mi"&gt;7&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;format&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="s"&gt;&amp;quot;csc&amp;quot;&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt; &lt;span class="o"&gt;-&lt;/span&gt; &lt;span class="n"&gt;rho&lt;/span&gt;&lt;span class="o"&gt;*&lt;/span&gt;&lt;span class="n"&gt;sparseW&lt;/span&gt;&lt;span class="p"&gt;))&lt;/span&gt;
 &lt;span class="k"&gt;print&lt;/span&gt; &lt;span class="n"&gt;np&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;sum&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;np&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;log&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;U&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;diagonal&lt;/span&gt;&lt;span class="p"&gt;()&lt;/span&gt;&lt;span class="o"&gt;/&lt;/span&gt;&lt;span class="n"&gt;R&lt;/span&gt;&lt;span class="p"&gt;))&lt;/span&gt;
@@ -1235,13 +1349,14 @@ In&amp;nbsp;[58]:
 
 &lt;/div&gt;
 &lt;/div&gt;
+&lt;/div&gt;
 
-&lt;div class="vbox output_wrapper"&gt;
-&lt;div class="output vbox"&gt;
+&lt;div class="output_wrapper"&gt;
+&lt;div class="output"&gt;
 
 
-&lt;div class="hbox output_area"&gt;&lt;div class="prompt"&gt;&lt;/div&gt;
-&lt;div class="box-flex1 output_subarea output_stream output_stdout"&gt;
+&lt;div class="output_area"&gt;&lt;div class="prompt"&gt;&lt;/div&gt;
+&lt;div class="output_subarea output_stream output_stdout output_text"&gt;
 &lt;pre&gt;
 -1.52619364203
 
@@ -1253,115 +1368,150 @@ In&amp;nbsp;[58]:
 &lt;/div&gt;
 
 &lt;/div&gt;
+&lt;div class="cell border-box-sizing text_cell rendered"&gt;
+&lt;div class="prompt input_prompt"&gt;
+&lt;/div&gt;
+&lt;div class="inner_cell"&gt;
 &lt;div class="text_cell_render border-box-sizing rendered_html"&gt;
 &lt;h3 id="Pace-and-Barry-Data"&gt;Pace and Barry Data&lt;a class="anchor-link" href="#Pace-and-Barry-Data"&gt;&amp;#182;&lt;/a&gt;&lt;/h3&gt;
 &lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;
 
+&lt;div class="cell border-box-sizing text_cell rendered"&gt;
+&lt;div class="prompt input_prompt"&gt;
+&lt;/div&gt;
+&lt;div class="inner_cell"&gt;
 &lt;div class="text_cell_render border-box-sizing rendered_html"&gt;
 &lt;p&gt;The following example uses the example data from Pace and Barry (1997) on 3,107 US Counties for the 1980 Presidential election. You can find the data and more information &lt;a href="http://spatial-econometrics.com/data/contents.html"&gt;here&lt;/a&gt;.&lt;/p&gt;
 &lt;/div&gt;
-&lt;div class="cell border-box-sizing code_cell vbox"&gt;
-&lt;div class="input hbox"&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div class="cell border-box-sizing code_cell rendered"&gt;
+&lt;div class="input"&gt;
 &lt;div class="prompt input_prompt"&gt;
 In&amp;nbsp;[59]:
 &lt;/div&gt;
-&lt;div class="input_area box-flex1"&gt;
+&lt;div class="inner_cell"&gt;
+    &lt;div class="input_area"&gt;
 &lt;div class="highlight-ipynb"&gt;&lt;pre class="ipynb"&gt;&lt;span class="kn"&gt;import&lt;/span&gt; &lt;span class="nn"&gt;pandas&lt;/span&gt; &lt;span class="kn"&gt;as&lt;/span&gt; &lt;span class="nn"&gt;pd&lt;/span&gt;
 &lt;span class="kn"&gt;from&lt;/span&gt; &lt;span class="nn"&gt;scipy&lt;/span&gt; &lt;span class="kn"&gt;import&lt;/span&gt; &lt;span class="n"&gt;sparse&lt;/span&gt;
 &lt;/pre&gt;&lt;/div&gt;
 
 &lt;/div&gt;
 &lt;/div&gt;
+&lt;/div&gt;
 
 &lt;/div&gt;
-&lt;div class="cell border-box-sizing code_cell vbox"&gt;
-&lt;div class="input hbox"&gt;
+&lt;div class="cell border-box-sizing code_cell rendered"&gt;
+&lt;div class="input"&gt;
 &lt;div class="prompt input_prompt"&gt;
 In&amp;nbsp;[60]:
 &lt;/div&gt;
-&lt;div class="input_area box-flex1"&gt;
+&lt;div class="inner_cell"&gt;
+    &lt;div class="input_area"&gt;
 &lt;div class="highlight-ipynb"&gt;&lt;pre class="ipynb"&gt;&lt;span class="n"&gt;dta&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;pd&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;read_table&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s"&gt;&amp;quot;http://spatial-econometrics.com/data/elect.dat&amp;quot;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;sep&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="s"&gt;&amp;quot; *&amp;quot;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;header&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="bp"&gt;None&lt;/span&gt;&lt;span class="p"&gt;)[[&lt;/span&gt;&lt;span class="mi"&gt;4&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;&lt;span class="mi"&gt;5&lt;/span&gt;&lt;span class="p"&gt;]]&lt;/span&gt;
 &lt;span class="n"&gt;dta&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;rename&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;columns&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="p"&gt;{&lt;/span&gt;&lt;span class="mi"&gt;4&lt;/span&gt; &lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="s"&gt;&amp;quot;lat&amp;quot;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="mi"&gt;5&lt;/span&gt; &lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="s"&gt;&amp;quot;long&amp;quot;&lt;/span&gt;&lt;span class="p"&gt;},&lt;/span&gt; &lt;span class="n"&gt;inplace&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="bp"&gt;True&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
 &lt;/pre&gt;&lt;/div&gt;
 
 &lt;/div&gt;
 &lt;/div&gt;
+&lt;/div&gt;
 
 &lt;/div&gt;
+&lt;div class="cell border-box-sizing text_cell rendered"&gt;
+&lt;div class="prompt input_prompt"&gt;
+&lt;/div&gt;
+&lt;div class="inner_cell"&gt;
 &lt;div class="text_cell_render border-box-sizing rendered_html"&gt;
 &lt;h4 id="Nearest-Neighbors"&gt;Nearest Neighbors&lt;a class="anchor-link" href="#Nearest-Neighbors"&gt;&amp;#182;&lt;/a&gt;&lt;/h4&gt;
 &lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;
 
+&lt;div class="cell border-box-sizing text_cell rendered"&gt;
+&lt;div class="prompt input_prompt"&gt;
+&lt;/div&gt;
+&lt;div class="inner_cell"&gt;
 &lt;div class="text_cell_render border-box-sizing rendered_html"&gt;
 &lt;p&gt;Compute the 5 nearest neighbors using Euclidean distance. Use 5 because it counts itself and we want the 4 nearest neighbors.&lt;/p&gt;
 &lt;/div&gt;
-&lt;div class="cell border-box-sizing code_cell vbox"&gt;
-&lt;div class="input hbox"&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div class="cell border-box-sizing code_cell rendered"&gt;
+&lt;div class="input"&gt;
 &lt;div class="prompt input_prompt"&gt;
 In&amp;nbsp;[61]:
 &lt;/div&gt;
-&lt;div class="input_area box-flex1"&gt;
+&lt;div class="inner_cell"&gt;
+    &lt;div class="input_area"&gt;
 &lt;div class="highlight-ipynb"&gt;&lt;pre class="ipynb"&gt;&lt;span class="kn"&gt;from&lt;/span&gt; &lt;span class="nn"&gt;sklearn&lt;/span&gt; &lt;span class="kn"&gt;import&lt;/span&gt; &lt;span class="n"&gt;neighbors&lt;/span&gt;
 &lt;/pre&gt;&lt;/div&gt;
 
 &lt;/div&gt;
 &lt;/div&gt;
+&lt;/div&gt;
 
 &lt;/div&gt;
-&lt;div class="cell border-box-sizing code_cell vbox"&gt;
-&lt;div class="input hbox"&gt;
+&lt;div class="cell border-box-sizing code_cell rendered"&gt;
+&lt;div class="input"&gt;
 &lt;div class="prompt input_prompt"&gt;
 In&amp;nbsp;[62]:
 &lt;/div&gt;
-&lt;div class="input_area box-flex1"&gt;
+&lt;div class="inner_cell"&gt;
+    &lt;div class="input_area"&gt;
 &lt;div class="highlight-ipynb"&gt;&lt;pre class="ipynb"&gt;&lt;span class="n"&gt;neigh&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;neighbors&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;NearestNeighbors&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;n_neighbors&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="mi"&gt;5&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
 &lt;span class="n"&gt;neigh&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;fit&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;dta&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;values&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
 &lt;/pre&gt;&lt;/div&gt;
 
 &lt;/div&gt;
 &lt;/div&gt;
+&lt;/div&gt;
 
-&lt;div class="vbox output_wrapper"&gt;
-&lt;div class="output vbox"&gt;
+&lt;div class="output_wrapper"&gt;
+&lt;div class="output"&gt;
 
 
-&lt;div class="hbox output_area"&gt;&lt;div class="prompt output_prompt"&gt;
+&lt;div class="output_area"&gt;&lt;div class="prompt output_prompt"&gt;
     Out[62]:&lt;/div&gt;
-&lt;div class="box-flex1 output_subarea output_pyout"&gt;
 
 
+&lt;div class="output_text output_subarea output_pyout"&gt;
 &lt;pre&gt;
 NearestNeighbors(algorithm=&amp;apos;auto&amp;apos;, leaf_size=30, n_neighbors=5, p=2,
          radius=1.0)
 &lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;/div&gt;
 
 &lt;/div&gt;
 &lt;/div&gt;
 
 &lt;/div&gt;
-&lt;/div&gt;
-
-&lt;/div&gt;
-&lt;div class="cell border-box-sizing code_cell vbox"&gt;
-&lt;div class="input hbox"&gt;
+&lt;div class="cell border-box-sizing code_cell rendered"&gt;
+&lt;div class="input"&gt;
 &lt;div class="prompt input_prompt"&gt;
 In&amp;nbsp;[63]:
 &lt;/div&gt;
-&lt;div class="input_area box-flex1"&gt;
+&lt;div class="inner_cell"&gt;
+    &lt;div class="input_area"&gt;
 &lt;div class="highlight-ipynb"&gt;&lt;pre class="ipynb"&gt;&lt;span class="n"&gt;nobs&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="nb"&gt;len&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;dta&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
 &lt;span class="n"&gt;W&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;sparse&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;lil_matrix&lt;/span&gt;&lt;span class="p"&gt;((&lt;/span&gt;&lt;span class="n"&gt;nobs&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;nobs&lt;/span&gt;&lt;span class="p"&gt;))&lt;/span&gt;
 &lt;/pre&gt;&lt;/div&gt;
 
 &lt;/div&gt;
 &lt;/div&gt;
+&lt;/div&gt;
 
 &lt;/div&gt;
-&lt;div class="cell border-box-sizing code_cell vbox"&gt;
-&lt;div class="input hbox"&gt;
+&lt;div class="cell border-box-sizing code_cell rendered"&gt;
+&lt;div class="input"&gt;
 &lt;div class="prompt input_prompt"&gt;
 In&amp;nbsp;[64]:
 &lt;/div&gt;
-&lt;div class="input_area box-flex1"&gt;
+&lt;div class="inner_cell"&gt;
+    &lt;div class="input_area"&gt;
 &lt;div class="highlight-ipynb"&gt;&lt;pre class="ipynb"&gt;&lt;span class="k"&gt;for&lt;/span&gt; &lt;span class="n"&gt;i&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;row&lt;/span&gt; &lt;span class="ow"&gt;in&lt;/span&gt; &lt;span class="n"&gt;dta&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;iterrows&lt;/span&gt;&lt;span class="p"&gt;():&lt;/span&gt;
     &lt;span class="n"&gt;closest&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;neigh&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;kneighbors&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;row&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;values&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;return_distance&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="bp"&gt;False&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
     &lt;span class="k"&gt;for&lt;/span&gt; &lt;span class="n"&gt;j&lt;/span&gt; &lt;span class="ow"&gt;in&lt;/span&gt; &lt;span class="n"&gt;closest&lt;/span&gt;&lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="mi"&gt;0&lt;/span&gt;&lt;span class="p"&gt;]:&lt;/span&gt;
@@ -1372,197 +1522,256 @@ In&amp;nbsp;[64]:
 
 &lt;/div&gt;
 &lt;/div&gt;
+&lt;/div&gt;
 
 &lt;/div&gt;
+&lt;div class="cell border-box-sizing text_cell rendered"&gt;
+&lt;div class="prompt input_prompt"&gt;
+&lt;/div&gt;
+&lt;div class="inner_cell"&gt;
 &lt;div class="text_cell_render border-box-sizing rendered_html"&gt;
 &lt;p&gt;Make row stochastic&lt;/p&gt;
 &lt;/div&gt;
-&lt;div class="cell border-box-sizing code_cell vbox"&gt;
-&lt;div class="input hbox"&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div class="cell border-box-sizing code_cell rendered"&gt;
+&lt;div class="input"&gt;
 &lt;div class="prompt input_prompt"&gt;
 In&amp;nbsp;[65]:
 &lt;/div&gt;
-&lt;div class="input_area box-flex1"&gt;
+&lt;div class="inner_cell"&gt;
+    &lt;div class="input_area"&gt;
 &lt;div class="highlight-ipynb"&gt;&lt;pre class="ipynb"&gt;&lt;span class="n"&gt;W&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;W&lt;/span&gt; &lt;span class="o"&gt;/&lt;/span&gt; &lt;span class="mf"&gt;4.&lt;/span&gt;
 &lt;span class="k"&gt;assert&lt;/span&gt; &lt;span class="nb"&gt;all&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;W&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;sum&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="mi"&gt;1&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt; &lt;span class="o"&gt;==&lt;/span&gt; &lt;span class="mi"&gt;1&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
 &lt;/pre&gt;&lt;/div&gt;
 
 &lt;/div&gt;
 &lt;/div&gt;
+&lt;/div&gt;
 
 &lt;/div&gt;
+&lt;div class="cell border-box-sizing text_cell rendered"&gt;
+&lt;div class="prompt input_prompt"&gt;
+&lt;/div&gt;
+&lt;div class="inner_cell"&gt;
 &lt;div class="text_cell_render border-box-sizing rendered_html"&gt;
 &lt;p&gt;Convert to CSC format for calculations&lt;/p&gt;
 &lt;/div&gt;
-&lt;div class="cell border-box-sizing code_cell vbox"&gt;
-&lt;div class="input hbox"&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div class="cell border-box-sizing code_cell rendered"&gt;
+&lt;div class="input"&gt;
 &lt;div class="prompt input_prompt"&gt;
 In&amp;nbsp;[66]:
 &lt;/div&gt;
-&lt;div class="input_area box-flex1"&gt;
+&lt;div class="inner_cell"&gt;
+    &lt;div class="input_area"&gt;
 &lt;div class="highlight-ipynb"&gt;&lt;pre class="ipynb"&gt;&lt;span class="n"&gt;W&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;W&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;tocsc&lt;/span&gt;&lt;span class="p"&gt;()&lt;/span&gt;
 &lt;/pre&gt;&lt;/div&gt;
 
 &lt;/div&gt;
 &lt;/div&gt;
+&lt;/div&gt;
 
 &lt;/div&gt;
-&lt;div class="text_cell_render border-box-sizing rendered_html"&gt;
-&lt;p&gt;Set &lt;span class="math"&gt;\(\rho\)&lt;/span&gt;&lt;/p&gt;
+&lt;div class="cell border-box-sizing text_cell rendered"&gt;
+&lt;div class="prompt input_prompt"&gt;
 &lt;/div&gt;
-&lt;div class="cell border-box-sizing code_cell vbox"&gt;
-&lt;div class="input hbox"&gt;
+&lt;div class="inner_cell"&gt;
+&lt;div class="text_cell_render border-box-sizing rendered_html"&gt;
+&lt;p&gt;Set $\rho$&lt;/p&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div class="cell border-box-sizing code_cell rendered"&gt;
+&lt;div class="input"&gt;
 &lt;div class="prompt input_prompt"&gt;
 In&amp;nbsp;[67]:
 &lt;/div&gt;
-&lt;div class="input_area box-flex1"&gt;
+&lt;div class="inner_cell"&gt;
+    &lt;div class="input_area"&gt;
 &lt;div class="highlight-ipynb"&gt;&lt;pre class="ipynb"&gt;&lt;span class="n"&gt;rho&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="mi"&gt;1&lt;/span&gt;
 &lt;/pre&gt;&lt;/div&gt;
 
 &lt;/div&gt;
 &lt;/div&gt;
+&lt;/div&gt;
 
 &lt;/div&gt;
+&lt;div class="cell border-box-sizing text_cell rendered"&gt;
+&lt;div class="prompt input_prompt"&gt;
+&lt;/div&gt;
+&lt;div class="inner_cell"&gt;
 &lt;div class="text_cell_render border-box-sizing rendered_html"&gt;
 &lt;p&gt;Calculate the exact log determinant.&lt;/p&gt;
 &lt;/div&gt;
-&lt;div class="cell border-box-sizing code_cell vbox"&gt;
-&lt;div class="input hbox"&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div class="cell border-box-sizing code_cell rendered"&gt;
+&lt;div class="input"&gt;
 &lt;div class="prompt input_prompt"&gt;
 In&amp;nbsp;[68]:
 &lt;/div&gt;
-&lt;div class="input_area box-flex1"&gt;
+&lt;div class="inner_cell"&gt;
+    &lt;div class="input_area"&gt;
 &lt;div class="highlight-ipynb"&gt;&lt;pre class="ipynb"&gt;&lt;span class="n"&gt;np&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;linalg&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;slogdet&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;np&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;eye&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;W&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;shape&lt;/span&gt;&lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="mi"&gt;0&lt;/span&gt;&lt;span class="p"&gt;])&lt;/span&gt; &lt;span class="o"&gt;-&lt;/span&gt; &lt;span class="n"&gt;rho&lt;/span&gt;&lt;span class="o"&gt;*&lt;/span&gt;&lt;span class="n"&gt;W&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;toarray&lt;/span&gt;&lt;span class="p"&gt;())&lt;/span&gt;
 &lt;/pre&gt;&lt;/div&gt;
 
 &lt;/div&gt;
 &lt;/div&gt;
+&lt;/div&gt;
 
-&lt;div class="vbox output_wrapper"&gt;
-&lt;div class="output vbox"&gt;
+&lt;div class="output_wrapper"&gt;
+&lt;div class="output"&gt;
 
 
-&lt;div class="hbox output_area"&gt;&lt;div class="prompt output_prompt"&gt;
+&lt;div class="output_area"&gt;&lt;div class="prompt output_prompt"&gt;
     Out[68]:&lt;/div&gt;
-&lt;div class="box-flex1 output_subarea output_pyout"&gt;
 
 
+&lt;div class="output_text output_subarea output_pyout"&gt;
 &lt;pre&gt;
 (1.0, -3.346557139406221)
 &lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;/div&gt;
 
 &lt;/div&gt;
 &lt;/div&gt;
 
 &lt;/div&gt;
+&lt;div class="cell border-box-sizing text_cell rendered"&gt;
+&lt;div class="prompt input_prompt"&gt;
 &lt;/div&gt;
-
-&lt;/div&gt;
+&lt;div class="inner_cell"&gt;
 &lt;div class="text_cell_render border-box-sizing rendered_html"&gt;
 &lt;p&gt;Get the monte carlo approximation of the log determinant.&lt;/p&gt;
 &lt;/div&gt;
-&lt;div class="cell border-box-sizing code_cell vbox"&gt;
-&lt;div class="input hbox"&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div class="cell border-box-sizing code_cell rendered"&gt;
+&lt;div class="input"&gt;
 &lt;div class="prompt input_prompt"&gt;
 In&amp;nbsp;[94]:
 &lt;/div&gt;
-&lt;div class="input_area box-flex1"&gt;
+&lt;div class="inner_cell"&gt;
+    &lt;div class="input_area"&gt;
 &lt;div class="highlight-ipynb"&gt;&lt;pre class="ipynb"&gt;&lt;span class="n"&gt;logdet_mc&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;W&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;rho&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;seed&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="mi"&gt;124&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;nterms&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="mi"&gt;10&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;exact&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="bp"&gt;False&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;nrepl&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="mi"&gt;2500&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
 &lt;/pre&gt;&lt;/div&gt;
 
 &lt;/div&gt;
 &lt;/div&gt;
+&lt;/div&gt;
 
-&lt;div class="vbox output_wrapper"&gt;
-&lt;div class="output vbox"&gt;
+&lt;div class="output_wrapper"&gt;
+&lt;div class="output"&gt;
 
 
-&lt;div class="hbox output_area"&gt;&lt;div class="prompt output_prompt"&gt;
+&lt;div class="output_area"&gt;&lt;div class="prompt output_prompt"&gt;
     Out[94]:&lt;/div&gt;
-&lt;div class="box-flex1 output_subarea output_pyout"&gt;
 
 
+&lt;div class="output_text output_subarea output_pyout"&gt;
 &lt;pre&gt;
 -3.2609283583388167
 &lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;/div&gt;
 
 &lt;/div&gt;
 &lt;/div&gt;
 
 &lt;/div&gt;
+&lt;div class="cell border-box-sizing text_cell rendered"&gt;
+&lt;div class="prompt input_prompt"&gt;
 &lt;/div&gt;
-
-&lt;/div&gt;
+&lt;div class="inner_cell"&gt;
 &lt;div class="text_cell_render border-box-sizing rendered_html"&gt;
 &lt;p&gt;(&lt;strong&gt;EDIT 8/14/2013&lt;/strong&gt; This is wrong. See above note. LU decomposition added below.) Compute the log determinant using CHOLMOD and scikits.sparse again.&lt;/p&gt;
 &lt;/div&gt;
-&lt;div class="cell border-box-sizing code_cell vbox"&gt;
-&lt;div class="input hbox"&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div class="cell border-box-sizing code_cell rendered"&gt;
+&lt;div class="input"&gt;
 &lt;div class="prompt input_prompt"&gt;
 In&amp;nbsp;[70]:
 &lt;/div&gt;
-&lt;div class="input_area box-flex1"&gt;
+&lt;div class="inner_cell"&gt;
+    &lt;div class="input_area"&gt;
 &lt;div class="highlight-ipynb"&gt;&lt;pre class="ipynb"&gt;&lt;span class="n"&gt;f&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;cholmod&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;cholesky&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;sparse&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;eye&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;W&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;shape&lt;/span&gt;&lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="mi"&gt;0&lt;/span&gt;&lt;span class="p"&gt;],&lt;/span&gt; &lt;span class="n"&gt;format&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="s"&gt;&amp;quot;csc&amp;quot;&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt; &lt;span class="o"&gt;-&lt;/span&gt; &lt;span class="n"&gt;rho&lt;/span&gt; &lt;span class="o"&gt;*&lt;/span&gt; &lt;span class="n"&gt;W&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
 &lt;/pre&gt;&lt;/div&gt;
 
 &lt;/div&gt;
 &lt;/div&gt;
+&lt;/div&gt;
 
 &lt;/div&gt;
-&lt;div class="cell border-box-sizing code_cell vbox"&gt;
-&lt;div class="input hbox"&gt;
+&lt;div class="cell border-box-sizing code_cell rendered"&gt;
+&lt;div class="input"&gt;
 &lt;div class="prompt input_prompt"&gt;
 In&amp;nbsp;[71]:
 &lt;/div&gt;
-&lt;div class="input_area box-flex1"&gt;
+&lt;div class="inner_cell"&gt;
+    &lt;div class="input_area"&gt;
 &lt;div class="highlight-ipynb"&gt;&lt;pre class="ipynb"&gt;&lt;span class="n"&gt;f&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;logdet&lt;/span&gt;&lt;span class="p"&gt;()&lt;/span&gt;
 &lt;/pre&gt;&lt;/div&gt;
 
 &lt;/div&gt;
 &lt;/div&gt;
+&lt;/div&gt;
 
-&lt;div class="vbox output_wrapper"&gt;
-&lt;div class="output vbox"&gt;
+&lt;div class="output_wrapper"&gt;
+&lt;div class="output"&gt;
 
 
-&lt;div class="hbox output_area"&gt;&lt;div class="prompt output_prompt"&gt;
+&lt;div class="output_area"&gt;&lt;div class="prompt output_prompt"&gt;
     Out[71]:&lt;/div&gt;
-&lt;div class="box-flex1 output_subarea output_pyout"&gt;
 
 
+&lt;div class="output_text output_subarea output_pyout"&gt;
 &lt;pre&gt;
 -3.9400025132708647
 &lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;/div&gt;
 
 &lt;/div&gt;
 &lt;/div&gt;
 
 &lt;/div&gt;
+&lt;div class="cell border-box-sizing text_cell rendered"&gt;
+&lt;div class="prompt input_prompt"&gt;
 &lt;/div&gt;
-
-&lt;/div&gt;
+&lt;div class="inner_cell"&gt;
 &lt;div class="text_cell_render border-box-sizing rendered_html"&gt;
 &lt;p&gt;(&lt;strong&gt;EDIT 8/14/2013&lt;/strong&gt; Add LU decomposition.)&lt;/p&gt;
 &lt;/div&gt;
-&lt;div class="cell border-box-sizing code_cell vbox"&gt;
-&lt;div class="input hbox"&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div class="cell border-box-sizing code_cell rendered"&gt;
+&lt;div class="input"&gt;
 &lt;div class="prompt input_prompt"&gt;
 In&amp;nbsp;[73]:
 &lt;/div&gt;
-&lt;div class="input_area box-flex1"&gt;
+&lt;div class="inner_cell"&gt;
+    &lt;div class="input_area"&gt;
 &lt;div class="highlight-ipynb"&gt;&lt;pre class="ipynb"&gt;&lt;span class="n"&gt;L&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;U&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;P&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;Q&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;R&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;do_recip&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;umfpack&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;lu&lt;/span&gt;&lt;span class="p"&gt;((&lt;/span&gt;&lt;span class="n"&gt;sparse&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;eye&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;W&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;shape&lt;/span&gt;&lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="mi"&gt;0&lt;/span&gt;&lt;span class="p"&gt;],&lt;/span&gt; &lt;span class="n"&gt;format&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="s"&gt;&amp;quot;csc&amp;quot;&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt; &lt;span class="o"&gt;-&lt;/span&gt; &lt;span class="n"&gt;rho&lt;/span&gt;&lt;span class="o"&gt;*&lt;/span&gt;&lt;span class="n"&gt;W&lt;/span&gt;&lt;span class="p"&gt;))&lt;/span&gt;
 &lt;span class="k"&gt;print&lt;/span&gt; &lt;span class="n"&gt;np&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;sum&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;np&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;log&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;U&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;diagonal&lt;/span&gt;&lt;span class="p"&gt;()&lt;/span&gt;&lt;span class="o"&gt;/&lt;/span&gt;&lt;span class="n"&gt;R&lt;/span&gt;&lt;span class="p"&gt;))&lt;/span&gt;
 &lt;/pre&gt;&lt;/div&gt;
 
 &lt;/div&gt;
 &lt;/div&gt;
+&lt;/div&gt;
 
-&lt;div class="vbox output_wrapper"&gt;
-&lt;div class="output vbox"&gt;
+&lt;div class="output_wrapper"&gt;
+&lt;div class="output"&gt;
 
 
-&lt;div class="hbox output_area"&gt;&lt;div class="prompt"&gt;&lt;/div&gt;
-&lt;div class="box-flex1 output_subarea output_stream output_stdout"&gt;
+&lt;div class="output_area"&gt;&lt;div class="prompt"&gt;&lt;/div&gt;
+&lt;div class="output_subarea output_stream output_stdout output_text"&gt;
 &lt;pre&gt;
 -3.34655713941
 
@@ -1574,38 +1783,59 @@ In&amp;nbsp;[73]:
 &lt;/div&gt;
 
 &lt;/div&gt;&lt;/p&gt;</summary><category term="stats"></category><category term="python"></category><category term="spatial"></category><category term="log determinant"></category></entry><entry><title>Wavelet Regression in Python</title><link href="http://jseabold.net/blog/2012/02/23/wavelet-regression-in-python" rel="alternate"></link><updated>2012-02-23T00:16:40-05:00</updated><author><name>Skipper Seabold</name></author><id>tag:jseabold.net,2012-02-23:blog/2012/02/23/wavelet-regression-in-python</id><summary type="html">&lt;p&gt;
+&lt;div class="cell border-box-sizing text_cell rendered"&gt;
+&lt;div class="prompt input_prompt"&gt;
+&lt;/div&gt;
+&lt;div class="inner_cell"&gt;
 &lt;div class="text_cell_render border-box-sizing rendered_html"&gt;
 &lt;h2 id="Wavelet-Regression-in-Python"&gt;Wavelet Regression in Python&lt;a class="anchor-link" href="#Wavelet-Regression-in-Python"&gt;&amp;#182;&lt;/a&gt;&lt;/h2&gt;
 &lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;
 
+&lt;div class="cell border-box-sizing text_cell rendered"&gt;
+&lt;div class="prompt input_prompt"&gt;
+&lt;/div&gt;
+&lt;div class="inner_cell"&gt;
 &lt;div class="text_cell_render border-box-sizing rendered_html"&gt;
-&lt;p&gt;Last week I needed to get my head around wavelet regression techniques for a project I am working on. This post will show how to do basic wavelet regression in Python using &lt;a href="http://www.pybytes.com/pywavelets/"&gt;PyWavelets&lt;/a&gt;. For references I used Chapter 9 in Wasserman's &lt;a href="http://www.amazon.com/gp/product/1441920447/ref=as_li_qf_sp_asin_tl?ie=UTF8&amp;amp;tag=scistapro-20&amp;amp;linkCode=as2&amp;amp;camp=1789&amp;amp;creative=9325&amp;amp;creativeASIN=1441920447"&gt;All of Non-Parametric Statistics&lt;/a&gt;, Ogden's &lt;a href="http://www.amazon.com/gp/product/0817638644/ref=as_li_qf_sp_asin_tl?ie=UTF8&amp;amp;tag=scistapro-20&amp;amp;linkCode=as2&amp;amp;camp=1789&amp;amp;creative=9325&amp;amp;creativeASIN=0817638644"&gt;Essential Wavelets for Statistical Applications and Data Analysis&lt;/a&gt;, and Donoho and Johnstone's &amp;quot;Ideal spational adaptation by wavelet shrinkage&amp;quot; [&lt;a href="biomet.oxfordjournals.org/content/81/3/425.full.pdf"&gt;pdf&lt;/a&gt;]. I also recommend &amp;quot;An Introduction to Wavelets&amp;quot; [&lt;a href="www.cis.udel.edu/~amer/CISC651/IEEEwavelet.pdf"&gt;pdf&lt;/a&gt;] by Amara Graps for a high level overview and a brief historical treatment of the development of wavelet analysis. These references will provide much more detail and guidance than I will here.&lt;/p&gt;
-&lt;p&gt;Wavelets are mathematical functions that provide an orthonormal basis for functions in the &lt;span class="math"&gt;\(L^2\)&lt;/span&gt; space. The use of wavelets is akin to the use of sines and cosines to represent &lt;span class="math"&gt;\(L^2\)&lt;/span&gt; functions in Fourier analysis. In fact, many treatments on wavelets start the discussion by reviewing Fourier series represenations of functions. Legendre polynomials are another complete orthonormal system.&lt;/p&gt;
+&lt;p&gt;Last week I needed to get my head around wavelet regression techniques for a project I am working on. This post will show how to do basic wavelet regression in Python using &lt;a href="http://www.pybytes.com/pywavelets/"&gt;PyWavelets&lt;/a&gt;. For references I used Chapter 9 in Wasserman&amp;#39;s &lt;a href="http://www.amazon.com/gp/product/1441920447/ref=as_li_qf_sp_asin_tl?ie=UTF8&amp;amp;tag=scistapro-20&amp;amp;linkCode=as2&amp;amp;camp=1789&amp;amp;creative=9325&amp;amp;creativeASIN=1441920447"&gt;All of Non-Parametric Statistics&lt;/a&gt;, Ogden&amp;#39;s &lt;a href="http://www.amazon.com/gp/product/0817638644/ref=as_li_qf_sp_asin_tl?ie=UTF8&amp;amp;tag=scistapro-20&amp;amp;linkCode=as2&amp;amp;camp=1789&amp;amp;creative=9325&amp;amp;creativeASIN=0817638644"&gt;Essential Wavelets for Statistical Applications and Data Analysis&lt;/a&gt;, and Donoho and Johnstone&amp;#39;s &amp;quot;Ideal spational adaptation by wavelet shrinkage&amp;quot; [&lt;a href="biomet.oxfordjournals.org/content/81/3/425.full.pdf"&gt;pdf&lt;/a&gt;]. I also recommend &amp;quot;An Introduction to Wavelets&amp;quot; [&lt;a href="www.cis.udel.edu/~amer/CISC651/IEEEwavelet.pdf"&gt;pdf&lt;/a&gt;] by Amara Graps for a high level overview and a brief historical treatment of the development of wavelet analysis. These references will provide much more detail and guidance than I will here.&lt;/p&gt;
+&lt;p&gt;Wavelets are mathematical functions that provide an orthonormal basis for functions in the $L^2$ space. The use of wavelets is akin to the use of sines and cosines to represent $L^2$ functions in Fourier analysis. In fact, many treatments on wavelets start the discussion by reviewing Fourier series represenations of functions. Legendre polynomials are another complete orthonormal system.&lt;/p&gt;
 &lt;p&gt;The simplest wavelet is the Haar wavelet. It is not much used in practice but it is convenient to fix ideas. The Haar function is given&lt;/p&gt;
 &lt;/div&gt;
-&lt;div class="text_cell_render border-box-sizing rendered_html"&gt;
-&lt;p&gt;&lt;span class="math"&gt;\[\psi(x)=\begin{cases}1,&amp;amp;x \in [0,1)\cr -1,&amp;amp;x \in [\frac{1}{2},1)\cr 0,&amp;amp;\text{otherwise}\end{cases}\]&lt;/span&gt;&lt;/p&gt;
 &lt;/div&gt;
-&lt;div class="cell border-box-sizing code_cell vbox"&gt;
-&lt;div class="input hbox"&gt;
+&lt;/div&gt;
+&lt;div class="cell border-box-sizing text_cell rendered"&gt;
+&lt;div class="prompt input_prompt"&gt;
+&lt;/div&gt;
+&lt;div class="inner_cell"&gt;
+&lt;div class="text_cell_render border-box-sizing rendered_html"&gt;
+&lt;p&gt;$$\psi(x)=\begin{cases}1,&amp;amp;x \in [0,1)\cr -1,&amp;amp;x \in [\frac{1}{2},1)\cr 0,&amp;amp;\text{otherwise}\end{cases}$$&lt;/p&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div class="cell border-box-sizing code_cell rendered"&gt;
+&lt;div class="input"&gt;
 &lt;div class="prompt input_prompt"&gt;
 In&amp;nbsp;[1]:
 &lt;/div&gt;
-&lt;div class="input_area box-flex1"&gt;
+&lt;div class="inner_cell"&gt;
+    &lt;div class="input_area"&gt;
 &lt;div class="highlight-ipynb"&gt;&lt;pre class="ipynb"&gt;&lt;span class="kn"&gt;import&lt;/span&gt; &lt;span class="nn"&gt;pywt&lt;/span&gt;
 &lt;span class="kn"&gt;import&lt;/span&gt; &lt;span class="nn"&gt;matplotlib.pyplot&lt;/span&gt; &lt;span class="kn"&gt;as&lt;/span&gt; &lt;span class="nn"&gt;plt&lt;/span&gt;
 &lt;/pre&gt;&lt;/div&gt;
 
 &lt;/div&gt;
 &lt;/div&gt;
+&lt;/div&gt;
 
 &lt;/div&gt;
-&lt;div class="cell border-box-sizing code_cell vbox"&gt;
-&lt;div class="input hbox"&gt;
+&lt;div class="cell border-box-sizing code_cell rendered"&gt;
+&lt;div class="input"&gt;
 &lt;div class="prompt input_prompt"&gt;
 In&amp;nbsp;[2]:
 &lt;/div&gt;
-&lt;div class="input_area box-flex1"&gt;
+&lt;div class="inner_cell"&gt;
+    &lt;div class="input_area"&gt;
 &lt;div class="highlight-ipynb"&gt;&lt;pre class="ipynb"&gt;&lt;span class="n"&gt;w&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;pywt&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;Wavelet&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s"&gt;&amp;#39;Haar&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
 &lt;span class="n"&gt;phi&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;psi&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;x&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;w&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;wavefun&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;level&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="mi"&gt;10&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
 
@@ -1616,15 +1846,16 @@ In&amp;nbsp;[2]:
 
 &lt;/div&gt;
 &lt;/div&gt;
+&lt;/div&gt;
 
-&lt;div class="vbox output_wrapper"&gt;
-&lt;div class="output vbox"&gt;
-
-
-&lt;div class="hbox output_area"&gt;&lt;div class="prompt"&gt;&lt;/div&gt;
-&lt;div class="box-flex1 output_subarea output_display_data"&gt;
+&lt;div class="output_wrapper"&gt;
+&lt;div class="output"&gt;
 
 
+&lt;div class="output_area"&gt;&lt;div class="prompt"&gt;&lt;/div&gt;
+
+
+&lt;div class="output_png output_subarea "&gt;
 &lt;img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAXsAAAD+CAYAAADbNKXUAAAABHNCSVQICAgIfAhkiAAAAAlwSFlz
 AAALEgAACxIB0t1+/AAAGBxJREFUeJzt3V9sHHe5xvFnXXtd23sotJG8C4VKIAp1XDt1kzRuLSWS
 D2opUmnkP8BFYpVYuUBI1KqiCuoEJJMbekGIiJCoJeT0BmQDjqACLiyK6saNG2+dTbGTg9QTCWFv
@@ -1735,28 +1966,36 @@ TZs2aW5uTnfeeWdJRHm51J/JZLS8vCzp2hc8S2nQbySW9DMDA3Wd/ZkzZ1b+utzR0aGGhgZJq39R
 a619wyyX+r/97W/rrrvuUllZmT7zmc/oqaeecnLMt1Iu9V/38ssv68qVKyXza3wuPfjXv/6lF154
 QZcvX1Zzc3NJxHm51P+b3/xG58+fVyaT0SOPPLLmrdPD5MNfWK2rq1v5wuqtmIGBGvYAgMIITGYP
 ACgchj0AGMCwBwADGPYAYADDHgAMYNgDgAEMewAw4H8BJdYehiXtg6gAAAAASUVORK5CYII=
-"&gt;
+"
+&gt;
+&lt;/div&gt;
+
+&lt;/div&gt;
 
 &lt;/div&gt;
 &lt;/div&gt;
 
 &lt;/div&gt;
+&lt;div class="cell border-box-sizing text_cell rendered"&gt;
+&lt;div class="prompt input_prompt"&gt;
 &lt;/div&gt;
-
-&lt;/div&gt;
+&lt;div class="inner_cell"&gt;
 &lt;div class="text_cell_render border-box-sizing rendered_html"&gt;
-&lt;p&gt;The location in the domain and the range of this &lt;em&gt;mother wavelet&lt;/em&gt; function can be conrolled by a translation index &lt;span class="math"&gt;\(k\)&lt;/span&gt; and a dilation index &lt;span class="math"&gt;\(j\)&lt;/span&gt;, respectively.&lt;/p&gt;
-&lt;p&gt;&lt;span class="math"&gt;\[\psi_{j,k}(x)=2^{j/2}\psi(2^{j}x-k)\]&lt;/span&gt;&lt;/p&gt;
-&lt;p&gt;A wavelet system is fully defined once a &lt;em&gt;scaling function&lt;/em&gt;, or &lt;em&gt;father wavelet&lt;/em&gt;, is defined. The scaling function ensures that the orthonormal basis covers the original space of a function without having to use an infinite number of mother wavelets. The father wavelet for the Haar system is&lt;/p&gt;
-&lt;p&gt;&lt;span class="math"&gt;\[\phi(x)=I_{[0,1)}(x)\]&lt;/span&gt;&lt;/p&gt;
-&lt;p&gt;where &lt;span class="math"&gt;\(I_A(x)\)&lt;/span&gt; is an indicator function that equals 1 if &lt;span class="math"&gt;\(x\)&lt;/span&gt; is in the set &lt;span class="math"&gt;\(A\)&lt;/span&gt;. You can see that any dilation and translation can cover the original function space. While the Haar function is a good introduction, the rest of the code will use the most nearly symmetric Debauchies wavelet with N=8.&lt;/p&gt;
+&lt;p&gt;The location in the domain and the range of this &lt;em&gt;mother wavelet&lt;/em&gt; function can be conrolled by a translation index $k$ and a dilation index $j$, respectively.&lt;/p&gt;
+&lt;p&gt;$$\psi_{j,k}(x)=2^{j/2}\psi(2^{j}x-k)$$&lt;/p&gt;
+&lt;p&gt;A wavelet system is fully defined once a &lt;em&gt;scaling function&lt;/em&gt;, or &lt;em&gt;father wavelet&lt;/em&gt;, is defined. The scaling function ensures that the orthonormal basis covers the original space of a function without having to use an infinite number of mother wavelets. The father wavelet for the Haar system is &lt;/p&gt;
+&lt;p&gt;$$\phi(x)=I_{[0,1)}(x)$$&lt;/p&gt;
+&lt;p&gt;where $I_A(x)$ is an indicator function that equals 1 if $x$ is in the set $A$. You can see that any dilation and translation can cover the original function space. While the Haar function is a good introduction, the rest of the code will use the most nearly symmetric Debauchies wavelet with N=8.&lt;/p&gt;
 &lt;/div&gt;
-&lt;div class="cell border-box-sizing code_cell vbox"&gt;
-&lt;div class="input hbox"&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div class="cell border-box-sizing code_cell rendered"&gt;
+&lt;div class="input"&gt;
 &lt;div class="prompt input_prompt"&gt;
 In&amp;nbsp;[3]:
 &lt;/div&gt;
-&lt;div class="input_area box-flex1"&gt;
+&lt;div class="inner_cell"&gt;
+    &lt;div class="input_area"&gt;
 &lt;div class="highlight-ipynb"&gt;&lt;pre class="ipynb"&gt;&lt;span class="n"&gt;db8&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;pywt&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;Wavelet&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s"&gt;&amp;#39;db8&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
 &lt;span class="n"&gt;scaling&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;wavelet&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;x&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;db8&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;wavefun&lt;/span&gt;&lt;span class="p"&gt;()&lt;/span&gt;
 
@@ -1776,15 +2015,16 @@ In&amp;nbsp;[3]:
 
 &lt;/div&gt;
 &lt;/div&gt;
+&lt;/div&gt;
 
-&lt;div class="vbox output_wrapper"&gt;
-&lt;div class="output vbox"&gt;
-
-
-&lt;div class="hbox output_area"&gt;&lt;div class="prompt"&gt;&lt;/div&gt;
-&lt;div class="box-flex1 output_subarea output_display_data"&gt;
+&lt;div class="output_wrapper"&gt;
+&lt;div class="output"&gt;
 
 
+&lt;div class="output_area"&gt;&lt;div class="prompt"&gt;&lt;/div&gt;
+
+
+&lt;div class="output_png output_subarea "&gt;
 &lt;img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAjkAAAGpCAYAAABvZSezAAAABHNCSVQICAgIfAhkiAAAAAlwSFlz
 AAALEgAACxIB0t1+/AAAIABJREFUeJzsnXl4FFXW/79V3enOTkIWEhLCFhAh7IiAcUBxGVdAQQE3
 FETxnRlH59XREXHcntFX58Xx/ek4juOug8LgvgKuEVBkERCEsAZIOmQl6c7Wy/39Uekknd6ququ7
@@ -2246,31 +2486,39 @@ jR566CHt3LnTWOzZent7lUgkjLZtvvvuOx0+fFgTExN67LHHjF92ff/993Xx4kVlMhk9/vjj2rhx
 Y9linThxQufPn9fo6Kg6Ozu1e/duo3lXKL6p3CsUe5qJvCsUvxy5ZzKfCrF9Pkl2PkckO5+jfG/Y
 O942c72Y87xiihwAAIBSqojfrgIAACg1ihwAABBIFDkAACCQKHIAAEAgUeQAAIBAosgBAACB9H8f
 5OQWCdXEpgAAAABJRU5ErkJggg==
-"&gt;
+"
+&gt;
+&lt;/div&gt;
+
+&lt;/div&gt;
 
 &lt;/div&gt;
 &lt;/div&gt;
 
 &lt;/div&gt;
+&lt;div class="cell border-box-sizing text_cell rendered"&gt;
+&lt;div class="prompt input_prompt"&gt;
 &lt;/div&gt;
-
-&lt;/div&gt;
+&lt;div class="inner_cell"&gt;
 &lt;div class="text_cell_render border-box-sizing rendered_html"&gt;
-&lt;p&gt;For the current purposes, the objective of wavelet analysis is to recover the unknown function &lt;span class="math"&gt;\(f\)&lt;/span&gt; from noisy data&lt;/p&gt;
-&lt;p&gt;&lt;span class="math"&gt;\[y_i = f(x_i) + e_i, i \in \left\{1,\dots,n\right\}\]&lt;/span&gt;&lt;/p&gt;
-&lt;p&gt;with &lt;span class="math"&gt;\(x_i = i/n\)&lt;/span&gt; without loss of generality and &lt;span class="math"&gt;\(e_i \sim N(0,\sigma^2)\)&lt;/span&gt;. The expansion of the function &lt;span class="math"&gt;\(f\)&lt;/span&gt; as a finite sum of wavelets can be achieved as&lt;/p&gt;
-&lt;p&gt;&lt;span class="math"&gt;\[f_J(x) = \alpha\phi(x) + \sum_{j=0}^{J-1}\sum_{k=0}^{2^j-1}\beta_{jk}\psi_{jk}(x)\]&lt;/span&gt;&lt;/p&gt;
+&lt;p&gt;For the current purposes, the objective of wavelet analysis is to recover the unknown function $f$ from noisy data&lt;/p&gt;
+&lt;p&gt;$$y_i = f(x_i) + e_i, i \in \left\{1,\dots,n\right\}$$&lt;/p&gt;
+&lt;p&gt;with $x_i = i/n$ without loss of generality and $e_i \sim N(0,\sigma^2)$. The expansion of the function $f$ as a finite sum of wavelets can be achieved as&lt;/p&gt;
+&lt;p&gt;$$f_J(x) = \alpha\phi(x) + \sum_{j=0}^{J-1}\sum_{k=0}^{2^j-1}\beta_{jk}\psi_{jk}(x)$$&lt;/p&gt;
 &lt;p&gt;where&lt;/p&gt;
-&lt;p&gt;&lt;span class="math"&gt;\[\alpha=\int_0^1f(x)\phi(x)dx\text{, }\beta_{jk}=\int_0^1f(x)\psi_{jk}(x)dx.\]&lt;/span&gt;&lt;/p&gt;
-&lt;p&gt;&lt;span class="math"&gt;\(\alpha\)&lt;/span&gt; and &lt;span class="math"&gt;\(\beta_jk\)&lt;/span&gt; are called the scaling coefficients and the detail coefficients, respectively. The basic idea is that the detail coefficients capture the coarser details of the function while the scaling, or smoothing, coefficients capture the overall functional form.&lt;/p&gt;
+&lt;p&gt;$$\alpha=\int_0^1f(x)\phi(x)dx\text{, }\beta_{jk}=\int_0^1f(x)\psi_{jk}(x)dx.$$ &lt;/p&gt;
+&lt;p&gt;$\alpha$ and $\beta_jk$ are called the scaling coefficients and the detail coefficients, respectively. The basic idea is that the detail coefficients capture the coarser details of the function while the scaling, or smoothing, coefficients capture the overall functional form.&lt;/p&gt;
 &lt;p&gt;Donoho and Johnstone use four functions that mimic properties of empirical data in domains where wavelets might be useful, Bumps, Blocks, HeaviSine, and Doppler. For completeness, they are defined here.&lt;/p&gt;
 &lt;/div&gt;
-&lt;div class="cell border-box-sizing code_cell vbox"&gt;
-&lt;div class="input hbox"&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div class="cell border-box-sizing code_cell rendered"&gt;
+&lt;div class="input"&gt;
 &lt;div class="prompt input_prompt"&gt;
 In&amp;nbsp;[4]:
 &lt;/div&gt;
-&lt;div class="input_area box-flex1"&gt;
+&lt;div class="inner_cell"&gt;
+    &lt;div class="input_area"&gt;
 &lt;div class="highlight-ipynb"&gt;&lt;pre class="ipynb"&gt;&lt;span class="k"&gt;def&lt;/span&gt; &lt;span class="nf"&gt;doppler&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;x&lt;/span&gt;&lt;span class="p"&gt;):&lt;/span&gt;
     &lt;span class="sd"&gt;&amp;quot;&amp;quot;&amp;quot;&lt;/span&gt;
 &lt;span class="sd"&gt;    Parameters&lt;/span&gt;
@@ -2315,14 +2563,16 @@ In&amp;nbsp;[4]:
 
 &lt;/div&gt;
 &lt;/div&gt;
+&lt;/div&gt;
 
 &lt;/div&gt;
-&lt;div class="cell border-box-sizing code_cell vbox"&gt;
-&lt;div class="input hbox"&gt;
+&lt;div class="cell border-box-sizing code_cell rendered"&gt;
+&lt;div class="input"&gt;
 &lt;div class="prompt input_prompt"&gt;
 In&amp;nbsp;[5]:
 &lt;/div&gt;
-&lt;div class="input_area box-flex1"&gt;
+&lt;div class="inner_cell"&gt;
+    &lt;div class="input_area"&gt;
 &lt;div class="highlight-ipynb"&gt;&lt;pre class="ipynb"&gt;&lt;span class="n"&gt;x&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;np&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;linspace&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="mi"&gt;0&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;&lt;span class="mi"&gt;1&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;&lt;span class="mi"&gt;2&lt;/span&gt;&lt;span class="o"&gt;**&lt;/span&gt;&lt;span class="mi"&gt;11&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
 &lt;span class="n"&gt;dop&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;doppler&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;x&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
 &lt;span class="n"&gt;blk&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;blocks&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;x&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
@@ -2332,14 +2582,16 @@ In&amp;nbsp;[5]:
 
 &lt;/div&gt;
 &lt;/div&gt;
+&lt;/div&gt;
 
 &lt;/div&gt;
-&lt;div class="cell border-box-sizing code_cell vbox"&gt;
-&lt;div class="input hbox"&gt;
+&lt;div class="cell border-box-sizing code_cell rendered"&gt;
+&lt;div class="input"&gt;
 &lt;div class="prompt input_prompt"&gt;
 In&amp;nbsp;[6]:
 &lt;/div&gt;
-&lt;div class="input_area box-flex1"&gt;
+&lt;div class="inner_cell"&gt;
+    &lt;div class="input_area"&gt;
 &lt;div class="highlight-ipynb"&gt;&lt;pre class="ipynb"&gt;&lt;span class="n"&gt;fig&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;axes&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;plt&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;subplots&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="mi"&gt;2&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="mi"&gt;2&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;figsize&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="mi"&gt;10&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;&lt;span class="mi"&gt;10&lt;/span&gt;&lt;span class="p"&gt;))&lt;/span&gt;
 &lt;span class="n"&gt;ax1&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;axes&lt;/span&gt;&lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="mi"&gt;0&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;&lt;span class="mi"&gt;0&lt;/span&gt;&lt;span class="p"&gt;]&lt;/span&gt;
 &lt;span class="n"&gt;ax2&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;axes&lt;/span&gt;&lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="mi"&gt;0&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;&lt;span class="mi"&gt;1&lt;/span&gt;&lt;span class="p"&gt;]&lt;/span&gt;
@@ -2367,15 +2619,16 @@ In&amp;nbsp;[6]:
 
 &lt;/div&gt;
 &lt;/div&gt;
+&lt;/div&gt;
 
-&lt;div class="vbox output_wrapper"&gt;
-&lt;div class="output vbox"&gt;
-
-
-&lt;div class="hbox output_area"&gt;&lt;div class="prompt"&gt;&lt;/div&gt;
-&lt;div class="box-flex1 output_subarea output_display_data"&gt;
+&lt;div class="output_wrapper"&gt;
+&lt;div class="output"&gt;
 
 
+&lt;div class="output_area"&gt;&lt;div class="prompt"&gt;&lt;/div&gt;
+
+
+&lt;div class="output_png output_subarea "&gt;
 &lt;img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAsgAAALJCAYAAACp99XTAAAABHNCSVQICAgIfAhkiAAAAAlwSFlz
 AAALEgAACxIB0t1+/AAAIABJREFUeJzsnXe4G+WZ9u+RdKTTi21sHzdMMLjhTseACQYCJIQkeAPZ
 dRaWJfkCHwkkS0vY0EJ2KQt8hARSaAksJbAbILQEh5KDwTg2uONgg8G4+/Sio6My3x8v79F0zYxm
@@ -3499,24 +3752,32 @@ Za5igaxRbo28914E11zTggULcrj66ixOPVX48YP28OOG9evXY/78+Y5eW89rcVCo13XHDz76KIIb
 b2zC8OEqbr+9DzNm6NeJjg4Jv/51Aj/7WQq33ZbGF78o7pNhjkelcExK4ZiUYnctthXIDMMwTG1w
 I5AZhmGY2uBaIDMMwzAMwzBMf4RkkR7DMAzDMAzD+AULZIZhGIZhGIYxwAKZYRiGYRiGYQywQGYY
 hmEYhmEYAyyQGYZhGIZhGMYAC2SGYRiGYRiGMfD/AZANLhBOuB29AAAAAElFTkSuQmCC
-"&gt;
+"
+&gt;
+&lt;/div&gt;
+
+&lt;/div&gt;
 
 &lt;/div&gt;
 &lt;/div&gt;
 
 &lt;/div&gt;
+&lt;div class="cell border-box-sizing text_cell rendered"&gt;
+&lt;div class="prompt input_prompt"&gt;
 &lt;/div&gt;
-
-&lt;/div&gt;
+&lt;div class="inner_cell"&gt;
 &lt;div class="text_cell_render border-box-sizing rendered_html"&gt;
 &lt;p&gt;The wavelet coefficients fully describe some data. First, generate some data from the noisy doppler function and apply a discrete wavelet transform to recover the smoothing and detail coefficients, then have a look at a common diagnostic plot of the wavelet coefficients using &lt;code&gt;coef_pyramid_plot&lt;/code&gt;.&lt;/p&gt;
 &lt;/div&gt;
-&lt;div class="cell border-box-sizing code_cell vbox"&gt;
-&lt;div class="input hbox"&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div class="cell border-box-sizing code_cell rendered"&gt;
+&lt;div class="input"&gt;
 &lt;div class="prompt input_prompt"&gt;
 In&amp;nbsp;[7]:
 &lt;/div&gt;
-&lt;div class="input_area box-flex1"&gt;
+&lt;div class="inner_cell"&gt;
+    &lt;div class="input_area"&gt;
 &lt;div class="highlight-ipynb"&gt;&lt;pre class="ipynb"&gt;&lt;span class="k"&gt;def&lt;/span&gt; &lt;span class="nf"&gt;coef_pyramid_plot&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;coefs&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;first&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="mi"&gt;0&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;scale&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="s"&gt;&amp;#39;uniform&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;ax&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="bp"&gt;None&lt;/span&gt;&lt;span class="p"&gt;):&lt;/span&gt;
     &lt;span class="sd"&gt;&amp;quot;&amp;quot;&amp;quot;&lt;/span&gt;
 &lt;span class="sd"&gt;    Parameters&lt;/span&gt;
@@ -3578,17 +3839,25 @@ In&amp;nbsp;[7]:
 
 &lt;/div&gt;
 &lt;/div&gt;
+&lt;/div&gt;
 
 &lt;/div&gt;
+&lt;div class="cell border-box-sizing text_cell rendered"&gt;
+&lt;div class="prompt input_prompt"&gt;
+&lt;/div&gt;
+&lt;div class="inner_cell"&gt;
 &lt;div class="text_cell_render border-box-sizing rendered_html"&gt;
 &lt;p&gt;Generate the data and get the coefficients using the multilevel discrete wavelet transform. Plot the true coefficients and the noisy ones.&lt;/p&gt;
 &lt;/div&gt;
-&lt;div class="cell border-box-sizing code_cell vbox"&gt;
-&lt;div class="input hbox"&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div class="cell border-box-sizing code_cell rendered"&gt;
+&lt;div class="input"&gt;
 &lt;div class="prompt input_prompt"&gt;
 In&amp;nbsp;[8]:
 &lt;/div&gt;
-&lt;div class="input_area box-flex1"&gt;
+&lt;div class="inner_cell"&gt;
+    &lt;div class="input_area"&gt;
 &lt;div class="highlight-ipynb"&gt;&lt;pre class="ipynb"&gt;&lt;span class="kn"&gt;from&lt;/span&gt; &lt;span class="nn"&gt;scipy&lt;/span&gt; &lt;span class="kn"&gt;import&lt;/span&gt; &lt;span class="n"&gt;stats&lt;/span&gt;
 &lt;span class="kn"&gt;import&lt;/span&gt; &lt;span class="nn"&gt;numpy&lt;/span&gt; &lt;span class="kn"&gt;as&lt;/span&gt; &lt;span class="nn"&gt;np&lt;/span&gt;
 
@@ -3612,15 +3881,16 @@ In&amp;nbsp;[8]:
 
 &lt;/div&gt;
 &lt;/div&gt;
+&lt;/div&gt;
 
-&lt;div class="vbox output_wrapper"&gt;
-&lt;div class="output vbox"&gt;
-
-
-&lt;div class="hbox output_area"&gt;&lt;div class="prompt"&gt;&lt;/div&gt;
-&lt;div class="box-flex1 output_subarea output_display_data"&gt;
+&lt;div class="output_wrapper"&gt;
+&lt;div class="output"&gt;
 
 
+&lt;div class="output_area"&gt;&lt;div class="prompt"&gt;&lt;/div&gt;
+
+
+&lt;div class="output_png output_subarea "&gt;
 &lt;img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAoAAAAPwCAYAAAChmM9WAAAABHNCSVQICAgIfAhkiAAAAAlwSFlz
 AAALEgAACxIB0t1+/AAAIABJREFUeJzs3XeUVPX9//HXzPbKwlIWWaQoglTZYA0hFI1oLKiooFGx
 oNHEiKiJfhUJKJYQEXuLQcUYDU1jF1YXQQKWFZGysCArdSnb2F5m7u8PD/NzWLbPnTv72efjHI9n
@@ -4434,27 +4704,35 @@ byZyvaL+FnBbW1v+Gy333HMP69atm+MRycX41re+RXl5OWazmcWLF/MXf/EXF8xSGc8vu3fvJpFI
 8IUvfEGZznMTExM8/fTTRKNRbrrpJr74xS8q03lsx44dnDx5kmw2y+bNm9m6davynEdeeOEFWltb
 CQaDNDc3881vfvOS8/u0uV5RBaCIiIiIzL4rpgdQRERERC4PFYAiIiIiVxkVgCIiIiJXGRWAIiIi
 IlcZFYAiIiIiVxkVgCIiIiJXmf8HFmrfAGBrdJUAAAAASUVORK5CYII=
-"&gt;
+"
+&gt;
+&lt;/div&gt;
+
+&lt;/div&gt;
 
 &lt;/div&gt;
 &lt;/div&gt;
 
 &lt;/div&gt;
+&lt;div class="cell border-box-sizing text_cell rendered"&gt;
+&lt;div class="prompt input_prompt"&gt;
 &lt;/div&gt;
-
-&lt;/div&gt;
+&lt;div class="inner_cell"&gt;
 &lt;div class="text_cell_render border-box-sizing rendered_html"&gt;
 &lt;p&gt;Notice that most of the coefficients of the true signal are zero. This is the idea of &lt;em&gt;sparseness&lt;/em&gt;, most functions, smooth or otherwise, have a sparse respresentation in a wavelet basis. The detail coefficients are non-zero where the block function is not flat. The detail coefficients of the noisy signal have many more non-zero coefficients at the higher resolutions from the added noise. To recover the signal from the noisy coefficients, you &lt;em&gt;threshold&lt;/em&gt; the coefficients. Essentially, thresholding sets many of the coefficients to zero by assuming that they are noise. There are a number of ways to go about performing thresholding. Details can be found in the given references. I will simply apply soft thresholding using the &lt;em&gt;universal threshold&lt;/em&gt;. The universal threshold is defined&lt;/p&gt;
-&lt;p&gt;&lt;span class="math"&gt;\[\lambda=\hat{\sigma}\sqrt{2\log(N)}\]&lt;/span&gt;&lt;/p&gt;
-&lt;p&gt;where &lt;span class="math"&gt;\(\hat{\sigma}\)&lt;/span&gt; is a robust estimator of the standard deviation of the finest level detail coefficients. Here, I use the standardized median absolute deviation available from &lt;a href="http://statsmodels.sf.net"&gt;statsmodels&lt;/a&gt;.&lt;/p&gt;
-&lt;p&gt;&lt;span class="math"&gt;\[\hat{\sigma}=\text{M}\text{A}\text{D}(\beta_{J-1,\cdot})\]&lt;/span&gt;&lt;/p&gt;
+&lt;p&gt;$$\lambda=\hat{\sigma}\sqrt{2\log(N)}$$&lt;/p&gt;
+&lt;p&gt;where $\hat{\sigma}$ is a robust estimator of the standard deviation of the finest level detail coefficients. Here, I use the standardized median absolute deviation available from &lt;a href="http://statsmodels.sf.net"&gt;statsmodels&lt;/a&gt;.&lt;/p&gt;
+&lt;p&gt;$$\hat{\sigma}=\text{M}\text{A}\text{D}(\beta_{J-1,\cdot})$$&lt;/p&gt;
 &lt;/div&gt;
-&lt;div class="cell border-box-sizing code_cell vbox"&gt;
-&lt;div class="input hbox"&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div class="cell border-box-sizing code_cell rendered"&gt;
+&lt;div class="input"&gt;
 &lt;div class="prompt input_prompt"&gt;
 In&amp;nbsp;[9]:
 &lt;/div&gt;
-&lt;div class="input_area box-flex1"&gt;
+&lt;div class="inner_cell"&gt;
+    &lt;div class="input_area"&gt;
 &lt;div class="highlight-ipynb"&gt;&lt;pre class="ipynb"&gt;&lt;span class="kn"&gt;from&lt;/span&gt; &lt;span class="nn"&gt;statsmodels.robust&lt;/span&gt; &lt;span class="kn"&gt;import&lt;/span&gt; &lt;span class="n"&gt;stand_mad&lt;/span&gt;
 
 &lt;span class="n"&gt;sigma&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;stand_mad&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;noisy_coefs&lt;/span&gt;&lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="mi"&gt;1&lt;/span&gt;&lt;span class="p"&gt;])&lt;/span&gt;
@@ -4467,17 +4745,25 @@ In&amp;nbsp;[9]:
 
 &lt;/div&gt;
 &lt;/div&gt;
+&lt;/div&gt;
 
 &lt;/div&gt;
+&lt;div class="cell border-box-sizing text_cell rendered"&gt;
+&lt;div class="prompt input_prompt"&gt;
+&lt;/div&gt;
+&lt;div class="inner_cell"&gt;
 &lt;div class="text_cell_render border-box-sizing rendered_html"&gt;
 &lt;p&gt;We can recover the signal by applying the inverse discrete wavelet transform to the thresholded coefficients.&lt;/p&gt;
 &lt;/div&gt;
-&lt;div class="cell border-box-sizing code_cell vbox"&gt;
-&lt;div class="input hbox"&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div class="cell border-box-sizing code_cell rendered"&gt;
+&lt;div class="input"&gt;
 &lt;div class="prompt input_prompt"&gt;
 In&amp;nbsp;[10]:
 &lt;/div&gt;
-&lt;div class="input_area box-flex1"&gt;
+&lt;div class="inner_cell"&gt;
+    &lt;div class="input_area"&gt;
 &lt;div class="highlight-ipynb"&gt;&lt;pre class="ipynb"&gt;&lt;span class="n"&gt;signal&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;pywt&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;waverec&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;denoised&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="s"&gt;&amp;#39;db8&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;mode&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="s"&gt;&amp;#39;per&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
 
 &lt;span class="n"&gt;fig&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;axes&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;plt&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;subplots&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="mi"&gt;1&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="mi"&gt;2&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;sharey&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="bp"&gt;True&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;sharex&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="bp"&gt;True&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;
@@ -4501,15 +4787,16 @@ In&amp;nbsp;[10]:
 
 &lt;/div&gt;
 &lt;/div&gt;
+&lt;/div&gt;
 
-&lt;div class="vbox output_wrapper"&gt;
-&lt;div class="output vbox"&gt;
-
-
-&lt;div class="hbox output_area"&gt;&lt;div class="prompt"&gt;&lt;/div&gt;
-&lt;div class="box-flex1 output_subarea output_display_data"&gt;
+&lt;div class="output_wrapper"&gt;
+&lt;div class="output"&gt;
 
 
+&lt;div class="output_area"&gt;&lt;div class="prompt"&gt;&lt;/div&gt;
+
+
+&lt;div class="output_png output_subarea "&gt;
 &lt;img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAsgAAAI5CAYAAAC8ZczKAAAABHNCSVQICAgIfAhkiAAAAAlwSFlz
 AAALEgAACxIB0t1+/AAAIABJREFUeJzs3XeYE3X+B/D3JNmSbbDUpYigUqQLWMDFAop3ggqIUhQp
 KifFgooVQfSHCJ7lVMod3qHo2eAUFRuKBVYBRYSlI9JhV8qyy9bsJpnfH+Mkk8mkTzaTzfv1PD6S
@@ -5370,59 +5657,82 @@ uru7WVlZaTgg7/bNXpK0e763SlI6Wg7IQ0NDDA0N7eoH9fb2sra2xrlz50iShCtXrtDX15fKRUqS
 JEmh7PmYt9pmRn9/P4uLi1uP79+/T39//96vTJIkSYpgT6dYzM7OMj8/z+PHj1lfX+f8+fPk83lO
 nz7NxYsXAZicnEz1QiVJkqQQopyDLEmSJHUq76QnSZIkVXBAliRJkio4IEuSJEkVHJAlSZKkCg7I
 kiRJUgUHZEmSJKnC/wDCA/Ugi9lI4QAAAABJRU5ErkJggg==
-"&gt;
+"
+&gt;
+&lt;/div&gt;
+
+&lt;/div&gt;
 
 &lt;/div&gt;
 &lt;/div&gt;
 
 &lt;/div&gt;
+&lt;div class="cell border-box-sizing text_cell rendered"&gt;
+&lt;div class="prompt input_prompt"&gt;
 &lt;/div&gt;
-
-&lt;/div&gt;
+&lt;div class="inner_cell"&gt;
 &lt;div class="text_cell_render border-box-sizing rendered_html"&gt;
 &lt;p&gt;PyWavelets is a really cool project. But it could use a little more attention. It would be nice if some of the library functions were wrapped up so that they return wavelet objects that would be easier to work with. For instance, if wavedec returned a discrete wavelet object that the thresholding functions also accepted, this would save me some keystrokes in the above. I do not have time to take on another project, but it is low hanging fruit if someone else does. The code is MIT licensed and might even find a nice home in SciPy.&lt;/p&gt;
+&lt;/div&gt;
+&lt;/div&gt;
 &lt;/div&gt;&lt;/p&gt;</summary><category term="stats"></category><category term="python"></category><category term="wavelets"></category><category term="nonparametric"></category></entry><entry><title>Making Graphical Models with PyDot</title><link href="http://jseabold.net/blog/2012/02/12/making-graphical-models-with-pydot" rel="alternate"></link><updated>2012-02-12T20:32:00-05:00</updated><author><name>Skipper Seabold</name></author><id>tag:jseabold.net,2012-02-12:blog/2012/02/12/making-graphical-models-with-pydot</id><summary type="html">&lt;p&gt;
-&lt;div class="cell border-box-sizing code_cell vbox"&gt;
-&lt;div class="input hbox"&gt;
+&lt;div class="cell border-box-sizing code_cell rendered"&gt;
+&lt;div class="input"&gt;
 &lt;div class="prompt input_prompt"&gt;
 In&amp;nbsp;[1]:
 &lt;/div&gt;
-&lt;div class="input_area box-flex1"&gt;
+&lt;div class="inner_cell"&gt;
+    &lt;div class="input_area"&gt;
 &lt;div class="highlight-ipynb"&gt;&lt;pre class="ipynb"&gt;&lt;span class="kn"&gt;from&lt;/span&gt; &lt;span class="nn"&gt;IPython.display&lt;/span&gt; &lt;span class="kn"&gt;import&lt;/span&gt; &lt;span class="n"&gt;Image&lt;/span&gt;
 &lt;/pre&gt;&lt;/div&gt;
 
 &lt;/div&gt;
 &lt;/div&gt;
+&lt;/div&gt;
 
 &lt;/div&gt;
+&lt;div class="cell border-box-sizing text_cell rendered"&gt;
+&lt;div class="prompt input_prompt"&gt;
+&lt;/div&gt;
+&lt;div class="inner_cell"&gt;
 &lt;div class="text_cell_render border-box-sizing rendered_html"&gt;
 &lt;h2 id="Graphical-Models-with-PyDot"&gt;Graphical Models with PyDot&lt;a class="anchor-link" href="#Graphical-Models-with-PyDot"&gt;&amp;#182;&lt;/a&gt;&lt;/h2&gt;
 &lt;/div&gt;
-
-&lt;div class="text_cell_render border-box-sizing rendered_html"&gt;
-&lt;p&gt;&lt;strong&gt;EDIT 6/26/13&lt;/strong&gt; Since I've written this post, I've heard about a new project, &lt;a href="http://daft-pgm.org/"&gt;daft&lt;/a&gt;, for making probabilistic graphical models. I hope to give it a shot soon.&lt;/p&gt;
 &lt;/div&gt;
-&lt;div class="cell border-box-sizing code_cell vbox"&gt;
-&lt;div class="input hbox"&gt;
+&lt;/div&gt;
+
+&lt;div class="cell border-box-sizing text_cell rendered"&gt;
+&lt;div class="prompt input_prompt"&gt;
+&lt;/div&gt;
+&lt;div class="inner_cell"&gt;
+&lt;div class="text_cell_render border-box-sizing rendered_html"&gt;
+&lt;p&gt;&lt;strong&gt;EDIT 6/26/13&lt;/strong&gt; Since I&amp;#39;ve written this post, I&amp;#39;ve heard about a new project, &lt;a href="http://daft-pgm.org/"&gt;daft&lt;/a&gt;, for making probabilistic graphical models. I hope to give it a shot soon.&lt;/p&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div class="cell border-box-sizing code_cell rendered"&gt;
+&lt;div class="input"&gt;
 &lt;div class="prompt input_prompt"&gt;
 In&amp;nbsp;[2]:
 &lt;/div&gt;
-&lt;div class="input_area box-flex1"&gt;
+&lt;div class="inner_cell"&gt;
+    &lt;div class="input_area"&gt;
 &lt;div class="highlight-ipynb"&gt;&lt;pre class="ipynb"&gt;&lt;span class="n"&gt;Image&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s"&gt;&amp;#39;Smoothed_LDA.png&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
 &lt;/pre&gt;&lt;/div&gt;
 
 &lt;/div&gt;
 &lt;/div&gt;
+&lt;/div&gt;
 
-&lt;div class="vbox output_wrapper"&gt;
-&lt;div class="output vbox"&gt;
+&lt;div class="output_wrapper"&gt;
+&lt;div class="output"&gt;
 
 
-&lt;div class="hbox output_area"&gt;&lt;div class="prompt output_prompt"&gt;
+&lt;div class="output_area"&gt;&lt;div class="prompt output_prompt"&gt;
     Out[2]:&lt;/div&gt;
-&lt;div class="box-flex1 output_subarea output_pyout"&gt;
 
 
+&lt;div class="output_png output_subarea output_pyout"&gt;
 &lt;img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAlIAAAEqCAIAAABRJCkVAAAAA3NCSVQICAjb4U/gAAAACXBIWXMA
 AA7EAAAOxAGVKw4bAAAgAElEQVR4nO3df1xUVd4H8IPc6NFRI2xWTVBKUsQdqcUf67A8YEKGj9to
 bJiTi+JKP5DWiC2T3QdxXr3wZa/Q9RWirVsmi6NSJBjCGliQzSglrcqjopkMAireJBOvrnhxnj9u
@@ -5685,39 +5995,49 @@ AACoCNIeAACoCNIeAACoCNIeAACoCDYeugNpd0QAAPAMWHwLAABUBJ2cAACgIkh7AACgIkh7AACg
 Ikh7AACgIkh7AACgIkh7AACgIkh7AACgIkh7AACgIkh7AACgIkh7AACgIkh7AACgIkh7AACgIkh7
 AACgIkh7AACgIkh7AACgIkh7AACgIkh7AACgIkh7AACgIkh7AACgIkh7AACgIv8PYM228Rus1XgA
 AAAASUVORK5CYII=
-"&gt;
+"
+&gt;
+&lt;/div&gt;
+
+&lt;/div&gt;
 
 &lt;/div&gt;
 &lt;/div&gt;
 
 &lt;/div&gt;
+&lt;div class="cell border-box-sizing text_cell rendered"&gt;
+&lt;div class="prompt input_prompt"&gt;
 &lt;/div&gt;
-
-&lt;/div&gt;
+&lt;div class="inner_cell"&gt;
 &lt;div class="text_cell_render border-box-sizing rendered_html"&gt;
-
-&lt;p style="font-size: 90%; text-align: right; color: #ddd; margin-top: -1.5em; padding-bottom: 4px"&gt;
-Source: Blei, Ng, and Jordan. (2003) &amp;quot;Latent Dirichlet Allocation&amp;quot;
-&lt;/p&gt;
-
+&lt;p style="font-size: 90%; text-align: right; color: #ddd; margin-top: -1.5em; padding-bottom: 4px"&gt;Source: Blei, Ng, and Jordan. (2003) &amp;quot;Latent Dirichlet Allocation&amp;quot;&lt;/p&gt;
 &lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div class="cell border-box-sizing text_cell rendered"&gt;
+&lt;div class="prompt input_prompt"&gt;
+&lt;/div&gt;
+&lt;div class="inner_cell"&gt;
 &lt;div class="text_cell_render border-box-sizing rendered_html"&gt;
-&lt;p&gt;Graphical models, are a handy way to represent probabilistic models. They are used much more in Bayesian statistics, particularly in hierarchical models when it's convenient to have a quick representation of the various dependencies. In graphical models, the nodes represent random variables of which the shaded ones are observed. The edges denote possible dependencies. The plates denote sequencies. Last week I wanted to create a Directed Graph Model similar to the one below. This post will recreate this graph using &lt;a href="http://www.graphviz.org/"&gt;Graphviz&lt;/a&gt; to render a &lt;a href="http://www.graphviz.org/doc/info/lang.html"&gt;DOT&lt;/a&gt; file created in &lt;a href="http://code.google.com/p/pydot/"&gt;PyDOT&lt;/a&gt;.&lt;/p&gt;
+&lt;p&gt;Graphical models, are a handy way to represent probabilistic models. They are used much more in Bayesian statistics, particularly in hierarchical models when it&amp;#39;s convenient to have a quick representation of the various dependencies. In graphical models, the nodes represent random variables of which the shaded ones are observed. The edges denote possible dependencies. The plates denote sequencies. Last week I wanted to create a Directed Graph Model similar to the one below. This post will recreate this graph using &lt;a href="http://www.graphviz.org/"&gt;Graphviz&lt;/a&gt; to render a &lt;a href="http://www.graphviz.org/doc/info/lang.html"&gt;DOT&lt;/a&gt; file created in &lt;a href="http://code.google.com/p/pydot/"&gt;PyDOT&lt;/a&gt;.&lt;/p&gt;
 &lt;p&gt;This graph is the total likelihood for a &lt;a href="http://en.wikipedia.org/wiki/Latent_Dirichlet_allocation"&gt;Latent Dirichlet Allocation model&lt;/a&gt;. Mathematically, this is&lt;/p&gt;
-&lt;p&gt;&lt;span class="math"&gt;\[\begin{equation}\begin{split}p(w, \theta, \beta, z | \alpha, \eta) \\
-   &amp;amp;= \prod_{k=1}^{K}p\left(\beta_{k}|\eta\right)\prod_{m=1}^{M}p\left(\theta_{m}|\alpha\right)\left[\prod_{n=1}^{N}p\left(z_{m,n}|\theta_{m}\right)p\left(w_{m,n}|z_{m,n},\beta_{1:K}\right)\right]\end{split}\end{equation}\]&lt;/span&gt;&lt;/p&gt;
+&lt;p&gt;  $$\begin{equation}\begin{split}p(w, \theta, \beta, z | \alpha, \eta) \\
+   &amp;amp;= \prod_{k=1}^{K}p\left(\beta_{k}|\eta\right)\prod_{m=1}^{M}p\left(\theta_{m}|\alpha\right)\left[\prod_{n=1}^{N}p\left(z_{m,n}|\theta_{m}\right)p\left(w_{m,n}|z_{m,n},\beta_{1:K}\right)\right]\end{split}\end{equation}$$&lt;/p&gt;
 &lt;p&gt;I already have Graphviz installed for use in &lt;a href="http://sphinx.pocoo.org/ext/graphviz.html"&gt;Sphinx&lt;/a&gt;. It can be installed using apt-get. To use the HTML subscript tag, you need at least version 2.28, so you may have to &lt;a href="http://www.graphviz.org/Download.php"&gt;install from elsewhere&lt;/a&gt;.&lt;/p&gt;
-&lt;pre&gt;&lt;code&gt;sudo apt-get install graphviz&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;PyDot can be installed using setuptools.&lt;/p&gt;
-&lt;pre&gt;&lt;code&gt;sudo easy_install pydot&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;I started by reading the &lt;a href="http://code.google.com/p/pymc/"&gt;PyMC&lt;/a&gt; source since they use PyDot to generate their graphical models. I spent most of my time in the Graphviz Dot &lt;a href="http://www.graphviz.org/content/dot-language"&gt;configuration documentation&lt;/a&gt;. Here's what I came up with.&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;sudo apt-get install graphviz
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;PyDot can be installed using setuptools.&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;sudo easy_install pydot
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;I started by reading the &lt;a href="http://code.google.com/p/pymc/"&gt;PyMC&lt;/a&gt; source since they use PyDot to generate their graphical models. I spent most of my time in the Graphviz Dot &lt;a href="http://www.graphviz.org/content/dot-language"&gt;configuration documentation&lt;/a&gt;. Here&amp;#39;s what I came up with.&lt;/p&gt;
 &lt;/div&gt;
-&lt;div class="cell border-box-sizing code_cell vbox"&gt;
-&lt;div class="input hbox"&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div class="cell border-box-sizing code_cell rendered"&gt;
+&lt;div class="input"&gt;
 &lt;div class="prompt input_prompt"&gt;
 In&amp;nbsp;[3]:
 &lt;/div&gt;
-&lt;div class="input_area box-flex1"&gt;
+&lt;div class="inner_cell"&gt;
+    &lt;div class="input_area"&gt;
 &lt;div class="highlight-ipynb"&gt;&lt;pre class="ipynb"&gt;&lt;span class="kn"&gt;import&lt;/span&gt; &lt;span class="nn"&gt;pydot&lt;/span&gt;
 
 &lt;span class="n"&gt;dot_object&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;pydot&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;Dot&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;graph_name&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="s"&gt;&amp;quot;main_graph&amp;quot;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;&lt;span class="n"&gt;rankdir&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="s"&gt;&amp;quot;LR&amp;quot;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;labelloc&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="s"&gt;&amp;#39;b&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; 
@@ -5728,18 +6048,26 @@ In&amp;nbsp;[3]:
 
 &lt;/div&gt;
 &lt;/div&gt;
+&lt;/div&gt;
 
 &lt;/div&gt;
+&lt;div class="cell border-box-sizing text_cell rendered"&gt;
+&lt;div class="prompt input_prompt"&gt;
+&lt;/div&gt;
+&lt;div class="inner_cell"&gt;
 &lt;div class="text_cell_render border-box-sizing rendered_html"&gt;
-&lt;p&gt;This instantiates the main Graph. It will be created left-to-right (alternatively, you could use 'TB' for top-to-bottom to look like the above example). This Graph will have SubGraphs, or Clusters, for the plates which will inherit &lt;em&gt;labelloc&lt;/em&gt; and &lt;em&gt;labeljust&lt;/em&gt;. Then I set the defaults for the Nodes.&lt;/p&gt;
+&lt;p&gt;This instantiates the main Graph. It will be created left-to-right (alternatively, you could use &amp;#39;TB&amp;#39; for top-to-bottom to look like the above example). This Graph will have SubGraphs, or Clusters, for the plates which will inherit &lt;em&gt;labelloc&lt;/em&gt; and &lt;em&gt;labeljust&lt;/em&gt;. Then I set the defaults for the Nodes.&lt;/p&gt;
 &lt;p&gt;Now make the nodes for the main graph and attach them.&lt;/p&gt;
 &lt;/div&gt;
-&lt;div class="cell border-box-sizing code_cell vbox"&gt;
-&lt;div class="input hbox"&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div class="cell border-box-sizing code_cell rendered"&gt;
+&lt;div class="input"&gt;
 &lt;div class="prompt input_prompt"&gt;
 In&amp;nbsp;[4]:
 &lt;/div&gt;
-&lt;div class="input_area box-flex1"&gt;
+&lt;div class="inner_cell"&gt;
+    &lt;div class="input_area"&gt;
 &lt;div class="highlight-ipynb"&gt;&lt;pre class="ipynb"&gt;&lt;span class="n"&gt;node_eta&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;pydot&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;Node&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;name&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="s"&gt;&amp;#39;eta&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;texlbl&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="s"&gt;r&amp;#39;\eta&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;label&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="s"&gt;&amp;#39;&amp;lt;&amp;amp;#951;&amp;gt;&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
 &lt;span class="n"&gt;dot_object&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;add_node&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;node_eta&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
 
@@ -5749,18 +6077,26 @@ In&amp;nbsp;[4]:
 
 &lt;/div&gt;
 &lt;/div&gt;
+&lt;/div&gt;
 
 &lt;/div&gt;
+&lt;div class="cell border-box-sizing text_cell rendered"&gt;
+&lt;div class="prompt input_prompt"&gt;
+&lt;/div&gt;
+&lt;div class="inner_cell"&gt;
 &lt;div class="text_cell_render border-box-sizing rendered_html"&gt;
-&lt;p&gt;You'll notice that the nodes take three parameters -- a name for internal use and &lt;em&gt;texlbl&lt;/em&gt; and &lt;em&gt;label&lt;/em&gt; containing &lt;span class="math"&gt;\(\TeX\)&lt;/span&gt; and HTML denoted by &amp;lt;&amp;gt;, respectively. The texlbl will allow us to use dot2tex to make an output for &lt;span class="math"&gt;\(LaTeX\)&lt;/span&gt;, and the HTML will allow us to create images containing Greek letters from their HTML codes. Labels allow &lt;a href="http://www.graphviz.org/doc/info/shapes.html#html"&gt;a subset of HTML tags&lt;/a&gt;.&lt;/p&gt;
+&lt;p&gt;You&amp;#39;ll notice that the nodes take three parameters -- a name for internal use and &lt;em&gt;texlbl&lt;/em&gt; and &lt;em&gt;label&lt;/em&gt; containing $\TeX$ and HTML denoted by &amp;lt;&amp;gt;, respectively. The texlbl will allow us to use dot2tex to make an output for $LaTeX$, and the HTML will allow us to create images containing Greek letters from their HTML codes. Labels allow &lt;a href="http://www.graphviz.org/doc/info/shapes.html#html"&gt;a subset of HTML tags&lt;/a&gt;.&lt;/p&gt;
 &lt;p&gt;The plates are called Clusters in DOT. They are a type of SubGraph that provide the borders for the plate notation and are attached as such.&lt;/p&gt;
 &lt;/div&gt;
-&lt;div class="cell border-box-sizing code_cell vbox"&gt;
-&lt;div class="input hbox"&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div class="cell border-box-sizing code_cell rendered"&gt;
+&lt;div class="input"&gt;
 &lt;div class="prompt input_prompt"&gt;
 In&amp;nbsp;[5]:
 &lt;/div&gt;
-&lt;div class="input_area box-flex1"&gt;
+&lt;div class="inner_cell"&gt;
+    &lt;div class="input_area"&gt;
 &lt;div class="highlight-ipynb"&gt;&lt;pre class="ipynb"&gt;&lt;span class="c"&gt;# K plate&lt;/span&gt;
 &lt;span class="n"&gt;plate_k&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;pydot&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;Cluster&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;graph_name&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="s"&gt;&amp;#39;plate_k&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;label&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="s"&gt;&amp;#39;K&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;fontsize&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="mi"&gt;24&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
 &lt;span class="n"&gt;node_beta&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;pydot&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;Node&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;name&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="s"&gt;&amp;#39;beta&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;texlbl&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="s"&gt;r&amp;#39;\beta&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;label&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="s"&gt;&amp;#39;&amp;lt;&amp;amp;#946;&amp;lt;SUB&amp;gt;k&amp;lt;/SUB&amp;gt;&amp;gt;&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
@@ -5789,17 +6125,25 @@ In&amp;nbsp;[5]:
 
 &lt;/div&gt;
 &lt;/div&gt;
+&lt;/div&gt;
 
 &lt;/div&gt;
+&lt;div class="cell border-box-sizing text_cell rendered"&gt;
+&lt;div class="prompt input_prompt"&gt;
+&lt;/div&gt;
+&lt;div class="inner_cell"&gt;
 &lt;div class="text_cell_render border-box-sizing rendered_html"&gt;
 &lt;p&gt;This creates the K, M, and N plates and attaches them to the appropriate objects. The last step is to instantiate and add the edges.&lt;/p&gt;
 &lt;/div&gt;
-&lt;div class="cell border-box-sizing code_cell vbox"&gt;
-&lt;div class="input hbox"&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div class="cell border-box-sizing code_cell rendered"&gt;
+&lt;div class="input"&gt;
 &lt;div class="prompt input_prompt"&gt;
 In&amp;nbsp;[6]:
 &lt;/div&gt;
-&lt;div class="input_area box-flex1"&gt;
+&lt;div class="inner_cell"&gt;
+    &lt;div class="input_area"&gt;
 &lt;div class="highlight-ipynb"&gt;&lt;pre class="ipynb"&gt;&lt;span class="c"&gt;# Add the edges&lt;/span&gt;
 &lt;span class="n"&gt;dot_object&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;add_edge&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;pydot&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;Edge&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;node_alpha&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;node_theta&lt;/span&gt;&lt;span class="p"&gt;))&lt;/span&gt;
 &lt;span class="n"&gt;dot_object&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;add_edge&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;pydot&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;Edge&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;node_theta&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;node_z&lt;/span&gt;&lt;span class="p"&gt;))&lt;/span&gt;
@@ -5810,102 +6154,121 @@ In&amp;nbsp;[6]:
 
 &lt;/div&gt;
 &lt;/div&gt;
+&lt;/div&gt;
 
 &lt;/div&gt;
+&lt;div class="cell border-box-sizing text_cell rendered"&gt;
+&lt;div class="prompt input_prompt"&gt;
+&lt;/div&gt;
+&lt;div class="inner_cell"&gt;
 &lt;div class="text_cell_render border-box-sizing rendered_html"&gt;
-&lt;p&gt;You'll notice that we added node_w and node_beta in reverse left-to-right order and specified the attribute dir to be 'back'. This is to maintain the left-to-right orientation and have the edge dependencies make sense.&lt;/p&gt;
+&lt;p&gt;You&amp;#39;ll notice that we added node_w and node_beta in reverse left-to-right order and specified the attribute dir to be &amp;#39;back&amp;#39;. This is to maintain the left-to-right orientation and have the edge dependencies make sense.&lt;/p&gt;
 &lt;p&gt;Optionally save the filter in raw form using the dot renderer do&lt;/p&gt;
 &lt;/div&gt;
-&lt;div class="cell border-box-sizing code_cell vbox"&gt;
-&lt;div class="input hbox"&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div class="cell border-box-sizing code_cell rendered"&gt;
+&lt;div class="input"&gt;
 &lt;div class="prompt input_prompt"&gt;
 In&amp;nbsp;[7]:
 &lt;/div&gt;
-&lt;div class="input_area box-flex1"&gt;
+&lt;div class="inner_cell"&gt;
+    &lt;div class="input_area"&gt;
 &lt;div class="highlight-ipynb"&gt;&lt;pre class="ipynb"&gt;&lt;span class="n"&gt;dot_object&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;write&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s"&gt;&amp;#39;graph.dotfile&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;format&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="s"&gt;&amp;#39;raw&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;prog&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="s"&gt;&amp;#39;dot&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
 &lt;/pre&gt;&lt;/div&gt;
 
 &lt;/div&gt;
 &lt;/div&gt;
+&lt;/div&gt;
 
-&lt;div class="vbox output_wrapper"&gt;
-&lt;div class="output vbox"&gt;
+&lt;div class="output_wrapper"&gt;
+&lt;div class="output"&gt;
 
 
-&lt;div class="hbox output_area"&gt;&lt;div class="prompt output_prompt"&gt;
+&lt;div class="output_area"&gt;&lt;div class="prompt output_prompt"&gt;
     Out[7]:&lt;/div&gt;
-&lt;div class="box-flex1 output_subarea output_pyout"&gt;
 
 
+&lt;div class="output_text output_subarea output_pyout"&gt;
 &lt;pre&gt;
 True
 &lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;/div&gt;
 
 &lt;/div&gt;
 &lt;/div&gt;
 
 &lt;/div&gt;
+&lt;div class="cell border-box-sizing text_cell rendered"&gt;
+&lt;div class="prompt input_prompt"&gt;
 &lt;/div&gt;
-
-&lt;/div&gt;
+&lt;div class="inner_cell"&gt;
 &lt;div class="text_cell_render border-box-sizing rendered_html"&gt;
 &lt;p&gt;You also have the option to use other renderers seach as &lt;em&gt;neato&lt;/em&gt;, &lt;em&gt;fdp&lt;/em&gt;, and &lt;em&gt;sfdp&lt;/em&gt;. Unfortunately, each of the renderers has its own strengths and weaknesses with &lt;em&gt;dot&lt;/em&gt; the most fully featured to my eyes. You can look at this file to get an idea of the DOT language syntax.&lt;/p&gt;
 &lt;p&gt;Now write the graph to a png. You will need a version of graphviz released after after 14, October 2011 for this to work, because of the &lt;code&gt;&amp;lt;SUB&amp;gt;&lt;/code&gt; HTML tags.&lt;/p&gt;
 &lt;/div&gt;
-&lt;div class="cell border-box-sizing code_cell vbox"&gt;
-&lt;div class="input hbox"&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div class="cell border-box-sizing code_cell rendered"&gt;
+&lt;div class="input"&gt;
 &lt;div class="prompt input_prompt"&gt;
 In&amp;nbsp;[8]:
 &lt;/div&gt;
-&lt;div class="input_area box-flex1"&gt;
+&lt;div class="inner_cell"&gt;
+    &lt;div class="input_area"&gt;
 &lt;div class="highlight-ipynb"&gt;&lt;pre class="ipynb"&gt;&lt;span class="n"&gt;dot_object&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;write_png&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s"&gt;&amp;#39;lda_graph.png&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;prog&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="s"&gt;&amp;#39;dot&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
 &lt;/pre&gt;&lt;/div&gt;
 
 &lt;/div&gt;
 &lt;/div&gt;
+&lt;/div&gt;
 
-&lt;div class="vbox output_wrapper"&gt;
-&lt;div class="output vbox"&gt;
+&lt;div class="output_wrapper"&gt;
+&lt;div class="output"&gt;
 
 
-&lt;div class="hbox output_area"&gt;&lt;div class="prompt output_prompt"&gt;
+&lt;div class="output_area"&gt;&lt;div class="prompt output_prompt"&gt;
     Out[8]:&lt;/div&gt;
-&lt;div class="box-flex1 output_subarea output_pyout"&gt;
 
 
+&lt;div class="output_text output_subarea output_pyout"&gt;
 &lt;pre&gt;
 True
 &lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;/div&gt;
 
 &lt;/div&gt;
 &lt;/div&gt;
 
 &lt;/div&gt;
-&lt;/div&gt;
-
-&lt;/div&gt;
-&lt;div class="cell border-box-sizing code_cell vbox"&gt;
-&lt;div class="input hbox"&gt;
+&lt;div class="cell border-box-sizing code_cell rendered"&gt;
+&lt;div class="input"&gt;
 &lt;div class="prompt input_prompt"&gt;
 In&amp;nbsp;[9]:
 &lt;/div&gt;
-&lt;div class="input_area box-flex1"&gt;
+&lt;div class="inner_cell"&gt;
+    &lt;div class="input_area"&gt;
 &lt;div class="highlight-ipynb"&gt;&lt;pre class="ipynb"&gt;&lt;span class="kn"&gt;from&lt;/span&gt; &lt;span class="nn"&gt;IPython.display&lt;/span&gt; &lt;span class="kn"&gt;import&lt;/span&gt; &lt;span class="n"&gt;Image&lt;/span&gt;
 &lt;span class="n"&gt;Image&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s"&gt;&amp;#39;lda_graph.png&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
 &lt;/pre&gt;&lt;/div&gt;
 
 &lt;/div&gt;
 &lt;/div&gt;
+&lt;/div&gt;
 
-&lt;div class="vbox output_wrapper"&gt;
-&lt;div class="output vbox"&gt;
+&lt;div class="output_wrapper"&gt;
+&lt;div class="output"&gt;
 
 
-&lt;div class="hbox output_area"&gt;&lt;div class="prompt output_prompt"&gt;
+&lt;div class="output_area"&gt;&lt;div class="prompt output_prompt"&gt;
     Out[9]:&lt;/div&gt;
-&lt;div class="box-flex1 output_subarea output_pyout"&gt;
 
 
+&lt;div class="output_png output_subarea output_pyout"&gt;
 &lt;img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAA9sAAAD4CAIAAABzO2KOAAAABmJLR0QA/wD/AP+gvaeTAAAgAElE
 QVR4nOzdeVxM7f8/8DOt2hWylGyp3PaSQouQFMpWCYXslHDbhexll+y0UVpsRZGlkrJHltBCQpZs
 ad/n98f53vPpV1NaZuZqZl7PPzymaZrzypzO+z1nrnNdDCaTSQEAAAAAACEipAMAAAAAAAg1dOQA
@@ -6272,43 +6635,59 @@ cgAAiEmRAwBATIocAABiUuQAABCTIgcAgJgUOQAAxKTIAQAgJkUOAAAxKXIAAIjpa+wF+FMUCoXY
 KwB8UtfX17FXAGJS5IRCoTA9Pf309BR7EYBPqq2tbWJiIvYWQDQt9Xo99g4AAPB5+R45AADEpMgB
 ACAmRQ4AADEpcgAAiEmRAwBATIocAABiUuQAABCTIgcAgJgUOQAAxKTIAQAgJkUOAAAxKXIAAIhJ
 kQMAQEyKHAAAYvoG585PkIsdUSoAAAAASUVORK5CYII=
-"&gt;
+"
+&gt;
+&lt;/div&gt;
+
+&lt;/div&gt;
 
 &lt;/div&gt;
 &lt;/div&gt;
 
 &lt;/div&gt;
+&lt;div class="cell border-box-sizing text_cell rendered"&gt;
+&lt;div class="prompt input_prompt"&gt;
 &lt;/div&gt;
-
-&lt;/div&gt;
+&lt;div class="inner_cell"&gt;
 &lt;div class="text_cell_render border-box-sizing rendered_html"&gt;
 &lt;p&gt;If you want to render the image to pdf, you can install &lt;a href="http://www.fauskes.net/code/dot2tex/"&gt;dot2tex&lt;/a&gt;.&lt;/p&gt;
-&lt;pre&gt;&lt;code&gt;sudo apt-get install dot2tex&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;To go from DOT to &lt;span class="math"&gt;\(\TeX\)&lt;/span&gt; do&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;sudo apt-get install dot2tex
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;To go from DOT to $\TeX$ do&lt;/p&gt;
 &lt;/div&gt;
-&lt;div class="cell border-box-sizing code_cell vbox"&gt;
-&lt;div class="input hbox"&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div class="cell border-box-sizing code_cell rendered"&gt;
+&lt;div class="input"&gt;
 &lt;div class="prompt input_prompt"&gt;
 In&amp;nbsp;[10]:
 &lt;/div&gt;
-&lt;div class="input_area box-flex1"&gt;
+&lt;div class="inner_cell"&gt;
+    &lt;div class="input_area"&gt;
 &lt;div class="highlight-ipynb"&gt;&lt;pre class="ipynb"&gt;&lt;span class="kn"&gt;import&lt;/span&gt; &lt;span class="nn"&gt;dot2tex&lt;/span&gt; &lt;span class="kn"&gt;as&lt;/span&gt; &lt;span class="nn"&gt;d2t&lt;/span&gt;
 &lt;span class="n"&gt;texcode&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;d2t&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;dot2tex&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;dot_object&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;to_string&lt;/span&gt;&lt;span class="p"&gt;(),&lt;/span&gt; &lt;span class="n"&gt;format&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="s"&gt;&amp;#39;tikz&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;crop&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="bp"&gt;True&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
 &lt;/pre&gt;&lt;/div&gt;
 
 &lt;/div&gt;
 &lt;/div&gt;
+&lt;/div&gt;
 
 &lt;/div&gt;
+&lt;div class="cell border-box-sizing text_cell rendered"&gt;
+&lt;div class="prompt input_prompt"&gt;
+&lt;/div&gt;
+&lt;div class="inner_cell"&gt;
 &lt;div class="text_cell_render border-box-sizing rendered_html"&gt;
 &lt;p&gt;And then write it to a file.&lt;/p&gt;
 &lt;/div&gt;
-&lt;div class="cell border-box-sizing code_cell vbox"&gt;
-&lt;div class="input hbox"&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div class="cell border-box-sizing code_cell rendered"&gt;
+&lt;div class="input"&gt;
 &lt;div class="prompt input_prompt"&gt;
 In&amp;nbsp;[11]:
 &lt;/div&gt;
-&lt;div class="input_area box-flex1"&gt;
+&lt;div class="inner_cell"&gt;
+    &lt;div class="input_area"&gt;
 &lt;div class="highlight-ipynb"&gt;&lt;pre class="ipynb"&gt;&lt;span class="n"&gt;fout&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="nb"&gt;open&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s"&gt;&amp;quot;img.tex&amp;quot;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="s"&gt;&amp;#39;w&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
 &lt;span class="n"&gt;fout&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;write&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;texcode&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
 &lt;span class="n"&gt;fout&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;close&lt;/span&gt;&lt;span class="p"&gt;()&lt;/span&gt;
@@ -6316,12 +6695,19 @@ In&amp;nbsp;[11]:
 
 &lt;/div&gt;
 &lt;/div&gt;
+&lt;/div&gt;
 
 &lt;/div&gt;
+&lt;div class="cell border-box-sizing text_cell rendered"&gt;
+&lt;div class="prompt input_prompt"&gt;
+&lt;/div&gt;
+&lt;div class="inner_cell"&gt;
 &lt;div class="text_cell_render border-box-sizing rendered_html"&gt;
 &lt;p&gt;Then make a &lt;em&gt;pdf&lt;/em&gt; and optionally convert this to a &lt;em&gt;png&lt;/em&gt;&lt;/p&gt;
-&lt;pre&gt;&lt;code&gt;pdflatex img.tex &amp;amp;&amp;amp; pdftops -eps img.pdf &amp;amp;&amp;amp; convert -density 300 img.eps img.png&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;I wasn't particularly happy with the layout and wanted a little more control over the padding and label placement not to mention some easier &lt;span class="math"&gt;\(TeX\)&lt;/span&gt; integration. I suppose you could edit the img.tex file for a bit more control, but I haven't seen any other really good open source solutions for more fine-grained control. I'd be happy to hear about any in the comments though.&lt;/p&gt;
-&lt;p&gt;One that I came across has you converting the DOT object to xml with &lt;a href="http://www.mydarc.de/dl9obn/programming/python/dottoxml/"&gt;dottoxml&lt;/a&gt; and using &lt;a href="http://www.yworks.com/en/products_yed_about.html"&gt;yEd&lt;/a&gt;. I tried this but it isn't the solution I'm looking for particularly because yEd doesn't have built-in support for &lt;span class="math"&gt;\(LaTeX\)&lt;/span&gt; either.&lt;/p&gt;
-&lt;p&gt;I've thought about and implemented a couple of solutions using matplotlib. I'll put up my solution in a future post. But I'd be really interested to hear from some real matplotlib pros. Particularly, if anyone has any library code for padding between different nested objects in a plot like this.&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;pdflatex img.tex &amp;amp;&amp;amp; pdftops -eps img.pdf &amp;amp;&amp;amp; convert -density 300 img.eps img.png
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;I wasn&amp;#39;t particularly happy with the layout and wanted a little more control over the padding and label placement not to mention some easier $TeX$ integration. I suppose you could edit the img.tex file for a bit more control, but I haven&amp;#39;t seen any other really good open source solutions for more fine-grained control. I&amp;#39;d be happy to hear about any in the comments though.&lt;/p&gt;
+&lt;p&gt;One that I came across has you converting the DOT object to xml with &lt;a href="http://www.mydarc.de/dl9obn/programming/python/dottoxml/"&gt;dottoxml&lt;/a&gt; and using &lt;a href="http://www.yworks.com/en/products_yed_about.html"&gt;yEd&lt;/a&gt;. I tried this but it isn&amp;#39;t the solution I&amp;#39;m looking for particularly because yEd doesn&amp;#39;t have built-in support for $LaTeX$ either.&lt;/p&gt;
+&lt;p&gt;I&amp;#39;ve thought about and implemented a couple of solutions using matplotlib. I&amp;#39;ll put up my solution in a future post. But I&amp;#39;d be really interested to hear from some real matplotlib pros. Particularly, if anyone has any library code for padding between different nested objects in a plot like this.&lt;/p&gt;
+&lt;/div&gt;
+&lt;/div&gt;
 &lt;/div&gt;&lt;/p&gt;</summary><category term="pydot"></category><category term="graphics"></category><category term="python"></category></entry></feed>

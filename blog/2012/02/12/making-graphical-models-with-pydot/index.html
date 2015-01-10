@@ -1318,47 +1318,63 @@ init_mathjax();
 
     
 </footer><!-- /.post-info -->      <p>
-<div class="cell border-box-sizing code_cell vbox">
-<div class="input hbox">
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
 <div class="prompt input_prompt">
 In&nbsp;[1]:
 </div>
-<div class="input_area box-flex1">
+<div class="inner_cell">
+    <div class="input_area">
 <div class="highlight-ipynb"><pre class="ipynb"><span class="kn">from</span> <span class="nn">IPython.display</span> <span class="kn">import</span> <span class="n">Image</span>
 </pre></div>
 
 </div>
 </div>
+</div>
 
 </div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <h2 id="Graphical-Models-with-PyDot">Graphical Models with PyDot<a class="anchor-link" href="#Graphical-Models-with-PyDot">&#182;</a></h2>
 </div>
-
-<div class="text_cell_render border-box-sizing rendered_html">
-<p><strong>EDIT 6/26/13</strong> Since I've written this post, I've heard about a new project, <a href="http://daft-pgm.org/">daft</a>, for making probabilistic graphical models. I hope to give it a shot soon.</p>
 </div>
-<div class="cell border-box-sizing code_cell vbox">
-<div class="input hbox">
+</div>
+
+<div class="cell border-box-sizing text_cell rendered">
+<div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p><strong>EDIT 6/26/13</strong> Since I&#39;ve written this post, I&#39;ve heard about a new project, <a href="http://daft-pgm.org/">daft</a>, for making probabilistic graphical models. I hope to give it a shot soon.</p>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
 <div class="prompt input_prompt">
 In&nbsp;[2]:
 </div>
-<div class="input_area box-flex1">
+<div class="inner_cell">
+    <div class="input_area">
 <div class="highlight-ipynb"><pre class="ipynb"><span class="n">Image</span><span class="p">(</span><span class="s">&#39;Smoothed_LDA.png&#39;</span><span class="p">)</span>
 </pre></div>
 
 </div>
 </div>
+</div>
 
-<div class="vbox output_wrapper">
-<div class="output vbox">
+<div class="output_wrapper">
+<div class="output">
 
 
-<div class="hbox output_area"><div class="prompt output_prompt">
+<div class="output_area"><div class="prompt output_prompt">
     Out[2]:</div>
-<div class="box-flex1 output_subarea output_pyout">
 
 
+<div class="output_png output_subarea output_pyout">
 <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAlIAAAEqCAIAAABRJCkVAAAAA3NCSVQICAjb4U/gAAAACXBIWXMA
 AA7EAAAOxAGVKw4bAAAgAElEQVR4nO3df1xUVd4H8IPc6NFRI2xWTVBKUsQdqcUf67A8YEKGj9to
 bJiTi+JKP5DWiC2T3QdxXr3wZa/Q9RWirVsmi6NSJBjCGliQzSglrcqjopkMAireJBOvrnhxnj9u
@@ -1621,39 +1637,49 @@ AACoCNIeAACoCNIeAACoCNIeAACoCDYeugNpd0QAAPAMWHwLAABUBJ2cAACgIkh7AACgIkh7AACg
 Ikh7AACgIkh7AACgIkh7AACgIkh7AACgIkh7AACgIkh7AACgIkh7AACgIkh7AACgIkh7AACgIkh7
 AACgIkh7AACgIkh7AACgIkh7AACgIkh7AACgIkh7AACgIkh7AACgIkh7AACgIv8PYM228Rus1XgA
 AAAASUVORK5CYII=
-">
+"
+>
+</div>
+
+</div>
 
 </div>
 </div>
 
 </div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="prompt input_prompt">
 </div>
-
-</div>
+<div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-
-<p style="font-size: 90%; text-align: right; color: #ddd; margin-top: -1.5em; padding-bottom: 4px">
-Source: Blei, Ng, and Jordan. (2003) &quot;Latent Dirichlet Allocation&quot;
-</p>
-
+<p style="font-size: 90%; text-align: right; color: #ddd; margin-top: -1.5em; padding-bottom: 4px">Source: Blei, Ng, and Jordan. (2003) &quot;Latent Dirichlet Allocation&quot;</p>
 </div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<p>Graphical models, are a handy way to represent probabilistic models. They are used much more in Bayesian statistics, particularly in hierarchical models when it's convenient to have a quick representation of the various dependencies. In graphical models, the nodes represent random variables of which the shaded ones are observed. The edges denote possible dependencies. The plates denote sequencies. Last week I wanted to create a Directed Graph Model similar to the one below. This post will recreate this graph using <a href="http://www.graphviz.org/">Graphviz</a> to render a <a href="http://www.graphviz.org/doc/info/lang.html">DOT</a> file created in <a href="http://code.google.com/p/pydot/">PyDOT</a>.</p>
+<p>Graphical models, are a handy way to represent probabilistic models. They are used much more in Bayesian statistics, particularly in hierarchical models when it&#39;s convenient to have a quick representation of the various dependencies. In graphical models, the nodes represent random variables of which the shaded ones are observed. The edges denote possible dependencies. The plates denote sequencies. Last week I wanted to create a Directed Graph Model similar to the one below. This post will recreate this graph using <a href="http://www.graphviz.org/">Graphviz</a> to render a <a href="http://www.graphviz.org/doc/info/lang.html">DOT</a> file created in <a href="http://code.google.com/p/pydot/">PyDOT</a>.</p>
 <p>This graph is the total likelihood for a <a href="http://en.wikipedia.org/wiki/Latent_Dirichlet_allocation">Latent Dirichlet Allocation model</a>. Mathematically, this is</p>
-<p><span class="math">\[\begin{equation}\begin{split}p(w, \theta, \beta, z | \alpha, \eta) \\
-   &amp;= \prod_{k=1}^{K}p\left(\beta_{k}|\eta\right)\prod_{m=1}^{M}p\left(\theta_{m}|\alpha\right)\left[\prod_{n=1}^{N}p\left(z_{m,n}|\theta_{m}\right)p\left(w_{m,n}|z_{m,n},\beta_{1:K}\right)\right]\end{split}\end{equation}\]</span></p>
+<p>  $$\begin{equation}\begin{split}p(w, \theta, \beta, z | \alpha, \eta) \\
+   &amp;= \prod_{k=1}^{K}p\left(\beta_{k}|\eta\right)\prod_{m=1}^{M}p\left(\theta_{m}|\alpha\right)\left[\prod_{n=1}^{N}p\left(z_{m,n}|\theta_{m}\right)p\left(w_{m,n}|z_{m,n},\beta_{1:K}\right)\right]\end{split}\end{equation}$$</p>
 <p>I already have Graphviz installed for use in <a href="http://sphinx.pocoo.org/ext/graphviz.html">Sphinx</a>. It can be installed using apt-get. To use the HTML subscript tag, you need at least version 2.28, so you may have to <a href="http://www.graphviz.org/Download.php">install from elsewhere</a>.</p>
-<pre><code>sudo apt-get install graphviz</code></pre>
-<p>PyDot can be installed using setuptools.</p>
-<pre><code>sudo easy_install pydot</code></pre>
-<p>I started by reading the <a href="http://code.google.com/p/pymc/">PyMC</a> source since they use PyDot to generate their graphical models. I spent most of my time in the Graphviz Dot <a href="http://www.graphviz.org/content/dot-language">configuration documentation</a>. Here's what I came up with.</p>
+<pre><code>sudo apt-get install graphviz
+</code></pre><p>PyDot can be installed using setuptools.</p>
+<pre><code>sudo easy_install pydot
+</code></pre><p>I started by reading the <a href="http://code.google.com/p/pymc/">PyMC</a> source since they use PyDot to generate their graphical models. I spent most of my time in the Graphviz Dot <a href="http://www.graphviz.org/content/dot-language">configuration documentation</a>. Here&#39;s what I came up with.</p>
 </div>
-<div class="cell border-box-sizing code_cell vbox">
-<div class="input hbox">
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
 <div class="prompt input_prompt">
 In&nbsp;[3]:
 </div>
-<div class="input_area box-flex1">
+<div class="inner_cell">
+    <div class="input_area">
 <div class="highlight-ipynb"><pre class="ipynb"><span class="kn">import</span> <span class="nn">pydot</span>
 
 <span class="n">dot_object</span> <span class="o">=</span> <span class="n">pydot</span><span class="o">.</span><span class="n">Dot</span><span class="p">(</span><span class="n">graph_name</span><span class="o">=</span><span class="s">&quot;main_graph&quot;</span><span class="p">,</span><span class="n">rankdir</span><span class="o">=</span><span class="s">&quot;LR&quot;</span><span class="p">,</span> <span class="n">labelloc</span><span class="o">=</span><span class="s">&#39;b&#39;</span><span class="p">,</span> 
@@ -1664,18 +1690,26 @@ In&nbsp;[3]:
 
 </div>
 </div>
+</div>
 
 </div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<p>This instantiates the main Graph. It will be created left-to-right (alternatively, you could use 'TB' for top-to-bottom to look like the above example). This Graph will have SubGraphs, or Clusters, for the plates which will inherit <em>labelloc</em> and <em>labeljust</em>. Then I set the defaults for the Nodes.</p>
+<p>This instantiates the main Graph. It will be created left-to-right (alternatively, you could use &#39;TB&#39; for top-to-bottom to look like the above example). This Graph will have SubGraphs, or Clusters, for the plates which will inherit <em>labelloc</em> and <em>labeljust</em>. Then I set the defaults for the Nodes.</p>
 <p>Now make the nodes for the main graph and attach them.</p>
 </div>
-<div class="cell border-box-sizing code_cell vbox">
-<div class="input hbox">
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
 <div class="prompt input_prompt">
 In&nbsp;[4]:
 </div>
-<div class="input_area box-flex1">
+<div class="inner_cell">
+    <div class="input_area">
 <div class="highlight-ipynb"><pre class="ipynb"><span class="n">node_eta</span> <span class="o">=</span> <span class="n">pydot</span><span class="o">.</span><span class="n">Node</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s">&#39;eta&#39;</span><span class="p">,</span> <span class="n">texlbl</span><span class="o">=</span><span class="s">r&#39;\eta&#39;</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s">&#39;&lt;&amp;#951;&gt;&#39;</span><span class="p">)</span>
 <span class="n">dot_object</span><span class="o">.</span><span class="n">add_node</span><span class="p">(</span><span class="n">node_eta</span><span class="p">)</span>
 
@@ -1685,18 +1719,26 @@ In&nbsp;[4]:
 
 </div>
 </div>
+</div>
 
 </div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<p>You'll notice that the nodes take three parameters -- a name for internal use and <em>texlbl</em> and <em>label</em> containing <span class="math">\(\TeX\)</span> and HTML denoted by &lt;&gt;, respectively. The texlbl will allow us to use dot2tex to make an output for <span class="math">\(LaTeX\)</span>, and the HTML will allow us to create images containing Greek letters from their HTML codes. Labels allow <a href="http://www.graphviz.org/doc/info/shapes.html#html">a subset of HTML tags</a>.</p>
+<p>You&#39;ll notice that the nodes take three parameters -- a name for internal use and <em>texlbl</em> and <em>label</em> containing $\TeX$ and HTML denoted by &lt;&gt;, respectively. The texlbl will allow us to use dot2tex to make an output for $LaTeX$, and the HTML will allow us to create images containing Greek letters from their HTML codes. Labels allow <a href="http://www.graphviz.org/doc/info/shapes.html#html">a subset of HTML tags</a>.</p>
 <p>The plates are called Clusters in DOT. They are a type of SubGraph that provide the borders for the plate notation and are attached as such.</p>
 </div>
-<div class="cell border-box-sizing code_cell vbox">
-<div class="input hbox">
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
 <div class="prompt input_prompt">
 In&nbsp;[5]:
 </div>
-<div class="input_area box-flex1">
+<div class="inner_cell">
+    <div class="input_area">
 <div class="highlight-ipynb"><pre class="ipynb"><span class="c"># K plate</span>
 <span class="n">plate_k</span> <span class="o">=</span> <span class="n">pydot</span><span class="o">.</span><span class="n">Cluster</span><span class="p">(</span><span class="n">graph_name</span><span class="o">=</span><span class="s">&#39;plate_k&#39;</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s">&#39;K&#39;</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">24</span><span class="p">)</span>
 <span class="n">node_beta</span> <span class="o">=</span> <span class="n">pydot</span><span class="o">.</span><span class="n">Node</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s">&#39;beta&#39;</span><span class="p">,</span> <span class="n">texlbl</span><span class="o">=</span><span class="s">r&#39;\beta&#39;</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s">&#39;&lt;&amp;#946;&lt;SUB&gt;k&lt;/SUB&gt;&gt;&#39;</span><span class="p">)</span>
@@ -1725,17 +1767,25 @@ In&nbsp;[5]:
 
 </div>
 </div>
+</div>
 
 </div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>This creates the K, M, and N plates and attaches them to the appropriate objects. The last step is to instantiate and add the edges.</p>
 </div>
-<div class="cell border-box-sizing code_cell vbox">
-<div class="input hbox">
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
 <div class="prompt input_prompt">
 In&nbsp;[6]:
 </div>
-<div class="input_area box-flex1">
+<div class="inner_cell">
+    <div class="input_area">
 <div class="highlight-ipynb"><pre class="ipynb"><span class="c"># Add the edges</span>
 <span class="n">dot_object</span><span class="o">.</span><span class="n">add_edge</span><span class="p">(</span><span class="n">pydot</span><span class="o">.</span><span class="n">Edge</span><span class="p">(</span><span class="n">node_alpha</span><span class="p">,</span> <span class="n">node_theta</span><span class="p">))</span>
 <span class="n">dot_object</span><span class="o">.</span><span class="n">add_edge</span><span class="p">(</span><span class="n">pydot</span><span class="o">.</span><span class="n">Edge</span><span class="p">(</span><span class="n">node_theta</span><span class="p">,</span> <span class="n">node_z</span><span class="p">))</span>
@@ -1746,102 +1796,121 @@ In&nbsp;[6]:
 
 </div>
 </div>
+</div>
 
 </div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<p>You'll notice that we added node_w and node_beta in reverse left-to-right order and specified the attribute dir to be 'back'. This is to maintain the left-to-right orientation and have the edge dependencies make sense.</p>
+<p>You&#39;ll notice that we added node_w and node_beta in reverse left-to-right order and specified the attribute dir to be &#39;back&#39;. This is to maintain the left-to-right orientation and have the edge dependencies make sense.</p>
 <p>Optionally save the filter in raw form using the dot renderer do</p>
 </div>
-<div class="cell border-box-sizing code_cell vbox">
-<div class="input hbox">
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
 <div class="prompt input_prompt">
 In&nbsp;[7]:
 </div>
-<div class="input_area box-flex1">
+<div class="inner_cell">
+    <div class="input_area">
 <div class="highlight-ipynb"><pre class="ipynb"><span class="n">dot_object</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s">&#39;graph.dotfile&#39;</span><span class="p">,</span> <span class="n">format</span><span class="o">=</span><span class="s">&#39;raw&#39;</span><span class="p">,</span> <span class="n">prog</span><span class="o">=</span><span class="s">&#39;dot&#39;</span><span class="p">)</span>
 </pre></div>
 
 </div>
 </div>
+</div>
 
-<div class="vbox output_wrapper">
-<div class="output vbox">
+<div class="output_wrapper">
+<div class="output">
 
 
-<div class="hbox output_area"><div class="prompt output_prompt">
+<div class="output_area"><div class="prompt output_prompt">
     Out[7]:</div>
-<div class="box-flex1 output_subarea output_pyout">
 
 
+<div class="output_text output_subarea output_pyout">
 <pre>
 True
 </pre>
+</div>
+
+</div>
 
 </div>
 </div>
 
 </div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="prompt input_prompt">
 </div>
-
-</div>
+<div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>You also have the option to use other renderers seach as <em>neato</em>, <em>fdp</em>, and <em>sfdp</em>. Unfortunately, each of the renderers has its own strengths and weaknesses with <em>dot</em> the most fully featured to my eyes. You can look at this file to get an idea of the DOT language syntax.</p>
 <p>Now write the graph to a png. You will need a version of graphviz released after after 14, October 2011 for this to work, because of the <code>&lt;SUB&gt;</code> HTML tags.</p>
 </div>
-<div class="cell border-box-sizing code_cell vbox">
-<div class="input hbox">
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
 <div class="prompt input_prompt">
 In&nbsp;[8]:
 </div>
-<div class="input_area box-flex1">
+<div class="inner_cell">
+    <div class="input_area">
 <div class="highlight-ipynb"><pre class="ipynb"><span class="n">dot_object</span><span class="o">.</span><span class="n">write_png</span><span class="p">(</span><span class="s">&#39;lda_graph.png&#39;</span><span class="p">,</span> <span class="n">prog</span><span class="o">=</span><span class="s">&#39;dot&#39;</span><span class="p">)</span>
 </pre></div>
 
 </div>
 </div>
+</div>
 
-<div class="vbox output_wrapper">
-<div class="output vbox">
+<div class="output_wrapper">
+<div class="output">
 
 
-<div class="hbox output_area"><div class="prompt output_prompt">
+<div class="output_area"><div class="prompt output_prompt">
     Out[8]:</div>
-<div class="box-flex1 output_subarea output_pyout">
 
 
+<div class="output_text output_subarea output_pyout">
 <pre>
 True
 </pre>
+</div>
+
+</div>
 
 </div>
 </div>
 
 </div>
-</div>
-
-</div>
-<div class="cell border-box-sizing code_cell vbox">
-<div class="input hbox">
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
 <div class="prompt input_prompt">
 In&nbsp;[9]:
 </div>
-<div class="input_area box-flex1">
+<div class="inner_cell">
+    <div class="input_area">
 <div class="highlight-ipynb"><pre class="ipynb"><span class="kn">from</span> <span class="nn">IPython.display</span> <span class="kn">import</span> <span class="n">Image</span>
 <span class="n">Image</span><span class="p">(</span><span class="s">&#39;lda_graph.png&#39;</span><span class="p">)</span>
 </pre></div>
 
 </div>
 </div>
+</div>
 
-<div class="vbox output_wrapper">
-<div class="output vbox">
+<div class="output_wrapper">
+<div class="output">
 
 
-<div class="hbox output_area"><div class="prompt output_prompt">
+<div class="output_area"><div class="prompt output_prompt">
     Out[9]:</div>
-<div class="box-flex1 output_subarea output_pyout">
 
 
+<div class="output_png output_subarea output_pyout">
 <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAA9sAAAD4CAIAAABzO2KOAAAABmJLR0QA/wD/AP+gvaeTAAAgAElE
 QVR4nOzdeVxM7f8/8DOt2hWylGyp3PaSQouQFMpWCYXslHDbhexll+y0UVpsRZGlkrJHltBCQpZs
 ad/n98f53vPpV1NaZuZqZl7PPzymaZrzypzO+z1nrnNdDCaTSQEAAAAAACEipAMAAAAAAAg1dOQA
@@ -2208,43 +2277,59 @@ cgAAiEmRAwBATIocAABiUuQAABCTIgcAgJgUOQAAxKTIAQAgJkUOAAAxKXIAAIjpa+wF+FMUCoXY
 KwB8UtfX17FXAGJS5IRCoTA9Pf309BR7EYBPqq2tbWJiIvYWQDQt9Xo99g4AAPB5+R45AADEpMgB
 ACAmRQ4AADEpcgAAiEmRAwBATIocAABiUuQAABCTIgcAgJgUOQAAxKTIAQAgJkUOAAAxKXIAAIhJ
 kQMAQEyKHAAAYvoG585PkIsdUSoAAAAASUVORK5CYII=
-">
+"
+>
+</div>
+
+</div>
 
 </div>
 </div>
 
 </div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="prompt input_prompt">
 </div>
-
-</div>
+<div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>If you want to render the image to pdf, you can install <a href="http://www.fauskes.net/code/dot2tex/">dot2tex</a>.</p>
-<pre><code>sudo apt-get install dot2tex</code></pre>
-<p>To go from DOT to <span class="math">\(\TeX\)</span> do</p>
+<pre><code>sudo apt-get install dot2tex
+</code></pre><p>To go from DOT to $\TeX$ do</p>
 </div>
-<div class="cell border-box-sizing code_cell vbox">
-<div class="input hbox">
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
 <div class="prompt input_prompt">
 In&nbsp;[10]:
 </div>
-<div class="input_area box-flex1">
+<div class="inner_cell">
+    <div class="input_area">
 <div class="highlight-ipynb"><pre class="ipynb"><span class="kn">import</span> <span class="nn">dot2tex</span> <span class="kn">as</span> <span class="nn">d2t</span>
 <span class="n">texcode</span> <span class="o">=</span> <span class="n">d2t</span><span class="o">.</span><span class="n">dot2tex</span><span class="p">(</span><span class="n">dot_object</span><span class="o">.</span><span class="n">to_string</span><span class="p">(),</span> <span class="n">format</span><span class="o">=</span><span class="s">&#39;tikz&#39;</span><span class="p">,</span> <span class="n">crop</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
 </pre></div>
 
 </div>
 </div>
+</div>
 
 </div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>And then write it to a file.</p>
 </div>
-<div class="cell border-box-sizing code_cell vbox">
-<div class="input hbox">
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
 <div class="prompt input_prompt">
 In&nbsp;[11]:
 </div>
-<div class="input_area box-flex1">
+<div class="inner_cell">
+    <div class="input_area">
 <div class="highlight-ipynb"><pre class="ipynb"><span class="n">fout</span> <span class="o">=</span> <span class="nb">open</span><span class="p">(</span><span class="s">&quot;img.tex&quot;</span><span class="p">,</span> <span class="s">&#39;w&#39;</span><span class="p">)</span>
 <span class="n">fout</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">texcode</span><span class="p">)</span>
 <span class="n">fout</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
@@ -2252,14 +2337,21 @@ In&nbsp;[11]:
 
 </div>
 </div>
+</div>
 
 </div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>Then make a <em>pdf</em> and optionally convert this to a <em>png</em></p>
-<pre><code>pdflatex img.tex &amp;&amp; pdftops -eps img.pdf &amp;&amp; convert -density 300 img.eps img.png</code></pre>
-<p>I wasn't particularly happy with the layout and wanted a little more control over the padding and label placement not to mention some easier <span class="math">\(TeX\)</span> integration. I suppose you could edit the img.tex file for a bit more control, but I haven't seen any other really good open source solutions for more fine-grained control. I'd be happy to hear about any in the comments though.</p>
-<p>One that I came across has you converting the DOT object to xml with <a href="http://www.mydarc.de/dl9obn/programming/python/dottoxml/">dottoxml</a> and using <a href="http://www.yworks.com/en/products_yed_about.html">yEd</a>. I tried this but it isn't the solution I'm looking for particularly because yEd doesn't have built-in support for <span class="math">\(LaTeX\)</span> either.</p>
-<p>I've thought about and implemented a couple of solutions using matplotlib. I'll put up my solution in a future post. But I'd be really interested to hear from some real matplotlib pros. Particularly, if anyone has any library code for padding between different nested objects in a plot like this.</p>
+<pre><code>pdflatex img.tex &amp;&amp; pdftops -eps img.pdf &amp;&amp; convert -density 300 img.eps img.png
+</code></pre><p>I wasn&#39;t particularly happy with the layout and wanted a little more control over the padding and label placement not to mention some easier $TeX$ integration. I suppose you could edit the img.tex file for a bit more control, but I haven&#39;t seen any other really good open source solutions for more fine-grained control. I&#39;d be happy to hear about any in the comments though.</p>
+<p>One that I came across has you converting the DOT object to xml with <a href="http://www.mydarc.de/dl9obn/programming/python/dottoxml/">dottoxml</a> and using <a href="http://www.yworks.com/en/products_yed_about.html">yEd</a>. I tried this but it isn&#39;t the solution I&#39;m looking for particularly because yEd doesn&#39;t have built-in support for $LaTeX$ either.</p>
+<p>I&#39;ve thought about and implemented a couple of solutions using matplotlib. I&#39;ll put up my solution in a future post. But I&#39;d be really interested to hear from some real matplotlib pros. Particularly, if anyone has any library code for padding between different nested objects in a plot like this.</p>
+</div>
+</div>
 </div></p>
     </div><!-- /.entry-content -->
     <div class="comments">
